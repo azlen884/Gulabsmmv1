@@ -1,94 +1,13 @@
 <?php
 // PHP Built-in Server Router for RoseSMM Panel
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 
-// Serve existing static files directly
+// Serve existing static files directly (excluding PHP files, root, and index.php)
 $filePath = __DIR__ . $uri;
-if ($uri !== '/' && file_exists($filePath) && !is_dir($filePath)) {
+if ($uri !== '/' && $uri !== '/index.php' && file_exists($filePath) && !is_dir($filePath) && substr($filePath, -4) !== '.php') {
     return false;
 }
 
-// Clean Route Map
-$routes = [
-    '/' => __DIR__ . '/views/public/landing.php',
-    '/login' => __DIR__ . '/views/public/login.php',
-    '/register' => __DIR__ . '/views/public/register.php',
-    '/logout' => __DIR__ . '/views/public/logout.php',
-    '/install' => __DIR__ . '/install/index.php',
+// Forward to index.php front controller
+require __DIR__ . '/index.php';
 
-    // User Portal
-    '/dashboard' => __DIR__ . '/views/user/dashboard.php',
-    '/order' => __DIR__ . '/views/user/order.php',
-    '/orders' => __DIR__ . '/views/user/orders.php',
-    '/services' => __DIR__ . '/views/user/services.php',
-    '/add-funds' => __DIR__ . '/views/user/add_funds.php',
-    '/wallet' => __DIR__ . '/views/user/wallet.php',
-    '/transactions' => __DIR__ . '/views/user/transactions.php',
-    '/support' => __DIR__ . '/views/user/support.php',
-    '/tournaments' => __DIR__ . '/views/user/tournaments.php',
-    '/notifications' => __DIR__ . '/views/user/notifications.php',
-    '/profile' => __DIR__ . '/views/user/profile.php',
-
-    // API Endpoints
-    '/api/order/create' => __DIR__ . '/api/order/create.php',
-    '/api/funds/add' => __DIR__ . '/api/funds/add.php',
-    '/api/currency/switch' => __DIR__ . '/api/currency/switch.php',
-    '/api/tickets/create' => __DIR__ . '/api/tickets/create.php',
-    '/api/tickets/reply' => __DIR__ . '/api/tickets/reply.php',
-    '/api/v2' => __DIR__ . '/api/v2.php',
-
-    // Admin Console
-    '/admin' => __DIR__ . '/views/admin/dashboard.php',
-    '/admin/login' => __DIR__ . '/views/admin/login.php',
-    '/admin/orders' => __DIR__ . '/views/admin/orders.php',
-    '/admin/users' => __DIR__ . '/views/admin/users.php',
-    '/admin/services' => __DIR__ . '/views/admin/services.php',
-    '/admin/providers' => __DIR__ . '/views/admin/providers.php',
-    '/admin/provider-services' => __DIR__ . '/views/admin/provider_services.php',
-    '/admin/categories' => __DIR__ . '/views/admin/categories.php',
-    '/admin/transactions' => __DIR__ . '/views/admin/transactions.php',
-    '/admin/currencies' => __DIR__ . '/views/admin/currencies.php',
-    '/admin/sliders' => __DIR__ . '/views/admin/sliders.php',
-    '/admin/tickets' => __DIR__ . '/views/admin/tickets.php',
-    '/admin/notifications' => __DIR__ . '/views/admin/notifications.php',
-    '/admin/settings' => __DIR__ . '/views/admin/settings.php',
-];
-
-// Normalize trailing slashes (except root)
-$normalizedUri = rtrim($uri, '/');
-if (empty($normalizedUri)) {
-    $normalizedUri = '/';
-}
-
-if (isset($routes[$normalizedUri])) {
-    require $routes[$normalizedUri];
-    exit;
-}
-
-// Check if PHP file directly exists
-if (file_exists(__DIR__ . $uri . '.php')) {
-    require __DIR__ . $uri . '.php';
-    exit;
-}
-
-// 404 Fallback
-http_response_code(404);
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>404 Not Found - RoseSMM</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex items-center justify-center p-4">
-  <div class="max-w-md w-full text-center bg-white p-8 rounded-3xl border border-[#FCE4E8] shadow-sm">
-    <div class="text-4xl font-black text-rose-500 mb-2">404</div>
-    <h1 class="text-lg font-bold text-slate-800 mb-2">Page Not Found</h1>
-    <p class="text-xs text-slate-500 mb-6">The page or resource you requested could not be located.</p>
-    <a href="/" class="px-5 py-2.5 rounded-full bg-rose-500 text-white font-bold text-xs shadow-sm hover:bg-rose-600 transition-colors">
-      Return to Home
-    </a>
-  </div>
-</body>
-</html>

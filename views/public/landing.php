@@ -7,8 +7,19 @@ if (is_logged_in()) {
     exit;
 }
 
-$db = getDB();
-$services = $db->query("SELECT s.*, c.name AS category_name, c.slug AS category_slug FROM services s JOIN categories c ON s.category_id = c.id WHERE s.status = 'active' ORDER BY s.sort_order ASC LIMIT 6")->fetchAll();
+$services = [];
+try {
+    $db = getDB();
+    if ($db) {
+        $stmt = $db->query("SELECT s.*, c.name AS category_name, c.slug AS category_slug FROM services s JOIN categories c ON s.category_id = c.id WHERE s.status = 'active' ORDER BY s.sort_order ASC LIMIT 6");
+        if ($stmt) {
+            $services = $stmt->fetchAll();
+        }
+    }
+} catch (Exception $e) {
+    // If services table is empty or error occurs, fail gracefully
+    $services = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -38,12 +38,45 @@ function getDB() {
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
-            // Attempt socket connection if 127.0.0.1 fails
-            try {
-                $dsnSocket = "mysql:unix_socket=/run/mysqld/mysqld.sock;dbname=" . DB_NAME . ";charset=utf8mb4";
-                $pdo = new PDO($dsnSocket, DB_USER, DB_PASS, $options);
-            } catch (PDOException $e2) {
-                die("MySQL Connection Error: " . $e2->getMessage() . "<br>Please run the installer at <a href='/install'>/install</a>");
+            // If 127.0.0.1 fails, try localhost fallback
+            $connected = false;
+            if (DB_HOST === '127.0.0.1') {
+                try {
+                    $dsnLocal = "mysql:host=localhost;port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+                    $pdo = new PDO($dsnLocal, DB_USER, DB_PASS, $options);
+                    $connected = true;
+                } catch (PDOException $eLocal) {}
+            }
+
+            // Check standard Unix socket paths if available
+            if (!$connected) {
+                $possibleSockets = ['/run/mysqld/mysqld.sock', '/var/run/mysqld/mysqld.sock', '/var/lib/mysql/mysql.sock', '/tmp/mysql.sock'];
+                foreach ($possibleSockets as $socket) {
+                    if (file_exists($socket)) {
+                        try {
+                            $dsnSocket = "mysql:unix_socket=$socket;dbname=" . DB_NAME . ";charset=utf8mb4";
+                            $pdo = new PDO($dsnSocket, DB_USER, DB_PASS, $options);
+                            $connected = true;
+                            break;
+                        } catch (PDOException $eSocket) {}
+                    }
+                }
+            }
+
+            if (!$connected) {
+                // Return clean diagnostic output rather than a blank white page
+                http_response_code(500);
+                echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Database Connection Error - RoseSMM</title>';
+                echo '<script src="https://cdn.tailwindcss.com"></script></head>';
+                echo '<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex items-center justify-center p-4">';
+                echo '<div class="max-w-md w-full bg-white p-8 rounded-3xl border border-[#FCE4E8] shadow-sm text-center">';
+                echo '<div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 border border-rose-100 flex items-center justify-center mx-auto mb-4 font-bold text-xl">!</div>';
+                echo '<h1 class="text-xl font-bold text-slate-900 mb-2">Database Connection Error</h1>';
+                echo '<p class="text-xs text-rose-600 bg-rose-50 p-3 rounded-xl border border-rose-100 mb-6 font-mono text-left break-words">' . htmlspecialchars($e->getMessage()) . '</p>';
+                echo '<p class="text-xs text-slate-500 mb-6">Please verify your database credentials in <code>config/db_config.php</code> or run the system installer.</p>';
+                echo '<a href="/install" class="inline-block px-6 py-2.5 rounded-full bg-rose-500 text-white font-bold text-xs shadow-sm hover:bg-rose-600 transition-colors">Run Installer</a>';
+                echo '</div></body></html>';
+                exit;
             }
         }
     }

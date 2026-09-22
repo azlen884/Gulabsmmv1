@@ -215,12 +215,12 @@ INSERT INTO `currencies` (`code`, `name`, `symbol`, `rate`, `is_default`, `statu
 -- Seed Admin User (Password: admin123)
 -- Hash generated via password_hash('admin123', PASSWORD_BCRYPT)
 INSERT INTO `users` (`username`, `email`, `password`, `full_name`, `role`, `balance`, `currency`, `api_key`, `is_verified`, `status`) VALUES
-('admin', 'admin@rosesmm.com', '$2y$10$vOa4iZ8qY1vH6p4w8T6SLezQ2.8bF.KkG4UaW6P8F8J5q.PZ6.Gq2', 'Administrator', 'admin', 50000.0000, 'USD', 'rose_adm_89f7a93e502b4d99c7b12', 1, 'active');
+('admin', 'admin@rosesmm.com', '$2y$10$9ckQsWdoRTJQI2UUvk6bRupIlmMCLVGuOMnKjqcVp38gW2JonU8D6', 'Administrator', 'admin', 50000.0000, 'USD', 'rose_adm_89f7a93e502b4d99c7b12', 1, 'active');
 
 -- Seed Default User from Screenshot: John Doe (@johndoe, balance $24.58)
 -- Password: password123
 INSERT INTO `users` (`username`, `email`, `password`, `full_name`, `role`, `balance`, `currency`, `api_key`, `is_verified`, `status`) VALUES
-('johndoe', 'johndoe@example.com', '$2y$10$wOq2kZ8qY1vH6p4w8T6SLezQ2.8bF.KkG4UaW6P8F8J5q.PZ6.Gq2', 'John Doe', 'user', 24.5800, 'USD', 'rose_usr_31a4c889f02e64b77d29e', 1, 'active');
+('johndoe', 'johndoe@example.com', '$2y$10$JeXi/.1WpxILt5Y8KS9NPebZRcNQxpuNGWoPhnD4Ub3b6aDmy/IHq', 'John Doe', 'user', 24.5800, 'USD', 'rose_usr_31a4c889f02e64b77d29e', 1, 'active');
 
 -- Seed Categories
 INSERT INTO `categories` (`name`, `slug`, `icon`, `sort_order`, `status`) VALUES

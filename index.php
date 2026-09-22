@@ -9,8 +9,13 @@ $rawUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($rawUri, PHP_URL_PATH);
 
 // Normalize script directory base path (supports both root and subfolder like /rsmm)
-$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
-$basePath = rtrim($scriptDir, '/');
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$scriptDir = str_replace('\\', '/', dirname($scriptName));
+if (preg_match('#/(index|router)\.php$#', $scriptName)) {
+    $basePath = rtrim($scriptDir, '/');
+} else {
+    $basePath = '';
+}
 
 $uri = $requestPath;
 if (!empty($basePath) && $basePath !== '/' && strpos($uri, $basePath) === 0) {

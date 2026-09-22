@@ -125,7 +125,7 @@ $services = $stmt->fetchAll();
         <div class="pt-4 border-t border-slate-100 space-y-3 shrink-0">
           <div class="flex items-center justify-between text-xs gap-2">
             <span class="text-slate-400 shrink-0">Rate per 1,000:</span>
-            <span class="font-extrabold text-rose-600 text-sm truncate"><?= format_price($s['rate']) ?></span>
+            <span class="font-extrabold text-rose-600 text-sm truncate"><?= format_price($s['rate'], null, $s['currency'] ?? 'USD') ?></span>
           </div>
 
           <div class="flex items-center justify-between text-[11px] text-slate-500 gap-2">

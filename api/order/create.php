@@ -42,9 +42,14 @@ if ($quantity < $minQty || $quantity > $maxQty) {
     exit;
 }
 
-// Calculate total charge
+// Calculate total charge in base currency (USD)
+$serviceBaseCurr = $service['currency'] ?? 'USD';
+$serviceRateInUSD = convert_price($service['rate'], $serviceBaseCurr, 'USD');
 $totalQuantity = $quantity * max(1, $runs);
-$charge = ($service['rate'] / 1000.0) * $totalQuantity;
+$charge = round(($serviceRateInUSD / 1000.0) * $totalQuantity, 4);
+
+$userCurrency = get_user_currency();
+$formattedCharge = format_price($charge, $userCurrency, 'USD');
 
 // Check user balance
 $uStmt = $db->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
@@ -54,9 +59,10 @@ $currentBalance = (float)$uStmt->fetchColumn();
 
 if ($currentBalance < $charge) {
     $db->rollBack();
+    $currentBalanceFormatted = format_price($currentBalance, $userCurrency, 'USD');
     echo json_encode([
         'success' => false, 
-        'error' => 'Insufficient wallet balance. Please add funds to place this order.'
+        'error' => "Insufficient wallet balance. Total cost is $formattedCharge, but your current balance is $currentBalanceFormatted. Please add funds to place this order."
     ]);
     exit;
 }
@@ -137,6 +143,9 @@ echo json_encode([
     'success' => true,
     'order_id' => $orderId,
     'charge' => $charge,
+    'converted_charge' => convert_price($charge, 'USD', $userCurrency),
+    'formatted_charge' => $formattedCharge,
     'balance' => $newBalance,
-    'message' => "Order #$orderId has been placed successfully!"
+    'new_balance' => format_price($newBalance, $userCurrency, 'USD'),
+    'message' => "Order #$orderId has been placed successfully! Total cost: $formattedCharge"
 ]);

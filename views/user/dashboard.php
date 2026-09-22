@@ -585,8 +585,13 @@ $services = $db->query("
           <div class="relative">
             <select id="order-service" onchange="onServiceChange(this)" class="w-full px-3.5 py-2.5 bg-rose-50/20 border border-[#FCE4E8] rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:border-rose-400">
               <?php foreach ($services as $s): ?>
-                <option value="<?= $s['id'] ?>" data-category="<?= $s['category_id'] ?>" data-rate="<?= $s['rate'] ?>" data-min="<?= $s['min_quantity'] ?>" data-max="<?= $s['max_quantity'] ?>">
-                  <?= e($s['name']) ?> - $<?= number_format($s['rate'], 2) ?> per 1K
+                <?php 
+                  $srvBaseCurr = $s['currency'] ?? 'USD';
+                  $convertedRate = convert_price($s['rate'], $srvBaseCurr, $userCurrency);
+                  $formattedRate = format_price($s['rate'], $userCurrency, $srvBaseCurr);
+                ?>
+                <option value="<?= $s['id'] ?>" data-category="<?= $s['category_id'] ?>" data-rate="<?= $s['rate'] ?>" data-base-currency="<?= e($srvBaseCurr) ?>" data-converted-rate="<?= $convertedRate ?>" data-min="<?= $s['min_quantity'] ?>" data-max="<?= $s['max_quantity'] ?>">
+                  <?= e($s['name']) ?> - <?= $formattedRate ?> per 1K
                 </option>
               <?php endforeach; ?>
             </select>
@@ -625,7 +630,7 @@ $services = $db->query("
             class="w-full px-3.5 py-2.5 bg-rose-50/20 border border-[#FCE4E8] rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:border-rose-400"
           >
           <div class="text-right text-xs font-semibold text-slate-500 mt-1">
-            Estimated Cost: <span id="estimated-cost-display" class="font-bold text-rose-600">$2.50</span>
+            Estimated Cost: <span id="estimated-cost-display" class="font-bold text-rose-600">--</span>
           </div>
         </div>
 
@@ -771,6 +776,8 @@ $services = $db->query("
   }
 
   // Calculate dynamic price based on quantity and service rate
+  const dashboardCurrencySymbol = "<?= addslashes(get_currency_info($userCurrency)['symbol'] ?? '$') ?>";
+
   function calculateEstimatedCost() {
     const srvSelect = document.getElementById('order-service');
     const qtyInput = document.getElementById('order-quantity');
@@ -780,11 +787,11 @@ $services = $db->query("
     const opt = srvSelect.options[srvSelect.selectedIndex];
     if (!opt) return;
 
-    const rate = parseFloat(opt.getAttribute('data-rate')) || 0;
+    const convertedRate = parseFloat(opt.getAttribute('data-converted-rate')) || 0;
     const qty = parseInt(qtyInput.value) || 0;
-    const cost = (rate / 1000) * qty;
+    const cost = (convertedRate / 1000) * qty;
 
-    display.textContent = '$' + cost.toFixed(2);
+    display.textContent = dashboardCurrencySymbol + cost.toFixed(2);
   }
 
   // Submit order to real MySQL database via AJAX

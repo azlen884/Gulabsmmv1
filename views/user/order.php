@@ -57,16 +57,23 @@ $preselectedServiceId = isset($_GET['service']) ? (int)$_GET['service'] : 0;
           <label class="block text-xs font-bold text-slate-700 mb-1.5">Service</label>
           <select id="main-order-service" onchange="updateServiceDetails(this)" class="w-full px-4 py-3 bg-rose-50/20 border border-[#FCE4E8] rounded-2xl text-xs sm:text-sm font-medium text-slate-700 focus:outline-none focus:border-rose-400">
             <?php foreach ($services as $srv): ?>
+              <?php 
+                $srvBaseCurr = $srv['currency'] ?? 'USD';
+                $convertedRate = convert_price($srv['rate'], $srvBaseCurr, $userCurrency);
+                $formattedRate = format_price($srv['rate'], $userCurrency, $srvBaseCurr);
+              ?>
               <option 
                 value="<?= $srv['id'] ?>" 
                 data-category="<?= $srv['category_id'] ?>" 
                 data-rate="<?= $srv['rate'] ?>" 
+                data-base-currency="<?= e($srvBaseCurr) ?>"
+                data-converted-rate="<?= $convertedRate ?>"
                 data-min="<?= $srv['min_quantity'] ?>" 
                 data-max="<?= $srv['max_quantity'] ?>"
                 data-desc="<?= e(htmlspecialchars($srv['description'] ?: '')) ?>"
                 <?= $preselectedServiceId === (int)$srv['id'] ? 'selected' : '' ?>
               >
-                #<?= $srv['id'] ?> - <?= e($srv['name']) ?> (<?= format_price($srv['rate']) ?> / 1K)
+                #<?= $srv['id'] ?> - <?= e($srv['name']) ?> (<?= $formattedRate ?> / 1K)
               </option>
             <?php endforeach; ?>
           </select>
@@ -112,7 +119,7 @@ $preselectedServiceId = isset($_GET['service']) ? (int)$_GET['service'] : 0;
         <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-100 flex items-center justify-between">
           <div>
             <div class="text-xs text-slate-500 font-medium">Total Charge</div>
-            <div class="text-2xl font-extrabold text-rose-600" id="main-order-total-cost">$2.50</div>
+            <div class="text-2xl font-extrabold text-rose-600" id="main-order-total-cost">--</div>
           </div>
           <div class="text-right text-xs text-slate-400">
             Deducted from wallet balance
@@ -203,16 +210,18 @@ $preselectedServiceId = isset($_GET['service']) ? (int)$_GET['service'] : 0;
     recalculateMainOrderCost();
   }
 
+  const userCurrencySymbol = "<?= addslashes(get_currency_info($userCurrency)['symbol'] ?? '$') ?>";
+
   function recalculateMainOrderCost() {
     const srvSelect = document.getElementById('main-order-service');
     const opt = srvSelect.options[srvSelect.selectedIndex];
     if (!opt) return;
 
-    const rate = parseFloat(opt.getAttribute('data-rate')) || 0;
+    const convertedRate = parseFloat(opt.getAttribute('data-converted-rate')) || 0;
     const qty = parseInt(document.getElementById('main-order-quantity').value) || 0;
-    const cost = (rate / 1000) * qty;
+    const cost = (convertedRate / 1000) * qty;
 
-    document.getElementById('main-order-total-cost').textContent = '$' + cost.toFixed(2);
+    document.getElementById('main-order-total-cost').textContent = userCurrencySymbol + cost.toFixed(2);
   }
 
   function handleNewOrderSubmit(e) {

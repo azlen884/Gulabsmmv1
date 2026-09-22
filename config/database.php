@@ -143,7 +143,7 @@ function current_user() {
  * Get active user currency
  */
 function get_user_currency() {
-    if (isset($_SESSION['user_currency'])) {
+    if (isset($_SESSION['user_currency']) && !empty($_SESSION['user_currency'])) {
         return $_SESSION['user_currency'];
     }
     $u = current_user();
@@ -155,7 +155,7 @@ function get_user_currency() {
 }
 
 /**
- * Get all active currencies
+ * Get all active currencies from MySQL
  */
 function get_currencies() {
     static $currencies = null;
@@ -167,42 +167,76 @@ function get_currencies() {
 }
 
 /**
- * Convert and format currency
+ * Get single currency data by code (cached)
  */
-function format_price($amountUSD, $targetCurrency = null) {
+function get_currency_info($code) {
+    $code = strtoupper(trim((string)$code));
+    $currencies = get_currencies();
+    foreach ($currencies as $c) {
+        if (strtoupper($c['code']) === $code) {
+            return $c;
+        }
+    }
+    return [
+        'code' => $code ?: 'USD',
+        'symbol' => ($code === 'INR' ? '₹' : ($code === 'EUR' ? '€' : ($code === 'GBP' ? '£' : '$'))),
+        'rate' => ($code === 'INR' ? 83.5 : 1.0),
+        'name' => $code
+    ];
+}
+
+/**
+ * Get real configured exchange rate from base_currency to target_currency
+ * Exchange rates in MySQL currencies table are defined per $1 USD base.
+ * Formula: exchange_rate(from -> to) = (rate_to / rate_from)
+ */
+function get_exchange_rate($fromCurrency = 'USD', $toCurrency = null) {
+    if ($toCurrency === null) {
+        $toCurrency = get_user_currency();
+    }
+    $fromCode = strtoupper(trim((string)$fromCurrency)) ?: 'USD';
+    $toCode = strtoupper(trim((string)$toCurrency)) ?: 'USD';
+
+    if ($fromCode === $toCode) {
+        return 1.0;
+    }
+
+    $fromInfo = get_currency_info($fromCode);
+    $toInfo = get_currency_info($toCode);
+
+    $fromRate = (float)($fromInfo['rate'] ?? 1.0);
+    $toRate = (float)($toInfo['rate'] ?? 1.0);
+
+    if ($fromRate <= 0) $fromRate = 1.0;
+    if ($toRate <= 0) $toRate = 1.0;
+
+    return $toRate / $fromRate;
+}
+
+/**
+ * Calculate converted price float value
+ * converted_price = base_price * exchange_rate(base_currency -> user_currency)
+ */
+function convert_price($amount, $fromCurrency = 'USD', $toCurrency = null) {
+    $rate = get_exchange_rate($fromCurrency, $toCurrency);
+    return round((float)$amount * $rate, 4);
+}
+
+/**
+ * Convert and format currency for display
+ * Preserves the service's base price and applies the configured exchange rate dynamically
+ */
+function format_price($amount, $targetCurrency = null, $fromCurrency = 'USD') {
     if ($targetCurrency === null) {
         $targetCurrency = get_user_currency();
     }
-    $currencies = get_currencies();
-    $currMap = [];
-    foreach ($currencies as $c) {
-        $currMap[$c['code']] = $c;
-    }
+    $curr = get_currency_info($targetCurrency);
+    $symbol = $curr['symbol'] ?? '$';
+    $converted = convert_price($amount, $fromCurrency, $targetCurrency);
 
-    $symbol = '$';
-    $rate = 1.0;
-
-    // Rates in database are relative to INR (default INR = 1.0)
-    // USD rate is e.g. 0.011765 (1 INR = 0.011765 USD => 1 USD = 85 INR)
-    $usdRate = isset($currMap['USD']) ? (float)$currMap['USD']['rate'] : 0.011765;
-    $targetRate = isset($currMap[$targetCurrency]) ? (float)$currMap[$targetCurrency]['rate'] : 1.0;
-    $targetSymbol = isset($currMap[$targetCurrency]) ? $currMap[$targetCurrency]['symbol'] : '$';
-
-    if ($targetCurrency === 'USD') {
-        $converted = (float)$amountUSD;
-        $symbol = '$';
-    } elseif ($targetCurrency === 'INR') {
-        // Convert USD to INR
-        $converted = (float)$amountUSD / ($usdRate > 0 ? $usdRate : 0.011765);
-        $symbol = '₹';
-    } else {
-        // Convert USD -> INR -> Target
-        $amountINR = (float)$amountUSD / ($usdRate > 0 ? $usdRate : 0.011765);
-        $converted = $amountINR * $targetRate;
-        $symbol = $targetSymbol;
-    }
-
-    return $symbol . number_format($converted, 2);
+    // Format with 2 decimals (or 4 if less than 0.01 and greater than 0)
+    $decimals = ($converted < 0.01 && $converted > 0) ? 4 : 2;
+    return $symbol . number_format($converted, $decimals);
 }
 
 /**

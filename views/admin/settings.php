@@ -18,6 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = ?");
         $stmt->execute([$key, $val, $val]);
     }
+
+    if (isset($_POST['active_theme'])) {
+        $chosenTheme = trim($_POST['active_theme']);
+        set_active_theme($chosenTheme);
+    }
+
     $msg = "System settings updated successfully.";
 }
 
@@ -25,6 +31,8 @@ $siteName = get_setting('site_name', 'RoseSMM');
 $supportEmail = get_setting('support_email', 'support@rosesmm.com');
 $bonusPct = get_setting('deposit_bonus_percent', '10');
 $maintMode = get_setting('maintenance_mode', '0');
+$activeTheme = get_active_theme();
+$availableThemes = get_available_themes();
 ?>
 
 <div class="max-w-3xl space-y-6">
@@ -79,6 +87,25 @@ $maintMode = get_setting('maintenance_mode', '0');
           >
           <span class="text-xs text-slate-500 font-semibold">% added automatically on every user wallet deposit</span>
         </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label for="admin-settings-theme" class="block text-xs font-bold text-slate-700">Active Website Theme</label>
+          <a href="/admin/theme" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1">
+            <i data-lucide="palette" class="w-3.5 h-3.5"></i> Detailed Theme Manager &rarr;
+          </a>
+        </div>
+        <select 
+          id="admin-settings-theme" 
+          name="active_theme" 
+          class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-rose-500"
+        >
+          <option value="default" <?= $activeTheme === 'default' ? 'selected' : '' ?>>Existing Theme</option>
+          <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
+          <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
+        </select>
+        <p class="text-[11px] text-slate-400 mt-1">Global website theme applied across the platform. Configured exclusively by administrators.</p>
       </div>
 
       <div class="pt-4 border-t border-slate-100">

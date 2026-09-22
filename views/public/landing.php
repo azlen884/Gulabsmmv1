@@ -52,8 +52,9 @@ try {
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between <?= get_theme_body_class() ?>">
 
   <!-- Public Navigation (NO Currency Selector here per Prompt Rule 15!) -->
   <header class="bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-12 py-3 sm:py-4">

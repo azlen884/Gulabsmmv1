@@ -245,3 +245,108 @@ function format_price($amount, $targetCurrency = null, $fromCurrency = 'USD') {
 function e($text) {
     return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
 }
+
+/**
+ * =========================================================================
+ * THEME MANAGEMENT SYSTEM (Admin-Only Controlled)
+ * Allowed themes:
+ * 1. 'default'        -> Existing Theme
+ * 2. 'premium_red'    -> Premium Red + White
+ * 3. 'premium_green'  -> Premium Green + White
+ * =========================================================================
+ */
+
+/**
+ * Get active theme key with strict server-side fallback
+ */
+function get_active_theme() {
+    $theme = get_setting('active_theme', 'default');
+    $valid = ['default', 'premium_red', 'premium_green'];
+    return in_array($theme, $valid, true) ? $theme : 'default';
+}
+
+/**
+ * Get list of available themes (exactly the 3 options)
+ */
+function get_available_themes() {
+    return [
+        'default' => [
+            'id' => 'default',
+            'name' => 'Existing Theme',
+            'description' => 'Original signature Rose & Pink palette with soft gradient accents.',
+            'primary_color' => '#FF3B69',
+            'secondary_color' => '#FFF0F3',
+            'accent_color' => '#E11D48',
+            'badge' => 'Classic Rose',
+            'features' => ['Original Rose Palette', 'Pink Gradients', 'Default Layout']
+        ],
+        'premium_red' => [
+            'id' => 'premium_red',
+            'name' => 'Premium Red + White',
+            'description' => 'Sophisticated crimson & ruby tones with tasteful glassmorphism, crisp white contrast, and modern red accents.',
+            'primary_color' => '#DC2626',
+            'secondary_color' => '#FEF2F2',
+            'accent_color' => '#B91C1C',
+            'badge' => 'Glassmorphic Luxury',
+            'features' => ['Tasteful Glassmorphic Navbar & Cards', 'Rich Crimson & Ruby Tones', 'High-Contrast White Canvas']
+        ],
+        'premium_green' => [
+            'id' => 'premium_green',
+            'name' => 'Premium Green + White',
+            'description' => 'Fresh, crisp emerald & jade shades paired with ultra-clean white surfaces, refined borders, and distinct visual identity.',
+            'primary_color' => '#059669',
+            'secondary_color' => '#ECFDF5',
+            'accent_color' => '#047857',
+            'badge' => 'Emerald Luxury',
+            'features' => ['Crisp Emerald & Jade Accents', 'Clean Modern White Cards', 'Elevated Visual Hierarchy']
+        ],
+    ];
+}
+
+/**
+ * Set active theme with strict server-side validation and security check
+ * Only authenticated Admin is authorized to change the theme.
+ */
+function set_active_theme($themeKey) {
+    if (!is_admin()) {
+        return false;
+    }
+    $valid = ['default', 'premium_red', 'premium_green'];
+    if (!in_array($themeKey, $valid, true)) {
+        return false;
+    }
+    return set_setting('active_theme', $themeKey);
+}
+
+/**
+ * Render active theme stylesheet link and meta tags in HTML <head>
+ */
+function render_theme_head_tags() {
+    $active = get_active_theme();
+    $cssFile = '';
+    if ($active === 'premium_red') {
+        $cssFile = '/assets/css/theme-premium-red.css';
+    } elseif ($active === 'premium_green') {
+        $cssFile = '/assets/css/theme-premium-green.css';
+    }
+
+    if (!empty($cssFile)) {
+        $fullPath = __DIR__ . '/..' . $cssFile;
+        $ver = file_exists($fullPath) ? filemtime($fullPath) : time();
+        echo '<link rel="stylesheet" id="app-active-theme-css" href="' . htmlspecialchars($cssFile . '?v=' . $ver, ENT_QUOTES, 'UTF-8') . '">' . "\n";
+    }
+}
+
+/**
+ * Return theme class for body tag
+ */
+function get_theme_body_class() {
+    $active = get_active_theme();
+    if ($active === 'premium_red') {
+        return 'theme-premium-red';
+    } elseif ($active === 'premium_green') {
+        return 'theme-premium-green';
+    }
+    return 'theme-default';
+}
+

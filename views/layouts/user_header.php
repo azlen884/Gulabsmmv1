@@ -70,8 +70,9 @@ $unreadCount = (int)$notifStmt->fetchColumn();
       border-radius: 9999px;
     }
   </style>
+  <?php render_theme_head_tags(); ?>
 </head>
-<body class="min-h-screen bg-[#FFF9FA] text-slate-800 antialiased flex flex-col">
+<body class="min-h-screen bg-[#FFF9FA] text-slate-800 antialiased flex flex-col <?= get_theme_body_class() ?>">
 
 <div class="flex flex-1 min-h-screen">
   <!-- Sidebar -->

@@ -1,0 +1,243 @@
+/**
+ * =========================================================================
+ * RoseSMM - Premium Red + White Theme (theme-premium-red)
+ * Features:
+ * - Sophisticated crimson and ruby shades (#DC2626, #B91C1C, #991B1B)
+ * - Tasteful glassmorphism on navbar and key dashboard cards
+ * - Crisp white canvas with high contrast and readability
+ * - Fully responsive across mobile, tablet, and desktop
+ * =========================================================================
+ */
+
+:root {
+  --color-red-primary: #DC2626;
+  --color-red-dark: #B91C1C;
+  --color-red-darker: #991B1B;
+  --color-red-accent: #EF4444;
+  --color-red-soft: #FEF2F2;
+  --color-red-border: #FEE2E2;
+  --color-red-border-medium: #FECACA;
+  --color-red-shadow: rgba(220, 38, 38, 0.15);
+}
+
+body.theme-premium-red {
+  background-color: #FAFAFC !important;
+  color: #1E293B !important;
+}
+
+/* Background canvas overrides */
+body.theme-premium-red .bg-\[\#FFF9FA\],
+body.theme-premium-red .bg-canvas {
+  background-color: #FAFAFC !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 1. GLASSMORPHISM NAVBAR
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red header.border-b,
+body.theme-premium-red header.bg-white {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(14px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.12) !important;
+  box-shadow: 0 4px 20px -2px rgba(220, 38, 38, 0.04) !important;
+}
+
+/* Public landing navbar glassmorphism */
+body.theme-premium-red header.bg-white\/80 {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(14px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(220, 38, 38, 0.14) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. GLASSMORPHISM DASHBOARD CARDS & PANELS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div,
+body.theme-premium-red .bg-white.p-5.rounded-2xl.border {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(220, 38, 38, 0.16) !important;
+  box-shadow: 0 4px 18px -2px rgba(220, 38, 38, 0.05) !important;
+}
+
+/* User sidebar */
+body.theme-premium-red aside#main-sidebar {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-right: 1px solid rgba(220, 38, 38, 0.12) !important;
+}
+
+/* Sidebar profile card */
+body.theme-premium-red a[href="/profile"].rounded-2xl {
+  background: rgba(254, 242, 242, 0.6) !important;
+  border-color: rgba(220, 38, 38, 0.15) !important;
+}
+body.theme-premium-red a[href="/profile"].rounded-2xl:hover {
+  background: rgba(254, 242, 242, 0.9) !important;
+}
+
+/* Balance gradient card in dashboard */
+body.theme-premium-red .rounded-3xl.bg-gradient-to-br {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 50%, #991B1B 100%) !important;
+  box-shadow: 0 12px 28px -4px rgba(185, 28, 28, 0.40) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 3. HERO SLIDER IN RED THEME
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red #hero-slider-wrapper {
+  border-color: rgba(220, 38, 38, 0.22) !important;
+  box-shadow: 0 8px 24px -4px rgba(220, 38, 38, 0.06) !important;
+}
+
+body.theme-premium-red .hero-slide[data-slide-index="0"],
+body.theme-premium-red .hero-slide:nth-child(odd) {
+  background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 45%, #FECDD3 100%) !important;
+}
+
+body.theme-premium-red .hero-slide[data-slide-index="1"],
+body.theme-premium-red .hero-slide:nth-child(even) {
+  background: linear-gradient(135deg, #FFF5F5 0%, #FEE2E2 45%, #FECACA 100%) !important;
+}
+
+body.theme-premium-red .hero-dot.bg-rose-500 {
+  background-color: #DC2626 !important;
+}
+
+body.theme-premium-red .hero-dot.bg-rose-300\/80 {
+  background-color: rgba(252, 165, 165, 0.8) !important;
+}
+
+body.theme-premium-red .hero-dot.bg-rose-300\/80:hover {
+  background-color: #F87171 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 4. BUTTONS & CALLS TO ACTION
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .bg-rose-500,
+body.theme-premium-red .bg-rose-600,
+body.theme-premium-red .bg-gradient-to-r.from-rose-500.to-rose-600 {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.30) !important;
+}
+
+body.theme-premium-red .bg-rose-500:hover,
+body.theme-premium-red .bg-rose-600:hover,
+body.theme-premium-red .hover\:bg-rose-600:hover,
+body.theme-premium-red .hover\:bg-rose-700:hover,
+body.theme-premium-red .hover\:from-rose-600:hover {
+  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%) !important;
+  box-shadow: 0 6px 18px 0 rgba(220, 38, 38, 0.40) !important;
+}
+
+/* Light button variants */
+body.theme-premium-red .bg-rose-50 {
+  background-color: #FEF2F2 !important;
+}
+body.theme-premium-red .bg-rose-100 {
+  background-color: #FEE2E2 !important;
+}
+body.theme-premium-red .bg-rose-200 {
+  background-color: #FECACA !important;
+}
+body.theme-premium-red .hover\:bg-rose-50:hover {
+  background-color: #FEF2F2 !important;
+}
+body.theme-premium-red .hover\:bg-rose-100:hover {
+  background-color: #FEE2E2 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. TEXT & LINKS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .text-rose-500 {
+  color: #DC2626 !important;
+}
+body.theme-premium-red .text-rose-600 {
+  color: #B91C1C !important;
+}
+body.theme-premium-red .text-rose-700 {
+  color: #991B1B !important;
+}
+body.theme-premium-red .hover\:text-rose-600:hover,
+body.theme-premium-red .hover\:text-rose-700:hover,
+body.theme-premium-red .group:hover .group-hover\:text-rose-500 {
+  color: #DC2626 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 6. ACTIVE STATES & NAVIGATION
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red a.bg-rose-50.text-rose-600,
+body.theme-premium-red nav a.bg-rose-50 {
+  background-color: #FEF2F2 !important;
+  color: #DC2626 !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #DC2626;
+}
+
+body.theme-premium-red nav a.bg-rose-600 {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 7. BORDERS & DIVIDERS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .border-\[\#FCE4E8\],
+body.theme-premium-red .border-borderPink {
+  border-color: #FEE2E2 !important;
+}
+
+body.theme-premium-red .border-\[\#FCD3DC\] {
+  border-color: #FECACA !important;
+}
+
+body.theme-premium-red .border-rose-100 {
+  border-color: #FEE2E2 !important;
+}
+body.theme-premium-red .border-rose-200 {
+  border-color: #FECACA !important;
+}
+body.theme-premium-red .border-rose-500\/20 {
+  border-color: rgba(220, 38, 38, 0.20) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. FORM INPUTS & SEARCH
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red input:focus,
+body.theme-premium-red select:focus,
+body.theme-premium-red textarea:focus {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+body.theme-premium-red #top-service-search {
+  background-color: rgba(254, 242, 242, 0.4) !important;
+  border-color: #FEE2E2 !important;
+}
+body.theme-premium-red #top-service-search:focus {
+  border-color: #DC2626 !important;
+  background-color: #FFFFFF !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. BADGES, CHIPS & ICONS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .bg-rose-500\/10 {
+  background-color: rgba(220, 38, 38, 0.08) !important;
+}
+
+body.theme-premium-red svg.fill-current {
+  fill: #DC2626 !important;
+}
+
+body.theme-premium-red .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #FECACA !important;
+}

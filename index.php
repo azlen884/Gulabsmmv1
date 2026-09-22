@@ -89,6 +89,7 @@ $routes = [
     '/admin/tickets' => __DIR__ . '/views/admin/tickets.php',
     '/admin/notifications' => __DIR__ . '/views/admin/notifications.php',
     '/admin/settings' => __DIR__ . '/views/admin/settings.php',
+    '/admin/theme' => __DIR__ . '/views/admin/theme.php',
 ];
 
 if (isset($routes[$cleanUri])) {

@@ -38,8 +38,9 @@ $adminPage = $adminPage ?? 'dashboard';
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col <?= get_theme_body_class() ?>">
 
 <!-- Mobile Admin Sidebar Drawer & Backdrop -->
 <div id="admin-mobile-backdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden lg:hidden" onclick="toggleAdminSidebar()"></div>
@@ -103,6 +104,9 @@ $adminPage = $adminPage ?? 'dashboard';
       </a>
       <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
         <i data-lucide="settings" class="w-4 h-4"></i> System Settings
+      </a>
+      <a href="/admin/theme" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="palette" class="w-4 h-4"></i> Website Theme
       </a>
     </nav>
   </div>
@@ -176,6 +180,9 @@ $adminPage = $adminPage ?? 'dashboard';
         </a>
         <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
           <i data-lucide="settings" class="w-4 h-4"></i> System Settings
+        </a>
+        <a href="/admin/theme" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="palette" class="w-4 h-4"></i> Website Theme
         </a>
       </nav>
     </div>

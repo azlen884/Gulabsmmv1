@@ -1,0 +1,6 @@
+{
+  "name": "RoseSMM",
+  "description": "RoseSMM - Full-Featured Social Media Services (SMM) Panel with real MySQL database, PHP backend, card-based responsive user and admin layouts, currency conversions, provider APIs, and order processing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

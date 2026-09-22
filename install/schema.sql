@@ -69,6 +69,9 @@ CREATE TABLE `services` (
   `description` TEXT,
   `type` ENUM('default', 'custom_comments', 'subscriptions', 'package') DEFAULT 'default',
   `rate` DECIMAL(10, 4) NOT NULL,
+  `original_rate` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+  `margin_type` ENUM('percentage', 'fixed') NOT NULL DEFAULT 'percentage',
+  `margin_value` DECIMAL(10, 4) NOT NULL DEFAULT 30.0000,
   `min_quantity` INT NOT NULL DEFAULT 100,
   `max_quantity` INT NOT NULL DEFAULT 100000,
   `dripfeed` TINYINT(1) DEFAULT 0,
@@ -76,6 +79,54 @@ CREATE TABLE `services` (
   `status` ENUM('active', 'inactive') DEFAULT 'active',
   `sort_order` INT DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `payment_gateways`;
+CREATE TABLE `payment_gateways` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `code` VARCHAR(50) NOT NULL UNIQUE,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT NULL,
+  `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
+  `mode` ENUM('test', 'live') NOT NULL DEFAULT 'test',
+  `api_key` VARCHAR(255) NULL,
+  `secret_key` VARCHAR(255) NULL,
+  `webhook_secret` VARCHAR(255) NULL,
+  `merchant_id` VARCHAR(255) NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'USD',
+  `min_amount` DECIMAL(10, 2) NOT NULL DEFAULT 5.00,
+  `max_amount` DECIMAL(10, 2) NOT NULL DEFAULT 5000.00,
+  `fee_percent` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+  `parameters` TEXT NULL,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `gateway` VARCHAR(50) NOT NULL,
+  `internal_payment_id` VARCHAR(100) NOT NULL UNIQUE,
+  `gateway_order_id` VARCHAR(191) DEFAULT NULL,
+  `gateway_payment_id` VARCHAR(191) DEFAULT NULL,
+  `amount` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'INR',
+  `status` ENUM('CREATED','PENDING','SUCCESS','FAILED','CANCELLED','EXPIRED','REJECTED') NOT NULL DEFAULT 'CREATED',
+  `verification_status` VARCHAR(50) NOT NULL DEFAULT 'unverified',
+  `gateway_response` LONGTEXT DEFAULT NULL,
+  `failure_reason` TEXT DEFAULT NULL,
+  `is_credited` TINYINT(1) NOT NULL DEFAULT 0,
+  `wallet_transaction_id` INT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_gateway` (`gateway`),
+  KEY `idx_gateway_order_id` (`gateway_order_id`),
+  KEY `idx_gateway_payment_id` (`gateway_payment_id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `orders`;
@@ -103,9 +154,12 @@ CREATE TABLE `transactions` (
   `charge` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
   `currency` VARCHAR(10) DEFAULT 'USD',
   `payment_method` VARCHAR(100) DEFAULT 'manual',
+  `gateway_code` VARCHAR(50) DEFAULT NULL,
   `transaction_id` VARCHAR(100) DEFAULT NULL,
-  `status` ENUM('pending', 'completed', 'failed') DEFAULT 'completed',
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `gateway_response` TEXT DEFAULT NULL,
+  `status` ENUM('pending', 'completed', 'failed', 'cancelled') DEFAULT 'pending',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `sliders`;
@@ -203,6 +257,7 @@ INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
 ('contact_email', 'support@rosesmm.com'),
 ('ticket_system', '1'),
 ('maintenance_mode', '0'),
+('active_theme', 'default'),
 ('installed', '1');
 
 -- Seed Currencies (INR default as required by specification, plus USD, EUR, GBP)
@@ -211,6 +266,17 @@ INSERT INTO `currencies` (`code`, `name`, `symbol`, `rate`, `is_default`, `statu
 ('USD', 'US Dollar', '$', 0.011765, 0, 'active'),
 ('EUR', 'Euro', '€', 0.010870, 0, 'active'),
 ('GBP', 'British Pound', '£', 0.009345, 0, 'active');
+
+-- Seed Payment Gateways (Razorpay, Cashfree, PhonePe, PayU, Stripe, PayPal, Cryptomus, Bank Transfer)
+INSERT INTO `payment_gateways` (`id`, `code`, `name`, `description`, `status`, `mode`, `api_key`, `secret_key`, `webhook_secret`, `merchant_id`, `currency`, `min_amount`, `max_amount`, `fee_percent`, `parameters`, `sort_order`) VALUES
+(1, 'razorpay', 'Razorpay (Cards / UPI / NetBanking)', 'Fast and secure payment via UPI, Debit/Credit Card, NetBanking (INR)', 'inactive', 'test', '', '', '', '', 'INR', 100.00, 100000.00, 0.00, NULL, 1),
+(2, 'cashfree', 'Cashfree Payments', 'Pay securely with UPI, Credit/Debit Cards, NetBanking, and Wallets via Cashfree', 'inactive', 'test', '', '', '', '', 'INR', 10.00, 100000.00, 0.00, '', 2),
+(3, 'phonepe', 'PhonePe Payment Gateway', 'Fast and secure UPI, Card, and NetBanking payments via official PhonePe PG', 'inactive', 'test', '1', '', '', '', 'INR', 10.00, 100000.00, 0.00, '{\"salt_index\":\"1\"}', 3),
+(4, 'payu', 'PayU', 'Reliable UPI, Cards, NetBanking, and PayLater checkout via PayU India', 'inactive', 'test', '', '', '', '', 'INR', 10.00, 100000.00, 0.00, '', 4),
+(5, 'stripe', 'Stripe (Credit / Debit Card)', 'Pay securely with Visa, Mastercard, Amex, Apple Pay, Google Pay', 'active', 'test', 'pk_test_sample', 'sk_test_sample', '', '', 'USD', 5.00, 5000.00, 0.00, NULL, 5),
+(6, 'paypal', 'PayPal Checkout', 'Pay with PayPal balance, connected credit card, or bank account', 'inactive', 'test', 'client_id_sample', 'client_secret_sample', '', '', 'USD', 5.00, 5000.00, 0.00, NULL, 6),
+(7, 'cryptomus', 'Cryptomus (Crypto USDT/BTC)', 'Instant cryptocurrency deposit via USDT (TRC20/BEP20), BTC, ETH', 'inactive', 'live', '', '', '', '', 'USD', 10.00, 10000.00, 0.00, NULL, 7),
+(8, 'bank_transfer', 'Bank Wire / Manual Transfer', 'Direct bank deposit with payment proof reference check', 'active', 'live', '', '', '', '', 'USD', 20.00, 10000.00, 0.00, NULL, 8);
 
 -- Seed Admin User (Password: admin123)
 -- Hash generated via password_hash('admin123', PASSWORD_BCRYPT)

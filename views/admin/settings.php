@@ -104,6 +104,7 @@ $availableThemes = get_available_themes();
           <option value="default" <?= $activeTheme === 'default' ? 'selected' : '' ?>>Existing Theme</option>
           <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
           <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
+          <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
         </select>
         <p class="text-[11px] text-slate-400 mt-1">Global website theme applied across the platform. Configured exclusively by administrators.</p>
       </div>

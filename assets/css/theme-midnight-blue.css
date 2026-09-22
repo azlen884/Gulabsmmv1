@@ -1,0 +1,1020 @@
+/**
+ * =========================================================================
+ * RoseSMM - Ultra-Premium Midnight + Electric Blue Theme (theme-midnight-blue)
+ * 
+ * COLOR IDENTITY:
+ * - MIDNIGHT / DEEP NAVY: Main background, Navbar, Main application surfaces, Large UI areas (#080C15, #0B1120, #0F172A)
+ * - ELECTRIC / COBALT BLUE: Primary buttons, Active navigation, Important actions, Selected states, Key highlights (#1D4ED8, #2563EB, #3B82F6)
+ * - SOFT LAVENDER / COOL PERIWINKLE: Secondary accents, Subtle highlights, Hover states, Small visual details (#818CF8, #A5B4FC, #C7D2FE)
+ * - PLATINUM / COOL GRAY: Main text, Secondary text, Borders, Inputs, Neutral UI elements (#F8FAFC, #F1F5F9, #CBD5E1, #94A3B8, #1E293B)
+ *
+ * SCOPING:
+ * Strictly scoped under body.theme-midnight-blue to guarantee zero style leakage.
+ * =========================================================================
+ */
+
+:root {
+  --color-midnight-bg: #080C15;
+  --color-midnight-surface: #0B1120;
+  --color-midnight-card: #0F172A;
+  --color-midnight-card-lighter: #131E35;
+  --color-midnight-border: #1E293B;
+  --color-midnight-border-light: #2A3B57;
+  
+  --color-electric-blue: #2563EB;
+  --color-cobalt-blue: #1D4ED8;
+  --color-electric-bright: #3B82F6;
+  --color-electric-glow: rgba(37, 99, 235, 0.30);
+  
+  --color-periwinkle-soft: #C7D2FE;
+  --color-periwinkle-accent: #A5B4FC;
+  --color-periwinkle-muted: #818CF8;
+  --color-periwinkle-subtle: rgba(165, 180, 252, 0.12);
+  
+  --color-platinum-text: #F8FAFC;
+  --color-platinum-muted: #CBD5E1;
+  --color-platinum-secondary: #94A3B8;
+  --color-platinum-dark: #64748B;
+}
+
+/* -------------------------------------------------------------------------
+ * 1. ROOT BODY & CANVAS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue {
+  background-color: #080C15 !important;
+  color: #F1F5F9 !important;
+}
+
+body.theme-midnight-blue .bg-\[\#FFF9FA\],
+body.theme-midnight-blue .bg-canvas,
+body.theme-midnight-blue .bg-slate-50 {
+  background-color: #080C15 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. NAVBAR - ULTRA-PREMIUM MIDNIGHT & ELECTRIC BLUE
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue header.border-b,
+body.theme-midnight-blue header.bg-white {
+  background: #0B1120 !important;
+  border-bottom: 1px solid #1E293B !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.6) !important;
+}
+
+body.theme-midnight-blue header.bg-white\/80 {
+  background: rgba(11, 17, 32, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid #1E293B !important;
+  box-shadow: 0 4px 24px -2px rgba(2, 6, 23, 0.7) !important;
+}
+
+/* Header service search */
+body.theme-midnight-blue #top-service-search {
+  background-color: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue #top-service-search::placeholder {
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue #top-service-search:focus {
+  border-color: #3B82F6 !important;
+  background-color: #131E35 !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.20) !important;
+}
+
+/* Header icon buttons (notifications, dark toggle) */
+body.theme-midnight-blue header .text-slate-600 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue header .text-slate-600:hover,
+body.theme-midnight-blue header .hover\:text-rose-600:hover {
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue header .hover\:bg-rose-50:hover {
+  background-color: #131E35 !important;
+}
+
+/* Currency dropdown button & popover */
+body.theme-midnight-blue #currency-dropdown-wrapper > button {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+  color: #E2E8F0 !important;
+}
+
+body.theme-midnight-blue #currency-dropdown-wrapper > button:hover {
+  background-color: #131E35 !important;
+  border-color: #2A3B57 !important;
+}
+
+body.theme-midnight-blue #currency-dropdown {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+  box-shadow: 0 12px 30px -4px rgba(2, 6, 23, 0.85) !important;
+}
+
+body.theme-midnight-blue #currency-dropdown button {
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue #currency-dropdown button:hover {
+  background-color: #131E35 !important;
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue #currency-dropdown button.text-rose-600,
+body.theme-midnight-blue #currency-dropdown button.bg-rose-50\/60 {
+  background-color: rgba(37, 99, 235, 0.16) !important;
+  color: #60A5FA !important;
+  font-weight: 700 !important;
+}
+
+/* Wallet balance chip in top navbar */
+body.theme-midnight-blue a[href="/wallet"].rounded-full.border {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+}
+
+body.theme-midnight-blue a[href="/wallet"].rounded-full.border:hover {
+  background-color: #131E35 !important;
+  border-color: #2A3B57 !important;
+}
+
+body.theme-midnight-blue a[href="/wallet"].rounded-full.border .bg-rose-100 {
+  background-color: #172554 !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue a[href="/wallet"].rounded-full.border .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue a[href="/wallet"].rounded-full.border .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+/* Header Add Funds button */
+body.theme-midnight-blue header a[href="/add-funds"].bg-gradient-to-r {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.40) !important;
+}
+
+body.theme-midnight-blue header a[href="/add-funds"].bg-gradient-to-r:hover {
+  background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 100%) !important;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.55) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 3. USER SIDEBAR & NAVIGATION
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue aside#main-sidebar,
+body.theme-midnight-blue aside#mobile-sidebar {
+  background-color: #0B1120 !important;
+  border-right: 1px solid #1E293B !important;
+}
+
+/* Logo container & icon */
+body.theme-midnight-blue aside#main-sidebar .bg-rose-50,
+body.theme-midnight-blue aside#mobile-sidebar .bg-rose-50 {
+  background-color: #0F1E38 !important;
+  border-color: #1E3A8A !important;
+  color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue aside#main-sidebar .text-rose-600,
+body.theme-midnight-blue aside#mobile-sidebar .text-rose-600 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue aside#main-sidebar svg.fill-current,
+body.theme-midnight-blue aside#mobile-sidebar svg.fill-current {
+  fill: #3B82F6 !important;
+}
+
+/* Sidebar profile card */
+body.theme-midnight-blue a[href="/profile"].rounded-2xl {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+}
+
+body.theme-midnight-blue a[href="/profile"].rounded-2xl:hover {
+  background-color: #131E35 !important;
+  border-color: #2A3B57 !important;
+}
+
+body.theme-midnight-blue a[href="/profile"].rounded-2xl .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue a[href="/profile"].rounded-2xl .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue a[href="/profile"].rounded-2xl .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue a[href="/profile"].rounded-2xl .bg-rose-100\/60 {
+  background-color: rgba(37, 99, 235, 0.16) !important;
+  color: #93C5FD !important;
+}
+
+/* Sidebar Navigation Links */
+body.theme-midnight-blue nav a.text-slate-600 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue nav a.text-slate-600:hover,
+body.theme-midnight-blue nav a.hover\:text-rose-600:hover {
+  color: #F8FAFC !important;
+  background-color: #131E35 !important;
+}
+
+body.theme-midnight-blue nav a.bg-\[\#FFE8EC\].text-rose-600,
+body.theme-midnight-blue nav a.bg-rose-50.text-rose-600 {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #3B82F6 !important;
+  box-shadow: inset 0 0 16px rgba(37, 99, 235, 0.08) !important;
+}
+
+body.theme-midnight-blue nav a.bg-\[\#FFE8EC\].text-rose-600 i,
+body.theme-midnight-blue nav a.bg-rose-50.text-rose-600 i {
+  color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue nav a[href="/logout"] {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue nav a[href="/logout"]:hover {
+  color: #F87171 !important;
+  background-color: rgba(239, 68, 68, 0.10) !important;
+}
+
+/* Sidebar upgrade card */
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] {
+  background: linear-gradient(180deg, #0F1B33 0%, #0C1527 100%) !important;
+  border: 1px solid #1E3A68 !important;
+  box-shadow: 0 4px 18px rgba(2, 6, 23, 0.6) !important;
+}
+
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] .w-9.h-9.bg-rose-500 {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.45) !important;
+}
+
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] h4 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] p {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] a {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] a:hover {
+  background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 100%) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5) !important;
+}
+
+/* Sidebar divider & footer */
+body.theme-midnight-blue aside#main-sidebar .border-t,
+body.theme-midnight-blue aside#mobile-sidebar .border-t {
+  border-color: #1E293B !important;
+}
+
+body.theme-midnight-blue aside#main-sidebar .text-slate-600 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue aside#main-sidebar .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 4. CARDS & SURFACES (DASHBOARD & ALL PAGES)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .bg-white {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+  color: #F1F5F9 !important;
+}
+
+/* Four statistics cards */
+body.theme-midnight-blue .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div,
+body.theme-midnight-blue .bg-white.p-5.rounded-2xl.border {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.40) !important;
+}
+
+body.theme-midnight-blue .bg-white.p-5.rounded-2xl.border:hover {
+  border-color: #2A3B57 !important;
+}
+
+/* Large dashboard container cards (Sales, Quick Actions, Orders, etc.) */
+body.theme-midnight-blue .bg-white.p-6.rounded-3xl.border {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 6px 24px -2px rgba(2, 6, 23, 0.45) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. DASHBOARD BALANCE CARD (ULTRA-PREMIUM COBALT & MIDNIGHT)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br {
+  background: linear-gradient(135deg, #091738 0%, #133273 50%, #1D4ED8 100%) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  box-shadow: 0 12px 32px -4px rgba(29, 78, 216, 0.40), 0 0 24px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br .text-rose-100 {
+  color: #C7D2FE !important; /* Soft lavender / cool periwinkle */
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br a[href="/add-funds"].bg-white {
+  background: #FFFFFF !important;
+  color: #1D4ED8 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br a[href="/add-funds"].bg-white:hover {
+  background: #EFF6FF !important;
+  color: #1E40AF !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br #user-balance-display {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br .border-t.border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br .border-white\/40 {
+  border-color: rgba(199, 210, 254, 0.35) !important;
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+body.theme-midnight-blue .rounded-3xl.bg-gradient-to-br a.group:hover .border-white\/40 {
+  background-color: rgba(255, 255, 255, 0.16) !important;
+  border-color: #FFFFFF !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 6. HERO SLIDER IN MIDNIGHT THEME
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue #hero-slider-wrapper {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 8px 28px -4px rgba(2, 6, 23, 0.5) !important;
+}
+
+body.theme-midnight-blue .hero-slide {
+  background: linear-gradient(135deg, #091224 0%, #0D1933 50%, #112042 100%) !important;
+}
+
+body.theme-midnight-blue .hero-slide h2 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .hero-slide .text-rose-600 {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .hero-slide p {
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue .hero-slide a.bg-rose-500,
+body.theme-midnight-blue .hero-slide a[href="/services"] {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.40) !important;
+}
+
+body.theme-midnight-blue .hero-slide a.bg-rose-500:hover,
+body.theme-midnight-blue .hero-slide a[href="/services"]:hover {
+  background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55) !important;
+}
+
+body.theme-midnight-blue #hero-slider-prev,
+body.theme-midnight-blue #hero-slider-next {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid #1E293B !important;
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue #hero-slider-prev:hover,
+body.theme-midnight-blue #hero-slider-next:hover {
+  background: #1E293B !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-midnight-blue .hero-dot.bg-rose-500 {
+  background-color: #3B82F6 !important;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6) !important;
+}
+
+body.theme-midnight-blue .hero-dot.bg-rose-300\/80 {
+  background-color: #334155 !important;
+}
+
+body.theme-midnight-blue .hero-dot.bg-rose-300\/80:hover {
+  background-color: #475569 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 7. BUTTONS & ACTIONS (PRIMARY: ELECTRIC/COBALT, SECONDARY: DARK NAVY)
+ * ------------------------------------------------------------------------- */
+/* Primary buttons */
+body.theme-midnight-blue .bg-rose-500,
+body.theme-midnight-blue .bg-rose-600,
+body.theme-midnight-blue .bg-gradient-to-r.from-rose-500.to-rose-600,
+body.theme-midnight-blue button[type="submit"].bg-gradient-to-r,
+body.theme-midnight-blue #order-submit-btn {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .bg-rose-500:hover,
+body.theme-midnight-blue .bg-rose-600:hover,
+body.theme-midnight-blue .hover\:bg-rose-600:hover,
+body.theme-midnight-blue .hover\:bg-rose-700:hover,
+body.theme-midnight-blue .hover\:from-rose-600:hover,
+body.theme-midnight-blue #order-submit-btn:hover {
+  background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.50) !important;
+}
+
+/* Secondary & soft buttons */
+body.theme-midnight-blue .bg-rose-50 {
+  background-color: #111E38 !important;
+  color: #93C5FD !important;
+  border-color: #1E3A6E !important;
+}
+
+body.theme-midnight-blue .bg-rose-100 {
+  background-color: #172554 !important;
+  color: #BFDBFE !important;
+}
+
+body.theme-midnight-blue .bg-rose-200 {
+  background-color: #1E3A8A !important;
+  color: #DBEAFE !important;
+}
+
+body.theme-midnight-blue .hover\:bg-rose-50:hover {
+  background-color: #162447 !important;
+}
+
+body.theme-midnight-blue .hover\:bg-rose-100:hover {
+  background-color: #1D3363 !important;
+}
+
+/* Quick action items in dashboard */
+body.theme-midnight-blue .lg\:col-span-3 .grid-cols-3 a {
+  background-color: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-3 .grid-cols-3 a:hover {
+  background-color: #131E35 !important;
+  border-color: #3B82F6 !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.20) !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-3 .grid-cols-3 a .w-11.h-11.bg-rose-500 {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-3 .grid-cols-3 a span {
+  color: #E2E8F0 !important;
+}
+
+/* Popular services buttons & cards */
+body.theme-midnight-blue .service-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.4) !important;
+}
+
+body.theme-midnight-blue .service-card:hover {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.theme-midnight-blue .service-card .w-8.h-8.bg-rose-50 {
+  background-color: rgba(37, 99, 235, 0.14) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .service-card h4 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .service-card .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .service-card .text-slate-700 {
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue .service-card button {
+  background-color: #111E38 !important;
+  border: 1px solid #1D4ED8 !important;
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue .service-card button:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  border-color: #3B82F6 !important;
+  color: #FFFFFF !important;
+}
+
+/* Category pills */
+body.theme-midnight-blue .category-pill.active {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4) !important;
+}
+
+body.theme-midnight-blue .category-pill:not(.active) {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .category-pill:not(.active):hover {
+  background: #131E35 !important;
+  color: #93C5FD !important;
+  border-color: #2A3B57 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. FORMS & INPUTS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue input,
+body.theme-midnight-blue select,
+body.theme-midnight-blue textarea {
+  background-color: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue input::placeholder,
+body.theme-midnight-blue textarea::placeholder {
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue input:focus,
+body.theme-midnight-blue select:focus,
+body.theme-midnight-blue textarea:focus {
+  border-color: #3B82F6 !important;
+  background-color: #0F172A !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.20) !important;
+  outline: none !important;
+}
+
+body.theme-midnight-blue select option {
+  background-color: #0B1120 !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue label {
+  color: #CBD5E1 !important;
+}
+
+/* Form container icon container */
+body.theme-midnight-blue #dashboard-order-form {
+  color: #F1F5F9 !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-4 .w-10.h-10.bg-rose-50 {
+  background-color: rgba(37, 99, 235, 0.14) !important;
+  border-color: rgba(59, 130, 246, 0.25) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue #estimated-cost-display {
+  color: #60A5FA !important;
+  font-weight: 700 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. RECENTLY ORDERED & LISTS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .space-y-2\.5 a {
+  background-color: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a:hover {
+  background-color: #131E35 !important;
+  border-color: #2563EB !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .w-9.h-9.bg-rose-50 {
+  background-color: rgba(225, 29, 72, 0.15) !important;
+  color: #F43F5E !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .w-9.h-9.bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  color: #F87171 !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .w-9.h-9.bg-blue-50 {
+  background-color: rgba(37, 99, 235, 0.15) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .w-9.h-9.bg-sky-50 {
+  background-color: rgba(14, 165, 233, 0.15) !important;
+  color: #38BDF8 !important;
+}
+
+body.theme-midnight-blue .space-y-2\.5 a .w-9.h-9.bg-slate-900 {
+  background-color: #020617 !important;
+  border: 1px solid #1E293B !important;
+  color: #E2E8F0 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 10. SALES OVERVIEW CHART (MIDNIGHT STYLING)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .lg\:col-span-5 svg line {
+  stroke: #1E293B !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg text {
+  fill: #64748B !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg path[stroke="#FF3B69"] {
+  stroke: #3B82F6 !important;
+  stroke-width: 2.5 !important;
+  filter: drop-shadow(0 2px 8px rgba(59, 130, 246, 0.5)) !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg stop[stop-color="#FF3B69"] {
+  stop-color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg circle {
+  stroke: #0F172A !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg circle[fill="#FF3B69"] {
+  fill: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 svg circle[fill="#CBD5E1"] {
+  fill: #334155 !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 .absolute.top-1.bg-white {
+  background: #172554 !important;
+  border: 1px solid #3B82F6 !important;
+  color: #F8FAFC !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 .absolute.top-1.bg-white span.bg-rose-500 {
+  background-color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 .absolute.top-1.bg-white span.text-rose-600 {
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue .lg\:col-span-5 .text-xs.font-semibold.px-2\.5.py-1.rounded-xl.bg-rose-50 {
+  background-color: rgba(37, 99, 235, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #93C5FD !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 11. PROMO & SUPPORT CARDS
+ * ------------------------------------------------------------------------- */
+/* Special offer card */
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] {
+  background: linear-gradient(135deg, #091735 0%, #0F2350 50%, #132D65 100%) !important;
+  border: 1px solid #1E3A6E !important;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.5) !important;
+}
+
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] .w-8.h-8.bg-rose-500 {
+  background: #2563EB !important;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.5) !important;
+}
+
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] .bg-white\/80 {
+  background: rgba(37, 99, 235, 0.25) !important;
+  border: 1px solid rgba(59, 130, 246, 0.4) !important;
+  color: #BFDBFE !important;
+}
+
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] h4 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] p {
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue .p-6.rounded-3xl.bg-gradient-to-br.from-\[\#FFE3E8\].to-\[\#FFD1DA\] a {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Support card */
+body.theme-midnight-blue .w-10.h-10.rounded-2xl.bg-rose-50 {
+  background-color: rgba(37, 99, 235, 0.14) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue a.bg-slate-900.text-white {
+  background: #111E38 !important;
+  border: 1px solid #1D4ED8 !important;
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue a.bg-slate-900.text-white:hover {
+  background: #1D4ED8 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 12. TEXT & TYPOGRAPHY
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue h1,
+body.theme-midnight-blue h2,
+body.theme-midnight-blue h3,
+body.theme-midnight-blue h4,
+body.theme-midnight-blue h5,
+body.theme-midnight-blue h6 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .text-slate-800,
+body.theme-midnight-blue .text-slate-900,
+body.theme-midnight-blue .text-slate-700 {
+  color: #F1F5F9 !important;
+}
+
+body.theme-midnight-blue .text-slate-600 {
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue .text-rose-500,
+body.theme-midnight-blue .text-rose-600 {
+  color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .text-rose-700 {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .hover\:text-rose-600:hover,
+body.theme-midnight-blue .hover\:text-rose-700:hover,
+body.theme-midnight-blue .group:hover .group-hover\:text-rose-500 {
+  color: #93C5FD !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 13. BORDERS & DIVIDERS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .border-\[\#FCE4E8\],
+body.theme-midnight-blue .border-borderPink,
+body.theme-midnight-blue .border-slate-100,
+body.theme-midnight-blue .border-slate-200,
+body.theme-midnight-blue .border-rose-100,
+body.theme-midnight-blue .border-rose-200 {
+  border-color: #1E293B !important;
+}
+
+body.theme-midnight-blue .border-\[\#FCD3DC\] {
+  border-color: #2A3B57 !important;
+}
+
+body.theme-midnight-blue .border-rose-500\/20 {
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. BADGES, CHIPS & SCROLLBAR
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .bg-rose-500\/10 {
+  background-color: rgba(37, 99, 235, 0.12) !important;
+}
+
+body.theme-midnight-blue .custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+body.theme-midnight-blue .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1E293B !important;
+  border-radius: 9999px;
+}
+
+body.theme-midnight-blue .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #334155 !important;
+}
+
+body.theme-midnight-blue .custom-scrollbar::-webkit-scrollbar-track {
+  background: #0B1120 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. TABLES & DATA LISTS (ORDERS, SERVICES, TRANSACTIONS)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue table {
+  color: #F1F5F9 !important;
+}
+
+body.theme-midnight-blue thead {
+  background-color: #0B1120 !important;
+}
+
+body.theme-midnight-blue th {
+  color: #94A3B8 !important;
+  border-bottom: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue tbody tr {
+  border-bottom: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue tbody tr:hover {
+  background-color: #131E35 !important;
+}
+
+body.theme-midnight-blue td {
+  color: #E2E8F0 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. ADMIN CONSOLE IN MIDNIGHT THEME
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .bg-slate-900 {
+  background-color: #080C15 !important;
+}
+
+body.theme-midnight-blue aside.w-64.bg-slate-900 {
+  background-color: #080C15 !important;
+  border-right: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue aside.w-64.bg-slate-900 .bg-rose-600 {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. PUBLIC PAGES & LANDING PAGE (HERO, SECTIONS, CTA)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue main {
+  background-color: #080C15 !important;
+}
+
+body.theme-midnight-blue .bg-rose-50\/40,
+body.theme-midnight-blue .bg-rose-50\/50,
+body.theme-midnight-blue .bg-rose-50\/30 {
+  background-color: #0B1120 !important;
+}
+
+body.theme-midnight-blue footer {
+  background-color: #05080F !important;
+  border-top: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue footer .text-slate-400,
+body.theme-midnight-blue footer .text-slate-500 {
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue footer .text-slate-800,
+body.theme-midnight-blue footer .text-slate-900 {
+  color: #F8FAFC !important;
+}
+
+/* Landing page hero badges */
+body.theme-midnight-blue .bg-rose-100.text-rose-600 {
+  background: rgba(37, 99, 235, 0.16) !important;
+  color: #93C5FD !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Feature cards & testimonials on public pages */
+body.theme-midnight-blue .grid > div.bg-white,
+body.theme-midnight-blue section div.bg-white {
+  background-color: #0F172A !important;
+  border: 1px solid #1E293B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. MODALS & POPUPS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .fixed.inset-0.bg-slate-950\/60,
+body.theme-midnight-blue .fixed.inset-0.bg-black\/50,
+body.theme-midnight-blue .modal-backdrop {
+  background-color: rgba(3, 7, 18, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+body.theme-midnight-blue .fixed.inset-0 .bg-white,
+body.theme-midnight-blue #modal .bg-white,
+body.theme-midnight-blue [id*="modal"] .bg-white {
+  background-color: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 19. STATUS BADGES & ACCENTS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .bg-emerald-50.text-emerald-600 {
+  background: rgba(16, 185, 129, 0.14) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+body.theme-midnight-blue .bg-amber-50.text-amber-600 {
+  background: rgba(245, 158, 11, 0.14) !important;
+  color: #FBBF24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+body.theme-midnight-blue .bg-blue-50.text-blue-600 {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #60A5FA !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+}
+
+body.theme-midnight-blue .bg-red-50.text-red-600 {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #F87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+}
+
+body.theme-midnight-blue .bg-purple-50.text-purple-600 {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #C084FC !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 20. LOGIN & REGISTER AUTH PAGES
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .max-w-md.bg-white,
+body.theme-midnight-blue .w-full.max-w-md.bg-white {
+  background-color: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 16px 40px -8px rgba(2, 6, 23, 0.8), 0 0 24px rgba(37, 99, 235, 0.10) !important;
+}
+
+/* Focus and active highlight states */
+body.theme-midnight-blue .focus\:border-rose-400:focus,
+body.theme-midnight-blue .focus\:border-rose-500:focus {
+  border-color: #3B82F6 !important;
+}
+

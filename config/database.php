@@ -253,6 +253,7 @@ function e($text) {
  * 1. 'default'        -> Existing Theme
  * 2. 'premium_red'    -> Premium Red + White
  * 3. 'premium_green'  -> Premium Green + White
+ * 4. 'midnight_blue'  -> Ultra-Premium Midnight + Electric Blue
  * =========================================================================
  */
 
@@ -261,12 +262,12 @@ function e($text) {
  */
 function get_active_theme() {
     $theme = get_setting('active_theme', 'default');
-    $valid = ['default', 'premium_red', 'premium_green'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue'];
     return in_array($theme, $valid, true) ? $theme : 'default';
 }
 
 /**
- * Get list of available themes (exactly the 3 options)
+ * Get list of available themes
  */
 function get_available_themes() {
     return [
@@ -300,6 +301,16 @@ function get_available_themes() {
             'badge' => 'Emerald Luxury',
             'features' => ['Crisp Emerald & Jade Accents', 'Clean Modern White Cards', 'Elevated Visual Hierarchy']
         ],
+        'midnight_blue' => [
+            'id' => 'midnight_blue',
+            'name' => 'Ultra-Premium Midnight + Electric Blue',
+            'description' => 'Ultra-premium midnight navy canvas paired with high-contrast electric cobalt blue, soft periwinkle highlights, and platinum accents.',
+            'primary_color' => '#2563EB',
+            'secondary_color' => '#080C15',
+            'accent_color' => '#A5B4FC',
+            'badge' => 'Midnight Luxury',
+            'features' => ['Deep Midnight & Navy Canvas', 'Electric Cobalt Blue Buttons & Highlights', 'Refined Soft Periwinkle Accents']
+        ],
     ];
 }
 
@@ -311,7 +322,7 @@ function set_active_theme($themeKey) {
     if (!is_admin()) {
         return false;
     }
-    $valid = ['default', 'premium_red', 'premium_green'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue'];
     if (!in_array($themeKey, $valid, true)) {
         return false;
     }
@@ -328,6 +339,8 @@ function render_theme_head_tags() {
         $cssFile = '/assets/css/theme-premium-red.css';
     } elseif ($active === 'premium_green') {
         $cssFile = '/assets/css/theme-premium-green.css';
+    } elseif ($active === 'midnight_blue') {
+        $cssFile = '/assets/css/theme-midnight-blue.css';
     }
 
     if (!empty($cssFile)) {
@@ -346,6 +359,8 @@ function get_theme_body_class() {
         return 'theme-premium-red';
     } elseif ($active === 'premium_green') {
         return 'theme-premium-green';
+    } elseif ($active === 'midnight_blue') {
+        return 'theme-midnight-blue';
     }
     return 'theme-default';
 }

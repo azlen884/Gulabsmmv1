@@ -14,7 +14,7 @@ $error = '';
 $availableThemes = get_available_themes();
 
 // Process Theme Update
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     $selectedTheme = trim($_POST['active_theme'] ?? '');
 
     // Server-side strict validation against allowed themes
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Failed to update theme in database.";
         }
     } else {
-        $error = "Invalid theme selection. Only the 3 authorized themes are allowed.";
+        $error = "Invalid theme selection. Please select an authorized theme.";
     }
 }
 
@@ -78,7 +78,7 @@ $activeTheme = get_active_theme();
             Choose which theme will be displayed to all users and visitors. Changing this immediately updates the active theme across all portal and public pages.
           </p>
           
-          <!-- Strict Theme Select Control with ONLY the 3 options -->
+          <!-- Strict Theme Select Control with authorized options -->
           <select 
             id="admin-theme-select" 
             name="active_theme" 
@@ -87,6 +87,7 @@ $activeTheme = get_active_theme();
             <option value="default" <?= $activeTheme === 'default' ? 'selected' : '' ?>>Existing Theme</option>
             <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
+            <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
           </select>
         </div>
 
@@ -108,7 +109,7 @@ $activeTheme = get_active_theme();
       <h2 class="text-sm font-bold text-slate-700 mb-3 px-1 flex items-center gap-2">
         <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i> Theme Overview & Presets
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         
         <!-- 1. Existing Theme -->
         <?php $isDef = ($activeTheme === 'default'); ?>
@@ -226,6 +227,47 @@ $activeTheme = get_active_theme();
               class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isGreen ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 border border-slate-200' ?>"
             >
               <?= $isGreen ? 'Current Active Theme' : 'Switch to Green + White' ?>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Ultra-Premium Midnight + Electric Blue -->
+        <?php $isMidnight = ($activeTheme === 'midnight_blue'); ?>
+        <div class="bg-white rounded-3xl border-2 <?= $isMidnight ? 'border-blue-600 ring-4 ring-blue-600/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          <?php if ($isMidnight): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+              Active
+            </div>
+          <?php endif; ?>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 mb-4 shadow-sm">
+              <i data-lucide="moon" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Midnight + Electric Blue</h3>
+            <span class="inline-block text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md mt-1 mb-2">Midnight Luxury</span>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Ultra-premium deep midnight & navy surfaces paired with high-contrast electric cobalt blue, soft periwinkle highlights, and platinum accents.
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #080C15;" title="#080C15 Deep Midnight"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #0B1120;" title="#0B1120 Deep Navy"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #2563EB;" title="#2563EB Electric Blue"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #A5B4FC;" title="#A5B4FC Soft Periwinkle"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F8FAFC;" title="#F8FAFC Platinum"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button 
+              type="button" 
+              onclick="selectTheme('midnight_blue')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isMidnight ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200' ?>"
+            >
+              <?= $isMidnight ? 'Current Active Theme' : 'Switch to Midnight Blue' ?>
             </button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/ReferralHelper.php';
 
 if (is_logged_in()) {
     header("Location: /dashboard");
@@ -8,12 +9,21 @@ if (is_logged_in()) {
 
 $error = '';
 
+// Capture referral code from URL query or existing session
+$refCode = trim($_GET['ref'] ?? $_SESSION['pending_ref'] ?? '');
+$referrerUser = null;
+if (!empty($refCode)) {
+    $_SESSION['pending_ref'] = $refCode;
+    $referrerUser = ReferralHelper::getReferrerByCode($refCode);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = trim($_POST['full_name'] ?? '');
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
+    $submittedRef = trim($_POST['ref'] ?? $_SESSION['pending_ref'] ?? '');
 
     if (empty($fullName) || empty($username) || empty($email) || empty($password)) {
         $error = 'Please fill out all required fields.';
@@ -39,7 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES (?, ?, ?, ?, 'user', 0.0000, 'USD', ?, 'active')
             ");
             $insertStmt->execute([$fullName, $username, $email, $hash, $apiKey]);
-            $newUserId = $db->lastInsertId();
+            $newUserId = (int)$db->lastInsertId();
+
+            // Generate unique permanent referral code for the new user
+            $userRefCode = ReferralHelper::generateUniqueReferralCode($newUserId, $username);
+            $db->prepare("UPDATE users SET referral_code = ? WHERE id = ?")->execute([$userRefCode, $newUserId]);
+
+            // Server-side permanent referral attribution (anti-tamper & anti-loop)
+            if (!empty($submittedRef)) {
+                ReferralHelper::attributeReferral($newUserId, $submittedRef);
+                unset($_SESSION['pending_ref']);
+            }
 
             // Auto-login
             $_SESSION['user_id'] = $newUserId;
@@ -116,7 +136,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     <?php endif; ?>
 
+    <?php if ($referrerUser): ?>
+      <div class="mb-4 p-3 rounded-2xl bg-gradient-to-r from-rose-50 to-rose-100/50 border border-rose-200 text-slate-800 text-xs flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+          </div>
+          <div>
+            <span class="text-slate-500 text-[11px] block">Invited by</span>
+            <span class="font-bold text-rose-600">@<?= e($referrerUser['username']) ?></span>
+          </div>
+        </div>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white text-rose-600 border border-rose-200 shadow-xs">Referral Active</span>
+      </div>
+    <?php endif; ?>
+
     <form method="POST" action="/register" class="space-y-3.5">
+      <?php if (!empty($refCode)): ?>
+        <input type="hidden" name="ref" value="<?= e($refCode) ?>">
+      <?php endif; ?>
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
         <input 

@@ -22,7 +22,9 @@ CREATE TABLE `currencies` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `referrer_id` INT NULL DEFAULT NULL,
   `username` VARCHAR(100) NOT NULL UNIQUE,
+  `referral_code` VARCHAR(32) NULL DEFAULT NULL UNIQUE,
   `email` VARCHAR(191) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
   `full_name` VARCHAR(150) DEFAULT '',
@@ -33,7 +35,8 @@ CREATE TABLE `users` (
   `avatar` VARCHAR(255) DEFAULT '',
   `is_verified` TINYINT(1) DEFAULT 1,
   `status` ENUM('active', 'suspended', 'banned') DEFAULT 'active',
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_referrer_id` (`referrer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `categories`;
@@ -243,6 +246,26 @@ CREATE TABLE `teams` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `referral_transactions`;
+CREATE TABLE `referral_transactions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `referrer_id` INT NOT NULL,
+  `referred_id` INT NOT NULL,
+  `source_type` ENUM('order', 'deposit') NOT NULL,
+  `source_id` VARCHAR(100) NOT NULL,
+  `base_amount` DECIMAL(12, 4) NOT NULL,
+  `commission_percent` DECIMAL(5, 2) NOT NULL,
+  `commission_amount` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'USD',
+  `status` ENUM('completed', 'reversed', 'pending') NOT NULL DEFAULT 'completed',
+  `wallet_transaction_id` INT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_ref_referrer` (`referrer_id`),
+  KEY `idx_ref_referred` (`referred_id`),
+  KEY `idx_ref_created` (`created_at`),
+  UNIQUE KEY `uk_ref_source` (`source_type`, `source_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Seed Default Settings
@@ -252,6 +275,9 @@ INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
 ('site_description', 'Get real engagement and boost your online presence with our premium SMM services.'),
 ('currency_default', 'INR'),
 ('currency_symbol', '₹'),
+('referral_system_enabled', '1'),
+('referral_commission_percent', '5.00'),
+('referral_commission_event', 'order'),
 ('referral_bonus_percent', '5'),
 ('deposit_bonus_percent', '10'),
 ('contact_email', 'support@rosesmm.com'),

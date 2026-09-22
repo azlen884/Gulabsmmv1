@@ -102,6 +102,10 @@ if ($action === 'add') {
 
     $db->commit();
 
+    // Process real referral commission if eligible
+    require_once __DIR__ . '/../includes/ReferralHelper.php';
+    ReferralHelper::processCommission('order', (string)$orderId, (int)$apiUser['id'], (float)$charge, 'USD');
+
     echo json_encode(['order' => (int)$orderId]);
     exit;
 }

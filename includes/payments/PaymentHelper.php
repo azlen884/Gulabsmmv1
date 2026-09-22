@@ -327,6 +327,10 @@ class PaymentHelper {
 
             $db->commit();
 
+            // Process real referral commission if eligible
+            require_once __DIR__ . '/../ReferralHelper.php';
+            ReferralHelper::processCommission('deposit', (string)$payment['id'], (int)$userId, (float)$verifiedAmount, $verifiedCurrency);
+
             $newBal = (float)$db->query("SELECT balance FROM users WHERE id = $userId")->fetchColumn();
 
             return [

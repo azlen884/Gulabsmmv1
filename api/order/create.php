@@ -139,6 +139,10 @@ $db->prepare("
 
 $db->commit();
 
+// Process real referral commission if eligible
+require_once __DIR__ . '/../../includes/ReferralHelper.php';
+ReferralHelper::processCommission('order', (string)$orderId, (int)$userId, (float)$charge, 'USD');
+
 echo json_encode([
     'success' => true,
     'order_id' => $orderId,

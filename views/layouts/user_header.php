@@ -136,6 +136,10 @@ $unreadCount = (int)$notifStmt->fetchColumn();
           <i data-lucide="wallet" class="w-4 h-4"></i>
           <span>Wallet</span>
         </a>
+        <a href="/referrals" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <i data-lucide="gift" class="w-4 h-4"></i>
+          <span>Refer & Earn</span>
+        </a>
         <a href="/add-funds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'add-funds' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
           <span>Add Funds</span>
@@ -220,6 +224,9 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         </a>
         <a href="/wallet" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'wallet' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="wallet" class="w-4 h-4"></i> Wallet
+        </a>
+        <a href="/referrals" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
+          <i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn
         </a>
         <a href="/add-funds" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'add-funds' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Funds

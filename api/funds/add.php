@@ -62,6 +62,10 @@ $newBalance = (float)$uStmt->fetchColumn();
 
 $db->commit();
 
+// Process real referral commission if eligible
+require_once __DIR__ . '/../../includes/ReferralHelper.php';
+ReferralHelper::processCommission('deposit', $txId, (int)$userId, (float)$amount, 'USD');
+
 echo json_encode([
     'success' => true,
     'balance' => $newBalance,

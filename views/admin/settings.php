@@ -89,6 +89,22 @@ $availableThemes = get_available_themes();
         </div>
       </div>
 
+      <!-- Refer & Earn Quick Link -->
+      <div class="p-4 rounded-2xl bg-rose-50/40 border border-rose-100 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0">
+            <i data-lucide="gift" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-800">Refer & Earn Management</h4>
+            <p class="text-[11px] text-slate-500">Configure referral commission rates, toggle program status, and review commission history.</p>
+          </div>
+        </div>
+        <a href="/admin/referrals" class="px-4 py-2 rounded-xl bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold text-xs shrink-0 transition-colors shadow-2xs">
+          Manage Referrals &rarr;
+        </a>
+      </div>
+
       <div>
         <div class="flex items-center justify-between mb-1">
           <label for="admin-settings-theme" class="block text-xs font-bold text-slate-700">Active Website Theme</label>

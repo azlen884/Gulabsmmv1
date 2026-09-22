@@ -6,16 +6,19 @@ require_once __DIR__ . '/../layouts/user_header.php';
 // Fetch database records for dashboard
 $db = getDB();
 
-// 1. Sliders from MySQL (Prompt Requirement 18: Slider/banner images must come from the real MySQL database)
-$sliderStmt = $db->query("SELECT * FROM sliders WHERE status = 'active' ORDER BY sort_order ASC LIMIT 1");
-$heroSlider = $sliderStmt->fetch();
-if (!$heroSlider) {
-    $heroSlider = [
-        'title' => 'Grow Your Social Media',
-        'tagline' => 'Fast • Secure • Reliable',
-        'subtitle' => 'Get real engagement and boost your online presence with our premium SMM services.',
-        'button_text' => 'Explore Services →',
-        'button_url' => '/services'
+// 1. Sliders from MySQL
+$sliders = $db->query("SELECT * FROM sliders WHERE status = 'active' ORDER BY sort_order ASC, id ASC")->fetchAll();
+if (empty($sliders)) {
+    $sliders = [
+        [
+            'id' => 1,
+            'title' => 'Grow Your Social Media',
+            'tagline' => 'Fast • Secure • Reliable',
+            'subtitle' => 'Get real engagement and boost your online presence with our premium SMM services.',
+            'button_text' => 'Explore Services →',
+            'button_url' => '/services',
+            'image_url' => '/assets/images/banner-hero-1.svg'
+        ]
     ];
 }
 
@@ -36,6 +39,43 @@ $pendingOrders = (int)$pendingOrdersStmt->fetchColumn();
 $totalSpentStmt = $db->prepare("SELECT COALESCE(SUM(charge), 0) FROM orders WHERE user_id = ?");
 $totalSpentStmt->execute([$userId]);
 $totalSpent = (float)$totalSpentStmt->fetchColumn();
+
+// Real percentage indicators calculated from user's actual database records
+$completedPercentage = ($totalOrders > 0) ? round(($completedOrders / $totalOrders) * 100) : null;
+$pendingPercentage = ($totalOrders > 0) ? round(($pendingOrders / $totalOrders) * 100) : null;
+
+// Period-over-period change (last 7 days vs previous 7 days) from user's orders
+$periodStatsStmt = $db->prepare("
+    SELECT 
+        COUNT(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 END) AS recent_orders,
+        COUNT(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY) AND created_at < DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 END) AS prev_orders,
+        COALESCE(SUM(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN charge END), 0) AS recent_spend,
+        COALESCE(SUM(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY) AND created_at < DATE_SUB(NOW(), INTERVAL 7 DAY) THEN charge END), 0) AS prev_spend
+    FROM orders
+    WHERE user_id = ?
+");
+$periodStatsStmt->execute([$userId]);
+$periodStats = $periodStatsStmt->fetch();
+
+$recentOrders = (int)($periodStats['recent_orders'] ?? 0);
+$prevOrders = (int)($periodStats['prev_orders'] ?? 0);
+if ($prevOrders > 0) {
+    $ordersPctChange = round((($recentOrders - $prevOrders) / $prevOrders) * 100);
+} elseif ($recentOrders > 0) {
+    $ordersPctChange = 100;
+} else {
+    $ordersPctChange = null;
+}
+
+$recentSpend = (float)($periodStats['recent_spend'] ?? 0);
+$prevSpend = (float)($periodStats['prev_spend'] ?? 0);
+if ($prevSpend > 0) {
+    $spendPctChange = round((($recentSpend - $prevSpend) / $prevSpend) * 100);
+} elseif ($recentSpend > 0) {
+    $spendPctChange = 100;
+} else {
+    $spendPctChange = null;
+}
 
 // Real daily sales/orders statistics for the last 7 days from the MySQL database
 $salesPeriodDays = [];
@@ -123,73 +163,91 @@ $services = $db->query("
 
 <!-- SECTION 1: Top Hero Banner & Balance Card -->
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-  <!-- Hero Banner Slider from MySQL -->
-  <div class="xl:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#FFE8EC] via-[#FFDCE3] to-[#FFCFDA] border border-[#FCD3DC] p-6 sm:p-8 flex flex-col justify-between shadow-sm min-h-[220px]">
-    <div class="relative z-10 max-w-md">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight mb-2">
-        <?= e($heroSlider['title']) ?>
-      </h2>
-      <div class="text-xs sm:text-sm font-bold text-rose-600 mb-2">
-        <?= e($heroSlider['tagline']) ?>
-      </div>
-      <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
-        <?= e($heroSlider['subtitle']) ?>
-      </p>
-      <a href="<?= e($heroSlider['button_url'] ?: '/services') ?>" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-rose-500 hover:bg-rose-600 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow transition-all">
-        <span><?= e($heroSlider['button_text'] ?: 'Explore Services →') ?></span>
-      </a>
-    </div>
+  <!-- Hero Banner Slider from MySQL (Image + Text Together per slide) -->
+  <div id="hero-slider-wrapper" class="xl:col-span-2 relative overflow-hidden rounded-3xl border border-[#FCD3DC] shadow-sm min-h-[250px] sm:min-h-[260px] md:min-h-[270px] flex flex-col justify-between group">
+    <!-- Slides Container -->
+    <div id="hero-slider-track" class="relative w-full h-full min-h-[250px] sm:min-h-[260px] md:min-h-[270px] overflow-hidden">
+      <?php foreach ($sliders as $idx => $slide): ?>
+        <div 
+          class="hero-slide absolute inset-0 w-full h-full p-5 sm:p-7 md:p-8 flex flex-col justify-center transition-all duration-700 ease-in-out <?= $idx === 0 ? 'opacity-100 z-10 translate-x-0' : 'opacity-0 z-0 pointer-events-none translate-x-8' ?>"
+          data-slide-index="<?= $idx ?>"
+          style="background: <?= $idx % 2 === 0 ? 'linear-gradient(135deg, #FFE8EC 0%, #FFDCE3 40%, #FFCFDA 100%)' : 'linear-gradient(135deg, #FFF0F3 0%, #FFE2E8 45%, #FCD3DC 100%)' ?>;"
+        >
+          <div class="flex items-center justify-between gap-3 sm:gap-6 w-full h-full relative z-10">
+            <!-- Slide Text Content -->
+            <div class="flex-1 min-w-0 text-left">
+              <?php if (!empty($slide['tagline'])): ?>
+                <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 text-[10px] sm:text-xs font-bold mb-2">
+                  <i data-lucide="sparkles" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
+                  <span class="truncate"><?= e($slide['tagline']) ?></span>
+                </div>
+              <?php endif; ?>
 
-    <!-- 3D Phone & Floating Badges Artwork matching screenshot -->
-    <div class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-72 h-56 select-none">
-      <!-- 3D Smartphone SVG graphic -->
-      <div class="relative w-full h-full">
-        <!-- Floating Social Badges -->
-        <div class="absolute right-36 top-4 w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center shadow-md animate-bounce" style="animation-duration: 3s;">
-          <i data-lucide="music-2" class="w-5 h-5"></i>
-        </div>
-        <div class="absolute right-12 top-2 w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center shadow-md">
-          <i data-lucide="youtube" class="w-5 h-5"></i>
-        </div>
-        <div class="absolute right-40 bottom-12 w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shadow-md">
-          <i data-lucide="instagram" class="w-5 h-5"></i>
-        </div>
-        <div class="absolute right-16 bottom-6 w-9 h-9 rounded-xl bg-blue-500 text-white flex items-center justify-center shadow-md">
-          <i data-lucide="send" class="w-5 h-5"></i>
-        </div>
-        <div class="absolute right-4 top-24 w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md">
-          <i data-lucide="facebook" class="w-5 h-5"></i>
-        </div>
-        <div class="absolute right-48 top-20 w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center shadow-md">
-          <i data-lucide="twitter" class="w-4 h-4"></i>
-        </div>
+              <h2 class="text-lg sm:text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight leading-tight mb-1.5 sm:mb-2 break-words">
+                <?= e($slide['title']) ?>
+              </h2>
 
-        <!-- Rose Floating Heart Badge +10.5K -->
-        <div class="absolute right-20 top-20 bg-rose-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5">
-          <i data-lucide="heart" class="w-3.5 h-3.5 fill-current"></i>
-          <span>+10.5K</span>
-        </div>
+              <?php if (!empty($slide['subtitle'])): ?>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3 sm:mb-5 line-clamp-2 sm:line-clamp-3 break-words max-w-prose">
+                  <?= e($slide['subtitle']) ?>
+                </p>
+              <?php endif; ?>
 
-        <!-- Phone Card Graphic -->
-        <div class="absolute right-8 top-6 w-40 h-48 bg-white/90 backdrop-blur rounded-2xl border-2 border-white shadow-xl p-3 flex flex-col justify-between">
-          <div class="space-y-1.5">
-            <div class="w-8 h-1 bg-slate-200 rounded-full mx-auto mb-2"></div>
-            <div class="flex items-center gap-1.5">
-              <div class="w-5 h-5 rounded-full bg-rose-400"></div>
-              <div class="w-16 h-2 bg-slate-200 rounded"></div>
+              <div>
+                <a href="<?= e($slide['button_url'] ?: '/services') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-full bg-rose-500 hover:bg-rose-600 active:scale-95 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow transition-all">
+                  <span><?= e($slide['button_text'] ?: 'Explore Services →') ?></span>
+                </a>
+              </div>
             </div>
-            <div class="w-full h-12 bg-rose-50 rounded-lg border border-rose-100 p-1 flex items-center justify-center text-[10px] text-rose-500 font-bold">
-              RoseSMM App
+
+            <!-- Slide Banner Image / Artwork (visible on mobile, tablet, and desktop) -->
+            <div class="shrink-0 flex items-center justify-center sm:justify-end w-24 sm:w-44 md:w-56 lg:w-64 h-full max-h-32 sm:max-h-52 relative select-none pointer-events-none">
+              <?php if (!empty($slide['image_url'])): ?>
+                <img 
+                  src="<?= e($slide['image_url']) ?>" 
+                  alt="<?= e($slide['title']) ?>" 
+                  class="w-full max-h-24 sm:max-h-44 md:max-h-48 object-contain drop-shadow-md transition-transform duration-700 hover:scale-105"
+                  loading="lazy"
+                >
+              <?php endif; ?>
             </div>
-            <div class="w-full h-2 bg-slate-100 rounded"></div>
-            <div class="w-3/4 h-2 bg-slate-100 rounded"></div>
-          </div>
-          <div class="w-full py-1 bg-rose-500 rounded text-white text-[9px] font-bold text-center">
-            Instant Boost
           </div>
         </div>
-      </div>
+      <?php endforeach; ?>
     </div>
+
+    <!-- Navigation Controls (if more than 1 slide) -->
+    <?php if (count($sliders) > 1): ?>
+      <!-- Prev / Next Arrows -->
+      <button 
+        type="button" 
+        id="hero-slider-prev" 
+        class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-700 shadow-sm hover:shadow flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:opacity-100" 
+        aria-label="Previous Slide"
+      >
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
+      <button 
+        type="button" 
+        id="hero-slider-next" 
+        class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-700 shadow-sm hover:shadow flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:opacity-100" 
+        aria-label="Next Slide"
+      >
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Pagination Indicators -->
+      <div class="absolute bottom-3 right-5 sm:right-7 z-20 flex items-center gap-1.5" id="hero-slider-dots">
+        <?php foreach ($sliders as $idx => $s): ?>
+          <button 
+            type="button" 
+            class="hero-dot h-2 rounded-full transition-all duration-300 <?= $idx === 0 ? 'w-6 bg-rose-500' : 'w-2 bg-rose-300/80 hover:bg-rose-400' ?>" 
+            data-slide-to="<?= $idx ?>" 
+            aria-label="Go to slide <?= $idx + 1 ?>"
+          ></button>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
   </div>
 
   <!-- Right Top Balance Card matching screenshot -->
@@ -242,7 +300,7 @@ $services = $db->query("
   </div>
 </div>
 
-<!-- SECTION 2: Four Statistics Cards matching screenshot -->
+<!-- SECTION 2: Four Statistics Cards (Real user data from MySQL) -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
   <!-- Card 1: Total Orders -->
   <div class="bg-white p-5 rounded-2xl border border-[#FCE4E8] flex items-center justify-between shadow-sm">
@@ -255,9 +313,23 @@ $services = $db->query("
         <div class="text-xl sm:text-2xl font-bold text-slate-800"><?= $totalOrders ?></div>
       </div>
     </div>
-    <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
-      <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> 20%
-    </div>
+    <?php if ($ordersPctChange !== null && $totalOrders > 0): ?>
+      <?php if ($ordersPctChange > 0): ?>
+        <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
+          <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> <?= $ordersPctChange ?>%
+        </div>
+      <?php elseif ($ordersPctChange < 0): ?>
+        <div class="text-xs font-bold text-rose-500 flex items-center gap-0.5">
+          <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i> <?= abs($ordersPctChange) ?>%
+        </div>
+      <?php else: ?>
+        <div class="text-xs font-bold text-slate-400 flex items-center gap-0.5">
+          0%
+        </div>
+      <?php endif; ?>
+    <?php else: ?>
+      <span class="text-xs font-bold text-slate-300">—</span>
+    <?php endif; ?>
   </div>
 
   <!-- Card 2: Completed -->
@@ -271,9 +343,13 @@ $services = $db->query("
         <div class="text-xl sm:text-2xl font-bold text-slate-800"><?= $completedOrders ?></div>
       </div>
     </div>
-    <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
-      <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> 33%
-    </div>
+    <?php if ($completedPercentage !== null): ?>
+      <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5" title="<?= $completedOrders ?> of <?= $totalOrders ?> completed">
+        <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> <?= $completedPercentage ?>%
+      </div>
+    <?php else: ?>
+      <span class="text-xs font-bold text-slate-300">—</span>
+    <?php endif; ?>
   </div>
 
   <!-- Card 3: Pending -->
@@ -287,9 +363,13 @@ $services = $db->query("
         <div class="text-xl sm:text-2xl font-bold text-slate-800"><?= $pendingOrders ?></div>
       </div>
     </div>
-    <div class="text-xs font-bold text-rose-500 flex items-center gap-0.5">
-      <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i> 25%
-    </div>
+    <?php if ($pendingPercentage !== null): ?>
+      <div class="text-xs font-bold <?= $pendingPercentage > 0 ? 'text-amber-500' : 'text-slate-400' ?> flex items-center gap-0.5" title="<?= $pendingOrders ?> of <?= $totalOrders ?> pending">
+        <?= $pendingPercentage ?>%
+      </div>
+    <?php else: ?>
+      <span class="text-xs font-bold text-slate-300">—</span>
+    <?php endif; ?>
   </div>
 
   <!-- Card 4: Total Spent -->
@@ -303,9 +383,23 @@ $services = $db->query("
         <div class="text-xl sm:text-2xl font-bold text-slate-800"><?= format_price($totalSpent) ?></div>
       </div>
     </div>
-    <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
-      <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> 12%
-    </div>
+    <?php if ($spendPctChange !== null && $totalSpent > 0): ?>
+      <?php if ($spendPctChange > 0): ?>
+        <div class="text-xs font-bold text-emerald-500 flex items-center gap-0.5">
+          <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> <?= $spendPctChange ?>%
+        </div>
+      <?php elseif ($spendPctChange < 0): ?>
+        <div class="text-xs font-bold text-rose-500 flex items-center gap-0.5">
+          <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i> <?= abs($spendPctChange) ?>%
+        </div>
+      <?php else: ?>
+        <div class="text-xs font-bold text-slate-400 flex items-center gap-0.5">
+          0%
+        </div>
+      <?php endif; ?>
+    <?php else: ?>
+      <span class="text-xs font-bold text-slate-300">—</span>
+    <?php endif; ?>
   </div>
 </div>
 
@@ -857,9 +951,123 @@ $services = $db->query("
     });
   }
 
+  // Hero Banner Slider (Transitions Image + Text together)
+  function initHeroSlider() {
+    const wrapper = document.getElementById('hero-slider-wrapper');
+    if (!wrapper) return;
+
+    const slides = wrapper.querySelectorAll('.hero-slide');
+    if (slides.length <= 1) return;
+
+    const dots = wrapper.querySelectorAll('.hero-dot');
+    const prevBtn = document.getElementById('hero-slider-prev');
+    const nextBtn = document.getElementById('hero-slider-next');
+
+    let currentSlide = 0;
+    let autoSlideInterval = null;
+
+    function goToSlide(newIndex) {
+      if (newIndex < 0) newIndex = slides.length - 1;
+      if (newIndex >= slides.length) newIndex = 0;
+
+      slides.forEach((slide, idx) => {
+        if (idx === newIndex) {
+          slide.classList.remove('opacity-0', 'pointer-events-none', 'z-0', 'translate-x-8', '-translate-x-8');
+          slide.classList.add('opacity-100', 'z-10', 'translate-x-0');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10', 'translate-x-0');
+          slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+          if (idx < newIndex) {
+            slide.classList.add('-translate-x-8');
+            slide.classList.remove('translate-x-8');
+          } else {
+            slide.classList.add('translate-x-8');
+            slide.classList.remove('-translate-x-8');
+          }
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === newIndex) {
+          dot.classList.remove('w-2', 'bg-rose-300/80');
+          dot.classList.add('w-6', 'bg-rose-500');
+        } else {
+          dot.classList.remove('w-6', 'bg-rose-500');
+          dot.classList.add('w-2', 'bg-rose-300/80');
+        }
+      });
+
+      currentSlide = newIndex;
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      autoSlideInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 5000);
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToSlide(currentSlide - 1);
+        startAutoSlide();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToSlide(currentSlide + 1);
+        startAutoSlide();
+      });
+    }
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToSlide(idx);
+        startAutoSlide();
+      });
+    });
+
+    wrapper.addEventListener('mouseenter', stopAutoSlide);
+    wrapper.addEventListener('mouseleave', startAutoSlide);
+
+    // Touch swipe support
+    let startX = 0;
+    wrapper.addEventListener('touchstart', (e) => {
+      startX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].screenX;
+      if (startX - endX > 40) {
+        goToSlide(currentSlide + 1);
+        startAutoSlide();
+      } else if (endX - startX > 40) {
+        goToSlide(currentSlide - 1);
+        startAutoSlide();
+      }
+    }, { passive: true });
+
+    startAutoSlide();
+  }
+
   // Initial calculation on load
   document.addEventListener('DOMContentLoaded', () => {
     calculateEstimatedCost();
+    initHeroSlider();
   });
 </script>
 

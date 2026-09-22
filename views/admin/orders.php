@@ -99,55 +99,55 @@ $orders = $stmt->fetchAll();
 <?php else: ?>
   <div class="space-y-4">
     <?php foreach ($orders as $o): ?>
-      <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm hover:border-slate-300 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-sm hover:border-slate-300 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-6 overflow-hidden">
         <!-- Order Primary Info -->
-        <div class="flex-1">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="px-3 py-1 rounded-xl bg-slate-100 font-mono font-bold text-xs text-slate-800">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+            <span class="px-3 py-1 rounded-xl bg-slate-100 font-mono font-bold text-xs text-slate-800 shrink-0">
               #<?= $o['id'] ?>
             </span>
-            <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full">
+            <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full truncate max-w-[160px]">
               <?= e($o['category_name']) ?>
             </span>
-            <span class="text-xs text-slate-400">
+            <span class="text-xs text-slate-400 whitespace-nowrap">
               <?= date('d M Y, h:i A', strtotime($o['created_at'])) ?>
             </span>
           </div>
 
-          <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-2">
+          <h3 class="font-bold text-sm sm:text-base text-slate-800 mb-2 break-words">
             <?= e($o['service_name']) ?>
           </h3>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-slate-100 text-xs">
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[11px]">Customer:</span>
-              <span class="font-bold text-slate-800">@<?= e($o['username']) ?></span>
+              <span class="font-bold text-slate-800 truncate block">@<?= e($o['username']) ?></span>
             </div>
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[11px]">Quantity:</span>
-              <span class="font-bold text-slate-800"><?= number_format($o['quantity']) ?></span>
+              <span class="font-bold text-slate-800 truncate block"><?= number_format($o['quantity']) ?></span>
             </div>
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[11px]">Charge:</span>
-              <span class="font-bold text-emerald-600">$<?= number_format($o['charge'], 4) ?></span>
+              <span class="font-bold text-emerald-600 truncate block">$<?= number_format($o['charge'], 4) ?></span>
             </div>
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[11px]">Start / Remains:</span>
-              <span class="font-bold text-slate-800"><?= $o['start_count'] ?> / <?= $o['remains'] ?></span>
+              <span class="font-bold text-slate-800 truncate block"><?= $o['start_count'] ?> / <?= $o['remains'] ?></span>
             </div>
           </div>
 
-          <div class="mt-2 text-xs flex items-center gap-1.5 text-slate-500 overflow-hidden text-ellipsis">
-            <span class="font-semibold text-slate-400">Target Link:</span>
-            <a href="<?= e($o['link']) ?>" target="_blank" class="text-rose-500 hover:underline font-mono truncate max-w-md">
+          <div class="mt-2 text-xs flex items-center gap-1.5 text-slate-500 min-w-0">
+            <span class="font-semibold text-slate-400 shrink-0">Target Link:</span>
+            <a href="<?= e($o['link']) ?>" target="_blank" class="text-rose-500 hover:underline font-mono truncate min-w-0 flex-1 break-all">
               <?= e($o['link']) ?>
             </a>
           </div>
         </div>
 
         <!-- Order Action Controls -->
-        <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-3 shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100">
-          <form method="POST" class="flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-3 shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100 w-full sm:w-auto">
+          <form method="POST" class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
             <input type="hidden" name="action" value="update_status">
             <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
             <select name="status" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 focus:outline-none focus:border-rose-400">
@@ -158,12 +158,12 @@ $orders = $stmt->fetchAll();
               <option value="partial" <?= $o['status'] === 'partial' ? 'selected' : '' ?>>Partial</option>
               <option value="cancelled" <?= $o['status'] === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
             </select>
-            <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors">
+            <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shrink-0 whitespace-nowrap">
               Update
             </button>
           </form>
 
-          <span class="px-3 py-1 rounded-full text-xs font-bold <?= $o['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : ($o['status'] === 'pending' ? 'bg-amber-50 text-amber-600' : ($o['status'] === 'cancelled' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600')) ?>">
+          <span class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap <?= $o['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : ($o['status'] === 'pending' ? 'bg-amber-50 text-amber-600' : ($o['status'] === 'cancelled' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600')) ?>">
             Status: <?= ucfirst($o['status']) ?>
           </span>
         </div>

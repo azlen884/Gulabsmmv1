@@ -143,10 +143,6 @@ $unreadCount = (int)$notifStmt->fetchColumn();
           <i data-lucide="message-square" class="w-4 h-4"></i>
           <span>Support Tickets</span>
         </a>
-        <a href="/tournaments" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'tournaments' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="trophy" class="w-4 h-4"></i>
-          <span>Tournaments</span>
-        </a>
         <a href="/notifications" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'notifications' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
           <div class="flex items-center gap-3">
             <i data-lucide="bell" class="w-4 h-4"></i>
@@ -230,9 +226,6 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         <a href="/support" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'support' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="message-square" class="w-4 h-4"></i> Support Tickets
         </a>
-        <a href="/tournaments" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'tournaments' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="trophy" class="w-4 h-4"></i> Tournaments
-        </a>
         <a href="/notifications" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'notifications' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="bell" class="w-4 h-4"></i> Notifications
         </a>
@@ -248,42 +241,42 @@ $unreadCount = (int)$notifStmt->fetchColumn();
 
   <!-- Main Content Wrapper -->
   <div class="flex-1 flex flex-col min-w-0">
-    <!-- Top Navbar matching screenshot -->
-    <header class="bg-white border-b border-[#FCE4E8] px-4 lg:px-8 py-3.5 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3 flex-1 max-w-xl">
-        <button type="button" onclick="toggleMobileSidebar()" class="p-2 -ml-2 text-slate-500 hover:text-slate-700 lg:hidden" aria-label="Open navigation menu">
+    <!-- Top Navbar matching screenshot, responsive on mobile without overflow -->
+    <header class="bg-white border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4">
+      <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
+        <button type="button" onclick="toggleMobileSidebar()" class="p-1.5 sm:p-2 -ml-1 text-slate-500 hover:text-slate-700 lg:hidden shrink-0" aria-label="Open navigation menu">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
 
         <!-- Search Bar -->
-        <div class="relative w-full">
-          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+        <div class="relative w-full min-w-0">
+          <i data-lucide="search" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
           <input 
             type="text" 
             id="top-service-search"
-            placeholder="Search for services..." 
-            class="w-full pl-10 pr-9 py-2 text-sm bg-rose-50/20 border border-[#FCE4E8] rounded-full focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-slate-700 placeholder-slate-400"
+            placeholder="Search services..." 
+            class="w-full pl-8 sm:pl-10 pr-3 sm:pr-9 py-1.5 sm:py-2 text-xs sm:text-sm bg-rose-50/20 border border-[#FCE4E8] rounded-full focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-slate-700 placeholder-slate-400"
             onkeydown="if(event.key==='Enter') window.location.href='/services?search='+encodeURIComponent(this.value)"
           >
-          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-300 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+          <i data-lucide="search" class="w-3 h-3 text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 hidden sm:block"></i>
         </div>
       </div>
 
       <!-- Right Header Actions -->
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         <!-- Notification Bell -->
-        <a href="/notifications" class="relative p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Notifications">
-          <i data-lucide="bell" class="w-5 h-5"></i>
+        <a href="/notifications" class="relative p-1.5 sm:p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Notifications">
+          <i data-lucide="bell" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           <?php if ($unreadCount > 0): ?>
-            <span class="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+            <span class="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
               <?= $unreadCount ?>
             </span>
           <?php endif; ?>
         </a>
 
         <!-- Dark/Light Theme Icon -->
-        <button type="button" class="p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Toggle Dark/Light">
-          <i data-lucide="moon" class="w-5 h-5"></i>
+        <button type="button" class="p-1.5 sm:p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Toggle Dark/Light">
+          <i data-lucide="moon" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </button>
 
         <!-- Currency Selector (Available only for authenticated user as required!) -->
@@ -291,11 +284,11 @@ $unreadCount = (int)$notifStmt->fetchColumn();
           <button 
             type="button" 
             onclick="toggleCurrencyDropdown()"
-            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-[#FCE4E8] text-xs font-semibold text-slate-700 hover:bg-rose-50/50 transition-colors"
+            class="flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full border border-[#FCE4E8] text-[11px] sm:text-xs font-semibold text-slate-700 hover:bg-rose-50/50 transition-colors"
           >
             <span><?= $userCurrency === 'INR' ? '🇮🇳' : ($userCurrency === 'USD' ? '🇺🇸' : ($userCurrency === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
             <span><?= e($userCurrency) ?></span>
-            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+            <i data-lucide="chevron-down" class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400"></i>
           </button>
           
           <div id="currency-dropdown" class="hidden absolute right-0 mt-2 w-36 bg-white border border-[#FCE4E8] rounded-xl shadow-lg py-1 z-30">
@@ -313,7 +306,7 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         </div>
 
         <!-- Wallet Balance Chip matching screenshot -->
-        <a href="/wallet" class="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-[#FCE4E8] bg-white hover:bg-rose-50/30 transition-colors">
+        <a href="/wallet" class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-[#FCE4E8] bg-white hover:bg-rose-50/30 transition-colors">
           <div class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">
             <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
           </div>
@@ -324,8 +317,8 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         </a>
 
         <!-- Add Funds Action Button matching screenshot -->
-        <a href="/add-funds" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-xs font-bold shadow-sm hover:shadow transition-all">
-          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+        <a href="/add-funds" class="inline-flex items-center gap-1 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-[11px] sm:text-xs font-bold shadow-sm hover:shadow transition-all whitespace-nowrap">
+          <i data-lucide="plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
           <span>Add Funds</span>
         </a>
       </div>

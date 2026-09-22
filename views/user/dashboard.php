@@ -37,6 +37,54 @@ $totalSpentStmt = $db->prepare("SELECT COALESCE(SUM(charge), 0) FROM orders WHER
 $totalSpentStmt->execute([$userId]);
 $totalSpent = (float)$totalSpentStmt->fetchColumn();
 
+// Real daily sales/orders statistics for the last 7 days from the MySQL database
+$salesPeriodDays = [];
+$totalPeriodSales = 0.0;
+$totalPeriodCount = 0;
+$maxDayAmount = 0.0;
+$peakDay = null;
+
+for ($i = 6; $i >= 0; $i--) {
+    $dateKey = date('Y-m-d', strtotime("-$i days"));
+    $salesPeriodDays[$dateKey] = [
+        'date' => $dateKey,
+        'label' => date('d M', strtotime($dateKey)),
+        'amount' => 0.0,
+        'count' => 0
+    ];
+}
+
+$salesHistoryStmt = $db->prepare("
+    SELECT DATE(created_at) AS order_date, 
+           COALESCE(SUM(charge), 0) AS daily_total, 
+           COUNT(*) AS daily_count
+    FROM orders
+    WHERE user_id = ? AND created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    GROUP BY DATE(created_at)
+");
+$salesHistoryStmt->execute([$userId]);
+$salesHistoryRows = $salesHistoryStmt->fetchAll();
+
+foreach ($salesHistoryRows as $shRow) {
+    $d = $shRow['order_date'];
+    if (isset($salesPeriodDays[$d])) {
+        $amt = (float)$shRow['daily_total'];
+        $cnt = (int)$shRow['daily_count'];
+        $salesPeriodDays[$d]['amount'] = $amt;
+        $salesPeriodDays[$d]['count'] = $cnt;
+        $totalPeriodSales += $amt;
+        $totalPeriodCount += $cnt;
+        if ($amt > $maxDayAmount) {
+            $maxDayAmount = $amt;
+            $peakDay = $salesPeriodDays[$d];
+        }
+    }
+}
+
+if (!$peakDay && !empty($salesPeriodDays)) {
+    $peakDay = end($salesPeriodDays);
+}
+
 // 3. Recently Ordered
 $recentOrdersStmt = $db->prepare("
     SELECT o.*, s.name AS service_name, c.name AS category_name, c.icon AS category_icon
@@ -268,64 +316,94 @@ $services = $db->query("
     <div class="flex items-center justify-between mb-4">
       <div>
         <h3 class="font-bold text-base text-slate-800">Sales Overview</h3>
-        <span class="text-xs text-slate-400">Last 7 days</span>
+        <span class="text-xs text-slate-400">Last 7 days • Real Volume: <strong class="text-slate-700"><?= format_price($totalPeriodSales) ?></strong></span>
       </div>
-      <div class="relative">
-        <select class="text-xs font-semibold bg-rose-50/50 border border-[#FCE4E8] rounded-xl px-2.5 py-1.5 text-slate-600 focus:outline-none focus:border-rose-400">
-          <option>Last 7 days</option>
-          <option>Last 30 days</option>
-          <option>This Month</option>
-        </select>
+      <div class="text-xs font-semibold px-2.5 py-1 rounded-xl bg-rose-50 text-rose-600 border border-[#FCE4E8]">
+        <?= $totalPeriodCount ?> <?= $totalPeriodCount === 1 ? 'Order' : 'Orders' ?>
       </div>
     </div>
 
-    <!-- Responsive SVG Line Chart matching screenshot -->
-    <div class="relative w-full h-56 pt-6">
-      <!-- Tooltip for 18 Sep $68.24 matching screenshot -->
-      <div class="absolute left-[62%] top-6 -translate-x-1/2 bg-white border border-rose-200 px-2.5 py-1 rounded-full shadow-md text-[11px] font-bold text-slate-800 flex items-center gap-1 z-10">
-        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-        <span>18 Sep</span>
-        <span class="text-rose-600">$68.24</span>
+    <?php if ($totalPeriodCount === 0 || $totalPeriodSales <= 0): ?>
+      <!-- Appropriate Empty / Zero State based on actual database -->
+      <div class="h-56 flex flex-col items-center justify-center text-center p-4">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-400 flex items-center justify-center mb-3">
+          <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+        </div>
+        <div class="font-bold text-sm text-slate-700">No Sales in Last 7 Days</div>
+        <p class="text-xs text-slate-400 mt-1 max-w-xs">Zero orders recorded in this period. Placed orders will automatically populate your real sales metrics here.</p>
       </div>
+    <?php else: ?>
+      <?php
+        $dayList = array_values($salesPeriodDays);
+        $chartMax = $maxDayAmount > 0 ? ceil($maxDayAmount * 1.25 * 10) / 10 : 10;
+        $chartPoints = [];
+        $svgCoords = [];
+        $peakCoord = null;
+        $totalDays = count($dayList);
+        foreach ($dayList as $idx => $dItem) {
+            $cx = 40 + ($idx * (390 / max(1, $totalDays - 1)));
+            $cy = 140 - ($chartMax > 0 ? ($dItem['amount'] / $chartMax) * 110 : 0);
+            $chartPoints[] = ['x' => $cx, 'y' => $cy, 'item' => $dItem];
+            $svgCoords[] = "$cx,$cy";
+            if ($peakDay && $dItem['date'] === $peakDay['date']) {
+                $peakCoord = ['x' => $cx, 'y' => $cy, 'item' => $dItem];
+            }
+        }
+        if (!$peakCoord && !empty($chartPoints)) {
+            $peakCoord = end($chartPoints);
+        }
+        $areaPath = "M " . $chartPoints[0]['x'] . ",140 L " . implode(' L ', $svgCoords) . " L " . end($chartPoints)['x'] . ",140 Z";
+        $linePath = "M " . implode(' L ', $svgCoords);
+      ?>
+      <div class="relative w-full h-56 pt-6">
+        <!-- Peak indicator tooltip with real data -->
+        <?php if ($peakCoord && $peakCoord['item']['amount'] > 0): ?>
+          <div class="absolute top-1 bg-white border border-rose-200 px-2.5 py-1 rounded-full shadow-md text-[11px] font-bold text-slate-800 flex items-center gap-1 z-10 -translate-x-1/2" style="left: <?= round(($peakCoord['x'] / 450) * 100) ?>%;">
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+            <span><?= e($peakCoord['item']['label']) ?></span>
+            <span class="text-rose-600"><?= format_price($peakCoord['item']['amount']) ?></span>
+          </div>
+        <?php endif; ?>
 
-      <svg class="w-full h-full overflow-visible" viewBox="0 0 450 180" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="roseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#FF3B69" stop-opacity="0.35" />
-            <stop offset="100%" stop-color="#FF3B69" stop-opacity="0.0" />
-          </linearGradient>
-        </defs>
+        <svg class="w-full h-full overflow-visible" viewBox="0 0 450 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="realRoseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FF3B69" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#FF3B69" stop-opacity="0.0" />
+            </linearGradient>
+          </defs>
 
-        <!-- Y Axis Grid lines -->
-        <line x1="30" y1="20" x2="440" y2="20" stroke="#F1F5F9" stroke-dasharray="3,3" />
-        <text x="5" y="24" fill="#94A3B8" font-size="10">100</text>
-        <line x1="30" y1="60" x2="440" y2="60" stroke="#F1F5F9" stroke-dasharray="3,3" />
-        <text x="10" y="64" fill="#94A3B8" font-size="10">80</text>
-        <line x1="30" y1="100" x2="440" y2="100" stroke="#F1F5F9" stroke-dasharray="3,3" />
-        <text x="10" y="104" fill="#94A3B8" font-size="10">40</text>
-        <line x1="30" y1="140" x2="440" y2="140" stroke="#F1F5F9" stroke-dasharray="3,3" />
-        <text x="15" y="144" fill="#94A3B8" font-size="10">0</text>
+          <!-- Y Axis Grid lines with real scales -->
+          <line x1="30" y1="30" x2="440" y2="30" stroke="#F1F5F9" stroke-dasharray="3,3" />
+          <text x="5" y="34" fill="#94A3B8" font-size="10"><?= format_price($chartMax) ?></text>
 
-        <!-- Area fill under the curve -->
-        <path d="M 35 135 C 70 120, 100 130, 130 95 C 160 65, 195 90, 230 110 C 265 80, 290 50, 320 45 C 350 70, 380 90, 435 60 L 435 150 L 35 150 Z" fill="url(#roseGradient)" />
+          <line x1="30" y1="67" x2="440" y2="67" stroke="#F1F5F9" stroke-dasharray="3,3" />
+          <text x="5" y="71" fill="#94A3B8" font-size="10"><?= format_price($chartMax * 0.66) ?></text>
 
-        <!-- Line curve -->
-        <path d="M 35 135 C 70 120, 100 130, 130 95 C 160 65, 195 90, 230 110 C 265 80, 290 50, 320 45 C 350 70, 380 90, 435 60" fill="none" stroke="#FF3B69" stroke-width="3" stroke-linecap="round" />
+          <line x1="30" y1="103" x2="440" y2="103" stroke="#F1F5F9" stroke-dasharray="3,3" />
+          <text x="5" y="107" fill="#94A3B8" font-size="10"><?= format_price($chartMax * 0.33) ?></text>
 
-        <!-- Data dot on 18 Sep matching screenshot -->
-        <circle cx="320" cy="45" r="5" fill="#FF3B69" stroke="#FFFFFF" stroke-width="2" />
-        <circle cx="320" cy="45" r="9" fill="none" stroke="#FF3B69" stroke-opacity="0.3" stroke-width="2" />
+          <line x1="30" y1="140" x2="440" y2="140" stroke="#F1F5F9" stroke-dasharray="3,3" />
+          <text x="15" y="144" fill="#94A3B8" font-size="10">0</text>
 
-        <!-- X Axis labels -->
-        <text x="30" y="170" fill="#94A3B8" font-size="10">14 Sep</text>
-        <text x="95" y="170" fill="#94A3B8" font-size="10">15 Sep</text>
-        <text x="160" y="170" fill="#94A3B8" font-size="10">16 Sep</text>
-        <text x="225" y="170" fill="#94A3B8" font-size="10">17 Sep</text>
-        <text x="305" y="170" fill="#FF3B69" font-weight="bold" font-size="10">18 Sep</text>
-        <text x="365" y="170" fill="#94A3B8" font-size="10">19 Sep</text>
-        <text x="415" y="170" fill="#94A3B8" font-size="10">20 Sep</text>
-      </svg>
-    </div>
+          <!-- Dynamic Area fill from real MySQL data -->
+          <path d="<?= $areaPath ?>" fill="url(#realRoseGradient)" />
+
+          <!-- Dynamic Line curve from real MySQL data -->
+          <path d="<?= $linePath ?>" fill="none" stroke="#FF3B69" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+          <!-- Real Data Points -->
+          <?php foreach ($chartPoints as $cp): ?>
+            <circle cx="<?= $cp['x'] ?>" cy="<?= $cp['y'] ?>" r="<?= $cp['item']['amount'] > 0 ? '4' : '2.5' ?>" fill="<?= $cp['item']['amount'] > 0 ? '#FF3B69' : '#CBD5E1' ?>" stroke="#FFFFFF" stroke-width="1.5" />
+          <?php endforeach; ?>
+
+          <!-- Real X Axis labels -->
+          <?php foreach ($chartPoints as $cp): ?>
+            <text x="<?= $cp['x'] - 14 ?>" y="165" fill="#94A3B8" font-size="10"><?= e($cp['item']['label']) ?></text>
+          <?php endforeach; ?>
+        </svg>
+      </div>
+    <?php endif; ?>
   </div>
 
   <!-- 2. Quick Actions (lg:col-span-3) -->

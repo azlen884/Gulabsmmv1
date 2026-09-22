@@ -56,32 +56,31 @@ try {
 <body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
   <!-- Public Navigation (NO Currency Selector here per Prompt Rule 15!) -->
-  <header class="bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-4 lg:px-12 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <a href="/" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 shadow-sm">
-          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+  <header class="bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-12 py-3 sm:py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <a href="/" class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 shadow-sm shrink-0">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
         </div>
         <div>
-          <span class="text-xl font-bold tracking-tight text-rose-600 block leading-tight">RoseSMM</span>
-          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block">Social Media Services</span>
+          <span class="text-lg sm:text-xl font-bold tracking-tight text-rose-600 block leading-tight">RoseSMM</span>
+          <span class="text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-slate-400 hidden sm:block">Social Media Services</span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
         <a href="#services" class="hover:text-rose-600 transition-colors">Services</a>
         <a href="#features" class="hover:text-rose-600 transition-colors">Why RoseSMM</a>
-        <a href="#tournaments" class="hover:text-rose-600 transition-colors">Tournaments</a>
         <a href="/login" class="hover:text-rose-600 transition-colors">API Docs</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="/login" class="px-5 py-2 rounded-full border border-[#FCE4E8] text-xs font-bold text-slate-700 hover:bg-rose-50 transition-colors">
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <a href="/login" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#FCE4E8] text-xs font-bold text-slate-700 hover:bg-rose-50 transition-colors whitespace-nowrap">
           Sign In
         </a>
-        <a href="/register" class="px-5 py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-xs font-bold shadow-sm transition-all">
+        <a href="/register" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap">
           Get Started
         </a>
       </div>
@@ -152,52 +151,52 @@ try {
 
             <!-- Preview Card list -->
             <div class="space-y-3 mb-6">
-              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center">
+              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm gap-3">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                  <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
                     <i data-lucide="instagram" class="w-4 h-4"></i>
                   </div>
-                  <div>
-                    <div class="font-bold text-xs text-slate-800">Instagram Followers</div>
-                    <div class="text-[10px] text-slate-400">+5,000 delivered</div>
+                  <div class="min-w-0 flex-1">
+                    <div class="font-bold text-xs text-slate-800 truncate">Instagram Followers</div>
+                    <div class="text-[10px] text-slate-400 truncate">+5,000 delivered</div>
                   </div>
                 </div>
-                <span class="text-xs font-extrabold text-emerald-600">Completed</span>
+                <span class="text-xs font-extrabold text-emerald-600 shrink-0">Completed</span>
               </div>
 
-              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
+              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm gap-3">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                  <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
                     <i data-lucide="youtube" class="w-4 h-4"></i>
                   </div>
-                  <div>
-                    <div class="font-bold text-xs text-slate-800">YouTube High Retention Views</div>
-                    <div class="text-[10px] text-slate-400">+25,000 delivered</div>
+                  <div class="min-w-0 flex-1">
+                    <div class="font-bold text-xs text-slate-800 truncate">YouTube High Retention Views</div>
+                    <div class="text-[10px] text-slate-400 truncate">+25,000 delivered</div>
                   </div>
                 </div>
-                <span class="text-xs font-extrabold text-emerald-600">Completed</span>
+                <span class="text-xs font-extrabold text-emerald-600 shrink-0">Completed</span>
               </div>
 
-              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center">
+              <div class="bg-white/90 backdrop-blur p-3.5 rounded-2xl border border-white flex items-center justify-between shadow-sm gap-3">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                  <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
                     <i data-lucide="music-2" class="w-4 h-4"></i>
                   </div>
-                  <div>
-                    <div class="font-bold text-xs text-slate-800">TikTok Likes & Shares</div>
-                    <div class="text-[10px] text-slate-400">+10,000 delivered</div>
+                  <div class="min-w-0 flex-1">
+                    <div class="font-bold text-xs text-slate-800 truncate">TikTok Likes & Shares</div>
+                    <div class="text-[10px] text-slate-400 truncate">+10,000 delivered</div>
                   </div>
                 </div>
-                <span class="text-xs font-extrabold text-amber-600">In Progress</span>
+                <span class="text-xs font-extrabold text-amber-600 shrink-0">In Progress</span>
               </div>
             </div>
 
-            <div class="p-4 rounded-2xl bg-white border border-[#FCD3DC] flex items-center justify-between">
-              <div>
-                <span class="text-[11px] text-slate-400 font-bold block">WALLET BONUS</span>
-                <span class="text-sm font-extrabold text-slate-800">10% Extra on Every Deposit</span>
+            <div class="p-4 rounded-2xl bg-white border border-[#FCD3DC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <span class="text-[11px] text-slate-400 font-bold block uppercase tracking-wider">WALLET BONUS</span>
+                <span class="text-sm font-extrabold text-slate-800 break-words block">10% Extra on Every Deposit</span>
               </div>
-              <a href="/register" class="px-4 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold hover:bg-rose-600">
+              <a href="/register" class="px-4 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold hover:bg-rose-600 shrink-0 whitespace-nowrap">
                 Claim Now
               </a>
             </div>
@@ -215,20 +214,20 @@ try {
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($services as $srv): ?>
-          <div class="bg-white p-6 rounded-3xl border border-[#FCE4E8] shadow-sm hover:border-rose-300 transition-all flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-bold px-3 py-1 rounded-full bg-rose-50 text-rose-600">
+          <div class="bg-white p-5 sm:p-6 rounded-3xl border border-[#FCE4E8] shadow-sm hover:border-rose-300 transition-all flex flex-col justify-between overflow-hidden">
+            <div class="min-w-0 mb-4">
+              <div class="flex items-center justify-between gap-2 mb-3 min-w-0">
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-rose-50 text-rose-600 truncate max-w-[60%]">
                   <?= e($srv['category_name']) ?>
                 </span>
-                <span class="text-xs font-extrabold text-slate-700">
+                <span class="text-xs font-extrabold text-slate-700 shrink-0 whitespace-nowrap">
                   $<?= number_format($srv['rate'], 2) ?> / 1K
                 </span>
               </div>
-              <h3 class="font-bold text-base text-slate-800 mb-2"><?= e($srv['name']) ?></h3>
-              <p class="text-xs text-slate-500 mb-4 line-clamp-2"><?= e($srv['description']) ?></p>
+              <h3 class="font-bold text-base text-slate-800 mb-2 break-words"><?= e($srv['name']) ?></h3>
+              <p class="text-xs text-slate-500 line-clamp-3 break-words leading-relaxed"><?= e($srv['description']) ?></p>
             </div>
-            <a href="/register" class="block w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white font-bold text-xs text-center transition-colors">
+            <a href="/register" class="block w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white font-bold text-xs text-center transition-colors shrink-0">
               Get Started
             </a>
           </div>

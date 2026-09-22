@@ -91,49 +91,49 @@ $services = $stmt->fetchAll();
 <?php else: ?>
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
     <?php foreach ($services as $s): ?>
-      <div class="bg-white rounded-3xl border border-[#FCE4E8] p-5 shadow-sm hover:border-rose-300 transition-all flex flex-col justify-between relative group">
-        <div>
+      <div class="bg-white rounded-3xl border border-[#FCE4E8] p-5 shadow-sm hover:border-rose-300 transition-all flex flex-col justify-between relative group overflow-hidden">
+        <div class="min-w-0">
           <!-- Top Row: Icon, Category & Badge -->
-          <div class="flex items-center justify-between gap-2 mb-3">
-            <div class="flex items-center gap-2.5">
-              <div class="w-9 h-9 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center font-bold text-xs">
+          <div class="flex items-center justify-between gap-2 mb-3 min-w-0">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <div class="w-9 h-9 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center font-bold text-xs shrink-0">
                 #<?= $s['id'] ?>
               </div>
-              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600">
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 truncate max-w-[140px]">
                 <?= e($s['category_name']) ?>
               </span>
             </div>
             <?php if (!empty($s['badge'])): ?>
-              <span class="text-[10px] font-bold text-white bg-rose-500 px-2.5 py-0.5 rounded-full">
+              <span class="text-[10px] font-bold text-white bg-rose-500 px-2.5 py-0.5 rounded-full shrink-0">
                 <?= e($s['badge']) ?>
               </span>
             <?php endif; ?>
           </div>
 
           <!-- Service Title -->
-          <h3 class="text-sm font-bold text-slate-800 mb-2 leading-snug">
+          <h3 class="text-sm font-bold text-slate-800 mb-2 leading-snug break-words">
             <?= e($s['name']) ?>
           </h3>
 
           <!-- Description -->
-          <p class="text-xs text-slate-500 mb-4 line-clamp-3 leading-relaxed">
+          <p class="text-xs text-slate-500 mb-4 line-clamp-3 leading-relaxed break-words">
             <?= e($s['description'] ?: 'High quality, automated instant delivery. 100% safe profile boost.') ?>
           </p>
         </div>
 
         <!-- Bottom Stats & Action -->
-        <div class="pt-4 border-t border-slate-100 space-y-3">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-slate-400">Rate per 1,000:</span>
-            <span class="font-extrabold text-rose-600 text-sm"><?= format_price($s['rate']) ?></span>
+        <div class="pt-4 border-t border-slate-100 space-y-3 shrink-0">
+          <div class="flex items-center justify-between text-xs gap-2">
+            <span class="text-slate-400 shrink-0">Rate per 1,000:</span>
+            <span class="font-extrabold text-rose-600 text-sm truncate"><?= format_price($s['rate']) ?></span>
           </div>
 
-          <div class="flex items-center justify-between text-[11px] text-slate-500">
-            <span>Min: <?= number_format($s['min_quantity']) ?></span>
-            <span>Max: <?= number_format($s['max_quantity']) ?></span>
+          <div class="flex items-center justify-between text-[11px] text-slate-500 gap-2">
+            <span class="truncate">Min: <?= number_format($s['min_quantity']) ?></span>
+            <span class="truncate">Max: <?= number_format($s['max_quantity']) ?></span>
           </div>
 
-          <a href="/order?service=<?= $s['id'] ?>" class="w-full py-2.5 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs text-center shadow-sm block transition-colors">
+          <a href="/order?service=<?= $s['id'] ?>" class="w-full py-2.5 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs text-center shadow-sm block transition-colors shrink-0 whitespace-nowrap">
             Order This Service
           </a>
         </div>

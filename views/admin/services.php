@@ -123,36 +123,36 @@ $services = $stmt->fetchAll();
 <?php else: ?>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <?php foreach ($services as $s): ?>
-      <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition-all flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 font-bold text-xs">
+      <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition-all flex flex-col justify-between overflow-hidden">
+        <div class="min-w-0">
+          <div class="flex items-center justify-between gap-2 mb-2 min-w-0">
+            <span class="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 font-bold text-xs truncate max-w-[160px]">
               <?= e($s['category_name']) ?>
             </span>
-            <span class="text-xs font-mono text-slate-400">ID: #<?= $s['id'] ?></span>
+            <span class="text-xs font-mono text-slate-400 shrink-0">ID: #<?= $s['id'] ?></span>
           </div>
 
-          <h3 class="font-bold text-sm text-slate-800 mb-2"><?= e($s['name']) ?></h3>
-          <p class="text-xs text-slate-400 mb-3 line-clamp-2"><?= e($s['description']) ?></p>
+          <h3 class="font-bold text-sm text-slate-800 mb-2 break-words"><?= e($s['name']) ?></h3>
+          <p class="text-xs text-slate-400 mb-3 line-clamp-2 break-words"><?= e($s['description']) ?></p>
 
           <div class="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 text-xs mb-3">
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[10px]">Rate per 1k:</span>
-              <span class="font-extrabold text-emerald-600 text-sm">$<?= number_format($s['rate'], 4) ?></span>
+              <span class="font-extrabold text-emerald-600 text-sm truncate block">$<?= number_format($s['rate'], 4) ?></span>
             </div>
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[10px]">Min:</span>
-              <span class="font-bold text-slate-700"><?= number_format($s['min']) ?></span>
+              <span class="font-bold text-slate-700 truncate block"><?= number_format($s['min']) ?></span>
             </div>
-            <div>
+            <div class="min-w-0">
               <span class="text-slate-400 block text-[10px]">Max:</span>
-              <span class="font-bold text-slate-700"><?= number_format($s['max']) ?></span>
+              <span class="font-bold text-slate-700 truncate block"><?= number_format($s['max']) ?></span>
             </div>
           </div>
         </div>
 
         <!-- Controls: Edit Rate & Toggle Active -->
-        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 flex-wrap sm:flex-nowrap">
           <form method="POST" class="flex items-center gap-1.5 text-xs">
             <input type="hidden" name="action" value="update_rate">
             <input type="hidden" name="service_id" value="<?= $s['id'] ?>">
@@ -164,14 +164,14 @@ $services = $stmt->fetchAll();
               value="<?= $s['rate'] ?>" 
               class="w-20 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono"
             >
-            <button type="submit" class="px-2 py-1 rounded-lg bg-slate-800 text-white font-bold text-[10px]">Save</button>
+            <button type="submit" class="px-2 py-1 rounded-lg bg-slate-800 text-white font-bold text-[10px] shrink-0">Save</button>
           </form>
 
-          <form method="POST">
+          <form method="POST" class="shrink-0">
             <input type="hidden" name="action" value="toggle_service">
             <input type="hidden" name="service_id" value="<?= $s['id'] ?>">
             <input type="hidden" name="status" value="<?= $s['status'] ?>">
-            <button type="submit" class="px-3 py-1 rounded-full text-xs font-bold <?= $s['status'] === 'active' ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' ?>">
+            <button type="submit" class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap <?= $s['status'] === 'active' ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' : 'bg-slate-100 text-slate-500 hover:bg-slate-200' ?>">
               <?= ucfirst($s['status']) ?>
             </button>
           </form>

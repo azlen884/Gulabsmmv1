@@ -101,27 +101,27 @@ $orders = $stmt->fetchAll();
 <?php else: ?>
   <div class="space-y-4">
     <?php foreach ($orders as $ord): ?>
-      <div class="bg-white rounded-3xl border border-[#FCE4E8] p-5 shadow-sm hover:border-rose-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="bg-white rounded-3xl border border-[#FCE4E8] p-4 sm:p-5 shadow-sm hover:border-rose-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 overflow-hidden">
         <!-- Left: Order Details & Service Name -->
-        <div class="flex items-start gap-4 overflow-hidden">
-          <div class="w-11 h-11 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
+        <div class="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">
             #<?= $ord['id'] ?>
           </div>
-          <div class="overflow-hidden">
+          <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2 mb-1 flex-wrap">
-              <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 truncate max-w-[150px]">
                 <?= e($ord['category_name']) ?>
               </span>
-              <span class="text-xs text-slate-400">
+              <span class="text-xs text-slate-400 whitespace-nowrap">
                 <?= date('d M Y, h:i A', strtotime($ord['created_at'])) ?>
               </span>
             </div>
-            <h3 class="text-sm font-bold text-slate-800 truncate mb-1">
+            <h3 class="text-sm font-bold text-slate-800 break-words mb-1">
               <?= e($ord['service_name']) ?>
             </h3>
-            <div class="text-xs text-slate-500 truncate flex items-center gap-1.5">
+            <div class="text-xs text-slate-500 flex items-center gap-1.5 min-w-0">
               <i data-lucide="link" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-              <a href="<?= e($ord['link']) ?>" target="_blank" rel="noopener noreferrer" class="hover:text-rose-600 underline truncate">
+              <a href="<?= e($ord['link']) ?>" target="_blank" rel="noopener noreferrer" class="hover:text-rose-600 underline truncate min-w-0 flex-1 break-all">
                 <?= e($ord['link']) ?>
               </a>
             </div>
@@ -129,25 +129,25 @@ $orders = $stmt->fetchAll();
         </div>
 
         <!-- Right: Metrics & Status Badge -->
-        <div class="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 shrink-0">
-          <div class="text-left md:text-right">
+        <div class="flex items-center justify-between md:justify-end gap-4 sm:gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 shrink-0 flex-wrap sm:flex-nowrap">
+          <div class="text-left md:text-right min-w-[70px]">
             <div class="text-xs text-slate-400">Quantity</div>
             <div class="text-sm font-extrabold text-slate-800"><?= number_format($ord['quantity']) ?></div>
           </div>
 
-          <div class="text-left md:text-right">
+          <div class="text-left md:text-right min-w-[70px]">
             <div class="text-xs text-slate-400">Charge</div>
             <div class="text-sm font-extrabold text-rose-600"><?= format_price($ord['charge']) ?></div>
           </div>
 
-          <div class="text-right">
+          <div class="text-right shrink-0">
             <?php
             $badgeBg = 'bg-blue-50 text-blue-600';
             if ($ord['status'] === 'completed') $badgeBg = 'bg-emerald-50 text-emerald-600';
             elseif ($ord['status'] === 'pending') $badgeBg = 'bg-amber-50 text-amber-600';
             elseif ($ord['status'] === 'canceled') $badgeBg = 'bg-rose-50 text-rose-600';
             ?>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold <?= $badgeBg ?>">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap <?= $badgeBg ?>">
               <?= ucfirst(str_replace('_', ' ', $ord['status'])) ?>
             </span>
           </div>

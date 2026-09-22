@@ -36,45 +36,45 @@ $transactions = $stmt->fetchAll();
 <!-- Balance Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
   <!-- Active Balance -->
-  <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-3xl p-6 text-white shadow-sm flex flex-col justify-between">
-    <div>
+  <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-3xl p-6 text-white shadow-sm flex flex-col justify-between overflow-hidden">
+    <div class="min-w-0 mb-4">
       <span class="text-xs uppercase tracking-wider text-rose-100 font-semibold block mb-2">Available Balance</span>
-      <div class="text-3xl sm:text-4xl font-black tracking-tight mb-4"><?= format_price($user['balance']) ?></div>
+      <div class="text-3xl sm:text-4xl font-black tracking-tight truncate"><?= format_price($user['balance']) ?></div>
     </div>
-    <div class="flex items-center gap-3">
-      <a href="/add-funds" class="px-4 py-2 rounded-full bg-white text-rose-600 font-bold text-xs shadow-sm hover:bg-rose-50 transition-colors">
+    <div class="flex items-center gap-3 flex-wrap">
+      <a href="/add-funds" class="px-4 py-2 rounded-full bg-white text-rose-600 font-bold text-xs shadow-sm hover:bg-rose-50 transition-colors whitespace-nowrap">
         + Deposit
       </a>
-      <a href="/transactions" class="px-4 py-2 rounded-full bg-rose-700/60 text-white font-bold text-xs hover:bg-rose-700 transition-colors">
+      <a href="/transactions" class="px-4 py-2 rounded-full bg-rose-700/60 text-white font-bold text-xs hover:bg-rose-700 transition-colors whitespace-nowrap">
         View History
       </a>
     </div>
   </div>
 
   <!-- Total Deposited -->
-  <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm flex flex-col justify-between">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-xs font-semibold text-slate-400">Total Lifetime Deposited</span>
-      <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+  <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm flex flex-col justify-between overflow-hidden">
+    <div class="flex items-center justify-between mb-4 gap-2">
+      <span class="text-xs font-semibold text-slate-400 truncate">Total Lifetime Deposited</span>
+      <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
         <i data-lucide="arrow-down-left" class="w-5 h-5"></i>
       </div>
     </div>
-    <div>
-      <div class="text-2xl sm:text-3xl font-bold text-slate-800"><?= format_price($totalDeposits) ?></div>
+    <div class="min-w-0">
+      <div class="text-2xl sm:text-3xl font-bold text-slate-800 truncate"><?= format_price($totalDeposits) ?></div>
       <div class="text-xs text-emerald-600 font-semibold mt-1">Verified & Active</div>
     </div>
   </div>
 
   <!-- Total Spent -->
-  <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm flex flex-col justify-between">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-xs font-semibold text-slate-400">Total Lifetime Spent</span>
-      <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center">
+  <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm flex flex-col justify-between overflow-hidden">
+    <div class="flex items-center justify-between mb-4 gap-2">
+      <span class="text-xs font-semibold text-slate-400 truncate">Total Lifetime Spent</span>
+      <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
         <i data-lucide="shopping-bag" class="w-5 h-5"></i>
       </div>
     </div>
-    <div>
-      <div class="text-2xl sm:text-3xl font-bold text-slate-800"><?= format_price($totalSpent) ?></div>
+    <div class="min-w-0">
+      <div class="text-2xl sm:text-3xl font-bold text-slate-800 truncate"><?= format_price($totalSpent) ?></div>
       <div class="text-xs text-slate-400 font-semibold mt-1">Across all orders</div>
     </div>
   </div>
@@ -92,16 +92,16 @@ $transactions = $stmt->fetchAll();
   <?php else: ?>
     <div class="space-y-3">
       <?php foreach ($transactions as $tx): ?>
-        <div class="p-4 rounded-2xl border border-slate-100 hover:border-rose-200 transition-all flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
+        <div class="p-4 rounded-2xl border border-slate-100 hover:border-rose-200 transition-all flex items-center justify-between gap-3 sm:gap-4 overflow-hidden">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
             <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 <?= $tx['type'] === 'deposit' || $tx['type'] === 'bonus' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600' ?>">
               <i data-lucide="<?= $tx['type'] === 'deposit' ? 'arrow-down-left' : ($tx['type'] === 'bonus' ? 'gift' : 'arrow-up-right') ?>" class="w-5 h-5"></i>
             </div>
-            <div>
-              <div class="font-bold text-xs sm:text-sm text-slate-800 capitalize">
+            <div class="min-w-0 flex-1">
+              <div class="font-bold text-xs sm:text-sm text-slate-800 capitalize truncate">
                 <?= e($tx['payment_method'] ?: ucfirst($tx['type'])) ?>
               </div>
-              <div class="text-[11px] text-slate-400">
+              <div class="text-[11px] text-slate-400 truncate">
                 <?= date('d M Y, h:i A', strtotime($tx['created_at'])) ?>
                 <?php if (!empty($tx['transaction_id'])): ?>
                   • Ref: <?= e($tx['transaction_id']) ?>
@@ -110,11 +110,11 @@ $transactions = $stmt->fetchAll();
             </div>
           </div>
 
-          <div class="text-right">
-            <div class="text-sm font-extrabold <?= $tx['type'] === 'deposit' || $tx['type'] === 'bonus' ? 'text-emerald-600' : 'text-slate-800' ?>">
+          <div class="text-right shrink-0">
+            <div class="text-sm font-extrabold whitespace-nowrap <?= $tx['type'] === 'deposit' || $tx['type'] === 'bonus' ? 'text-emerald-600' : 'text-slate-800' ?>">
               <?= $tx['type'] === 'deposit' || $tx['type'] === 'bonus' ? '+' : '-' ?><?= format_price($tx['amount']) ?>
             </div>
-            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold <?= $tx['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' ?>">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap <?= $tx['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' ?>">
               <?= ucfirst($tx['status']) ?>
             </span>
           </div>

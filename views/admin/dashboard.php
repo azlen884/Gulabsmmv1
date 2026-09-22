@@ -41,59 +41,59 @@ $recentOrders = $db->query("
 
 <!-- Metrics Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-    <div>
-      <span class="text-xs font-semibold text-slate-400 block mb-1">Total Orders</span>
-      <div class="text-2xl font-black text-slate-800"><?= number_format($totalOrders) ?></div>
-      <div class="text-[11px] text-amber-600 font-bold mt-1"><?= $pendingOrders ?> Pending</div>
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-3 overflow-hidden">
+    <div class="min-w-0 flex-1">
+      <span class="text-xs font-semibold text-slate-400 block mb-1 truncate">Total Orders</span>
+      <div class="text-2xl font-black text-slate-800 truncate"><?= number_format($totalOrders) ?></div>
+      <div class="text-[11px] text-amber-600 font-bold mt-1 truncate"><?= $pendingOrders ?> Pending</div>
     </div>
-    <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center">
+    <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
       <i data-lucide="shopping-cart" class="w-6 h-6"></i>
     </div>
   </div>
 
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-    <div>
-      <span class="text-xs font-semibold text-slate-400 block mb-1">Registered Users</span>
-      <div class="text-2xl font-black text-slate-800"><?= number_format($totalUsers) ?></div>
-      <div class="text-[11px] text-emerald-600 font-bold mt-1">Active Accounts</div>
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-3 overflow-hidden">
+    <div class="min-w-0 flex-1">
+      <span class="text-xs font-semibold text-slate-400 block mb-1 truncate">Registered Users</span>
+      <div class="text-2xl font-black text-slate-800 truncate"><?= number_format($totalUsers) ?></div>
+      <div class="text-[11px] text-emerald-600 font-bold mt-1 truncate">Active Accounts</div>
     </div>
-    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
       <i data-lucide="users" class="w-6 h-6"></i>
     </div>
   </div>
 
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-    <div>
-      <span class="text-xs font-semibold text-slate-400 block mb-1">Gross Revenue</span>
-      <div class="text-2xl font-black text-slate-800">$<?= number_format($totalRevenue, 2) ?></div>
-      <div class="text-[11px] text-slate-400 font-bold mt-1">Lifetime Volume</div>
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-3 overflow-hidden">
+    <div class="min-w-0 flex-1">
+      <span class="text-xs font-semibold text-slate-400 block mb-1 truncate">Gross Revenue</span>
+      <div class="text-2xl font-black text-slate-800 truncate">$<?= number_format($totalRevenue, 2) ?></div>
+      <div class="text-[11px] text-slate-400 font-bold mt-1 truncate">Lifetime Volume</div>
     </div>
-    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
       <i data-lucide="dollar-sign" class="w-6 h-6"></i>
     </div>
   </div>
 
-  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-    <div>
-      <span class="text-xs font-semibold text-slate-400 block mb-1">Support Inquiries</span>
-      <div class="text-2xl font-black text-slate-800"><?= $openTickets ?></div>
-      <div class="text-[11px] text-rose-600 font-bold mt-1">Awaiting Reply</div>
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-3 overflow-hidden">
+    <div class="min-w-0 flex-1">
+      <span class="text-xs font-semibold text-slate-400 block mb-1 truncate">Support Inquiries</span>
+      <div class="text-2xl font-black text-slate-800 truncate"><?= $openTickets ?></div>
+      <div class="text-[11px] text-rose-600 font-bold mt-1 truncate">Awaiting Reply</div>
     </div>
-    <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+    <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
       <i data-lucide="message-square" class="w-6 h-6"></i>
     </div>
   </div>
 </div>
 
 <!-- Recent Orders Card Section (NO TABLE UI!) -->
-<div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm mb-6">
-  <div class="flex items-center justify-between mb-4">
-    <div>
-      <h3 class="font-bold text-base text-slate-800">Recent Customer Orders</h3>
-      <p class="text-xs text-slate-400">Real-time order feed across all users</p>
+<div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm mb-6 overflow-hidden">
+  <div class="flex items-center justify-between mb-4 gap-2">
+    <div class="min-w-0">
+      <h3 class="font-bold text-base text-slate-800 truncate">Recent Customer Orders</h3>
+      <p class="text-xs text-slate-400 truncate">Real-time order feed across all users</p>
     </div>
-    <a href="/admin/orders" class="text-xs font-bold text-rose-600 hover:text-rose-700">View All Orders →</a>
+    <a href="/admin/orders" class="text-xs font-bold text-rose-600 hover:text-rose-700 shrink-0 whitespace-nowrap">View All Orders →</a>
   </div>
 
   <?php if (empty($recentOrders)): ?>
@@ -101,27 +101,27 @@ $recentOrders = $db->query("
   <?php else: ?>
     <div class="space-y-3">
       <?php foreach ($recentOrders as $ro): ?>
-        <div class="p-4 rounded-2xl border border-slate-100 hover:border-slate-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-3.5">
+        <div class="p-4 rounded-2xl border border-slate-100 hover:border-slate-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 overflow-hidden">
+          <div class="flex items-center gap-3.5 min-w-0 flex-1">
             <div class="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-700 shrink-0">
               #<?= $ro['id'] ?>
             </div>
-            <div>
-              <div class="font-bold text-xs sm:text-sm text-slate-800">
+            <div class="min-w-0 flex-1">
+              <div class="font-bold text-xs sm:text-sm text-slate-800 break-words line-clamp-1">
                 <?= e($ro['service_name']) ?>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">
+              <div class="text-[11px] text-slate-400 mt-0.5 truncate">
                 User: <span class="font-bold text-slate-700">@<?= e($ro['username']) ?></span> • Qty: <?= number_format($ro['quantity']) ?> • Link: <span class="text-rose-500 font-mono"><?= e(substr($ro['link'], 0, 30)) ?>...</span>
               </div>
             </div>
           </div>
 
-          <div class="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-            <div class="text-right">
-              <div class="text-xs font-extrabold text-slate-800">$<?= number_format($ro['charge'], 4) ?></div>
-              <div class="text-[10px] text-slate-400"><?= date('d M, h:i A', strtotime($ro['created_at'])) ?></div>
+          <div class="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0">
+            <div class="text-left sm:text-right">
+              <div class="text-xs font-extrabold text-slate-800 whitespace-nowrap">$<?= number_format($ro['charge'], 4) ?></div>
+              <div class="text-[10px] text-slate-400 whitespace-nowrap"><?= date('d M, h:i A', strtotime($ro['created_at'])) ?></div>
             </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-bold <?= $ro['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : ($ro['status'] === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-blue-600') ?>">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold whitespace-nowrap <?= $ro['status'] === 'completed' ? 'bg-emerald-50 text-emerald-600' : ($ro['status'] === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-blue-600') ?>">
               <?= ucfirst($ro['status']) ?>
             </span>
           </div>

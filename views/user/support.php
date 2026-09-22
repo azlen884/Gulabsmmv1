@@ -44,19 +44,19 @@ $tickets = $allTicketsStmt->fetchAll();
 <?php if ($activeTicket): ?>
   <!-- Active Ticket Discussion View -->
   <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm mb-6">
-    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-      <div>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-3">
+      <div class="min-w-0 flex-1">
         <a href="/support" class="text-xs font-bold text-rose-500 hover:text-rose-600 flex items-center gap-1 mb-2">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to all tickets
         </a>
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2.5">
-          <span>Ticket #<?= $activeTicket['id'] ?>: <?= e($activeTicket['subject']) ?></span>
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold <?= $activeTicket['status'] === 'open' ? 'bg-amber-50 text-amber-600' : ($activeTicket['status'] === 'answered' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500') ?>">
+        <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2.5 flex-wrap">
+          <span class="break-words min-w-0">Ticket #<?= $activeTicket['id'] ?>: <?= e($activeTicket['subject']) ?></span>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0 <?= $activeTicket['status'] === 'open' ? 'bg-amber-50 text-amber-600' : ($activeTicket['status'] === 'answered' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500') ?>">
             <?= ucfirst($activeTicket['status']) ?>
           </span>
         </h2>
       </div>
-      <div class="text-xs text-slate-400">
+      <div class="text-xs text-slate-400 shrink-0">
         Priority: <span class="font-bold text-slate-700 capitalize"><?= e($activeTicket['priority']) ?></span>
       </div>
     </div>
@@ -64,20 +64,20 @@ $tickets = $allTicketsStmt->fetchAll();
     <!-- Message Thread -->
     <div class="space-y-4 mb-6 max-h-[450px] overflow-y-auto p-2 custom-scrollbar">
       <?php foreach ($messages as $msg): ?>
-        <div class="flex items-start gap-3 <?= $msg['is_admin'] ? 'bg-rose-50/50' : 'bg-slate-50' ?> p-4 rounded-2xl border border-slate-100">
+        <div class="flex items-start gap-3 <?= $msg['is_admin'] ? 'bg-rose-50/50' : 'bg-slate-50' ?> p-4 rounded-2xl border border-slate-100 overflow-hidden">
           <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white shrink-0 <?= $msg['is_admin'] ? 'bg-rose-500' : 'bg-slate-700' ?>">
             <?= $msg['is_admin'] ? 'ADM' : 'YOU' ?>
           </div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-bold text-slate-800">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center justify-between mb-1 gap-2">
+              <span class="text-xs font-bold text-slate-800 truncate">
                 <?= $msg['is_admin'] ? 'RoseSMM Support Agent' : e($msg['full_name'] ?: 'You') ?>
               </span>
-              <span class="text-[10px] text-slate-400">
+              <span class="text-[10px] text-slate-400 shrink-0 whitespace-nowrap">
                 <?= date('d M Y, h:i A', strtotime($msg['created_at'])) ?>
               </span>
             </div>
-            <p class="text-xs text-slate-600 whitespace-pre-wrap leading-relaxed"><?= e($msg['message']) ?></p>
+            <p class="text-xs text-slate-600 whitespace-pre-wrap leading-relaxed break-words"><?= e($msg['message']) ?></p>
           </div>
         </div>
       <?php endforeach; ?>
@@ -94,7 +94,7 @@ $tickets = $allTicketsStmt->fetchAll();
         class="w-full p-4 bg-rose-50/20 border border-[#FCE4E8] rounded-2xl text-xs text-slate-700 focus:outline-none focus:border-rose-400"
       ></textarea>
       <div class="flex justify-end">
-        <button type="submit" class="px-5 py-2.5 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-sm transition-colors">
+        <button type="submit" class="px-5 py-2.5 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-sm transition-colors whitespace-nowrap">
           Send Reply
         </button>
       </div>
@@ -116,26 +116,26 @@ $tickets = $allTicketsStmt->fetchAll();
   <?php else: ?>
     <div class="space-y-3">
       <?php foreach ($tickets as $t): ?>
-        <a href="/support?ticket_id=<?= $t['id'] ?>" class="p-4 rounded-2xl border border-slate-100 hover:border-rose-300 hover:bg-rose-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 block">
-          <div class="flex items-center gap-3">
+        <a href="/support?ticket_id=<?= $t['id'] ?>" class="p-4 rounded-2xl border border-slate-100 hover:border-rose-300 hover:bg-rose-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 block overflow-hidden">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
             <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 font-bold text-xs">
               #<?= $t['id'] ?>
             </div>
-            <div>
-              <div class="font-bold text-xs sm:text-sm text-slate-800">
+            <div class="min-w-0 flex-1">
+              <div class="font-bold text-xs sm:text-sm text-slate-800 break-words line-clamp-1">
                 <?= e($t['subject']) ?>
               </div>
-              <div class="text-[11px] text-slate-400 mt-0.5">
+              <div class="text-[11px] text-slate-400 mt-0.5 truncate">
                 Updated: <?= date('d M Y, h:i A', strtotime($t['updated_at'])) ?> • Priority: <span class="capitalize font-semibold text-slate-600"><?= e($t['priority']) ?></span>
               </div>
             </div>
           </div>
 
-          <div class="flex items-center justify-between sm:justify-end gap-3">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold <?= $t['status'] === 'open' ? 'bg-amber-50 text-amber-600' : ($t['status'] === 'answered' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500') ?>">
+          <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold whitespace-nowrap <?= $t['status'] === 'open' ? 'bg-amber-50 text-amber-600' : ($t['status'] === 'answered' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500') ?>">
               <?= ucfirst($t['status']) ?>
             </span>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 shrink-0"></i>
           </div>
         </a>
       <?php endforeach; ?>

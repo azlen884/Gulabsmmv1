@@ -53,7 +53,6 @@ $routes = [
     '/wallet' => __DIR__ . '/views/user/wallet.php',
     '/transactions' => __DIR__ . '/views/user/transactions.php',
     '/support' => __DIR__ . '/views/user/support.php',
-    '/tournaments' => __DIR__ . '/views/user/tournaments.php',
     '/notifications' => __DIR__ . '/views/user/notifications.php',
     '/profile' => __DIR__ . '/views/user/profile.php',
 

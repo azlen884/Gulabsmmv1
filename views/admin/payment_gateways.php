@@ -164,6 +164,12 @@ require_once __DIR__ . '/../layouts/admin_header.php';
                 <i data-lucide="wallet" class="w-6 h-6"></i>
               <?php elseif ($gw['code'] === 'razorpay'): ?>
                 <i data-lucide="zap" class="w-6 h-6"></i>
+              <?php elseif ($gw['code'] === 'cashfree'): ?>
+                <i data-lucide="layers" class="w-6 h-6"></i>
+              <?php elseif ($gw['code'] === 'phonepe'): ?>
+                <i data-lucide="smartphone" class="w-6 h-6"></i>
+              <?php elseif ($gw['code'] === 'payu'): ?>
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
               <?php elseif ($gw['code'] === 'bank_transfer'): ?>
                 <i data-lucide="building" class="w-6 h-6"></i>
               <?php else: ?>
@@ -485,16 +491,44 @@ function openEditGatewayModal(gw) {
   // Tailor labels to gateway code
   const lblApi = document.getElementById('lbl-api-key');
   const lblSecret = document.getElementById('lbl-secret-key');
+  const lblMerchant = document.getElementById('lbl-merchant-id');
+  const lblWebhook = document.getElementById('lbl-webhook-secret');
+  const fieldParams = document.getElementById('field-parameters');
+
+  lblMerchant.textContent = 'Merchant ID (Optional)';
+  lblWebhook.textContent = 'Webhook Secret / ID';
+  fieldParams.classList.remove('hidden');
 
   if (gw.code === 'stripe') {
     lblApi.textContent = 'Stripe Publishable Key (pk_test_... or pk_live_...)';
     lblSecret.textContent = 'Stripe Secret Key (sk_test_... or sk_live_...)';
+    lblWebhook.textContent = 'Stripe Webhook Signing Secret (whsec_...)';
   } else if (gw.code === 'paypal') {
     lblApi.textContent = 'PayPal REST Client ID';
-    lblSecret.textContent = 'PayPal REST Secret';
+    lblSecret.textContent = 'PayPal REST Client Secret';
+    lblWebhook.textContent = 'PayPal Webhook ID';
   } else if (gw.code === 'razorpay') {
     lblApi.textContent = 'Razorpay Key ID (rzp_test_... or rzp_live_...)';
     lblSecret.textContent = 'Razorpay Key Secret';
+    lblWebhook.textContent = 'Razorpay Webhook Secret (from Webhook portal)';
+  } else if (gw.code === 'cashfree') {
+    lblApi.textContent = 'Cashfree App ID / Client ID';
+    lblSecret.textContent = 'Cashfree Secret Key';
+    lblWebhook.textContent = 'Cashfree Webhook Signature Secret';
+  } else if (gw.code === 'phonepe') {
+    lblMerchant.textContent = 'PhonePe Merchant ID (e.g. PGTESTPAYUAT or Live MID) *';
+    lblSecret.textContent = 'PhonePe Salt Key / Secret Key *';
+    lblApi.textContent = 'PhonePe Salt Index (Default: 1)';
+    lblWebhook.textContent = 'PhonePe Webhook Salt Index (Optional)';
+  } else if (gw.code === 'payu') {
+    lblApi.textContent = 'PayU Merchant Key *';
+    lblSecret.textContent = 'PayU Merchant Salt *';
+    lblMerchant.textContent = 'PayU Merchant ID (Optional)';
+    lblWebhook.textContent = 'PayU Webhook Secret (Optional)';
+  } else if (gw.code === 'bank_transfer') {
+    lblApi.textContent = 'Bank / Account Name';
+    lblSecret.textContent = 'Security PIN (Optional)';
+    lblWebhook.textContent = 'Reference ID Prefix';
   } else {
     lblApi.textContent = 'API Key / Merchant ID';
     lblSecret.textContent = 'API Secret Key';

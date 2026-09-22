@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/payments/PaymentHelper.php';
+require_once __DIR__ . '/../../includes/payments/RazorpayService.php';
+require_once __DIR__ . '/../../includes/payments/CashfreeService.php';
+require_once __DIR__ . '/../../includes/payments/PhonePeService.php';
+require_once __DIR__ . '/../../includes/payments/PayUService.php';
 
 header('Content-Type: application/json');
 
@@ -318,9 +323,187 @@ try {
     }
 
     // -------------------------------------------------------------
-    // GATEWAY 4: RAZORPAY / CRYPTO / OTHER
+    // GATEWAY 4: RAZORPAY
     // -------------------------------------------------------------
-    // Generic real gateway handler
+    if ($gateway['code'] === 'razorpay') {
+        $rzp = new RazorpayService($gateway);
+        if (!$rzp->isConfigured()) {
+            echo json_encode([
+                'success' => false,
+                'error' => 'Razorpay merchant credentials (Key ID and Key Secret) are not configured by the administrator.'
+            ]);
+            exit;
+        }
+
+        $internalId = PaymentHelper::generateInternalId('razorpay');
+        $rzpOrder = $rzp->createOrder($userId, $totalToCharge, $gateway['currency'], $internalId);
+        $orderId = $rzpOrder['id'];
+
+        // Save in payments table
+        $paymentRecord = PaymentHelper::createPayment(
+            $userId,
+            'razorpay',
+            $amount,
+            $gateway['currency'],
+            $internalId,
+            $orderId,
+            $rzpOrder
+        );
+
+        echo json_encode([
+            'success' => true,
+            'gateway' => 'razorpay',
+            'internal_payment_id' => $internalId,
+            'order_id' => $orderId,
+            'amount' => $amount,
+            'currency' => $gateway['currency'],
+            'redirect_url' => '/payment/checkout?internal_id=' . urlencode($internalId)
+        ]);
+        exit;
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY 5: CASHFREE PAYMENTS
+    // -------------------------------------------------------------
+    if ($gateway['code'] === 'cashfree') {
+        $cf = new CashfreeService($gateway);
+        if (!$cf->isConfigured()) {
+            echo json_encode([
+                'success' => false,
+                'error' => 'Cashfree merchant credentials (App ID and Secret Key) are not configured by the administrator.'
+            ]);
+            exit;
+        }
+
+        $internalId = PaymentHelper::generateInternalId('cashfree');
+        $returnUrl = $baseUrl . '/payment/verify?gateway=cashfree&internal_id=' . urlencode($internalId);
+        
+        $cfOrder = $cf->createOrder(
+            $userId,
+            $totalToCharge,
+            $gateway['currency'],
+            $internalId,
+            $user['username'],
+            $user['email'],
+            '9876543210',
+            $returnUrl
+        );
+
+        $orderId = $cfOrder['order_id'];
+        $sessionId = $cfOrder['payment_session_id'] ?? '';
+
+        PaymentHelper::createPayment(
+            $userId,
+            'cashfree',
+            $amount,
+            $gateway['currency'],
+            $internalId,
+            $orderId,
+            [
+                'payment_session_id' => $sessionId,
+                'cf_order' => $cfOrder
+            ]
+        );
+
+        echo json_encode([
+            'success' => true,
+            'gateway' => 'cashfree',
+            'internal_payment_id' => $internalId,
+            'payment_session_id' => $sessionId,
+            'order_id' => $orderId,
+            'redirect_url' => '/payment/checkout?internal_id=' . urlencode($internalId)
+        ]);
+        exit;
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY 6: PHONEPE PAYMENT GATEWAY
+    // -------------------------------------------------------------
+    if ($gateway['code'] === 'phonepe') {
+        $phonepe = new PhonePeService($gateway);
+        if (!$phonepe->isConfigured()) {
+            echo json_encode([
+                'success' => false,
+                'error' => 'PhonePe merchant credentials (Merchant ID and Salt Key) are not configured by the administrator.'
+            ]);
+            exit;
+        }
+
+        $internalId = PaymentHelper::generateInternalId('phonepe');
+        $redirectUrl = $baseUrl . '/payment/verify?gateway=phonepe&internal_id=' . urlencode($internalId);
+        $callbackUrl = $baseUrl . '/payment/webhook?gateway=phonepe';
+
+        $initData = $phonepe->initiatePayment(
+            $userId,
+            $totalToCharge,
+            $gateway['currency'],
+            $internalId,
+            $redirectUrl,
+            $callbackUrl
+        );
+
+        $merchantTxnId = $initData['merchant_transaction_id'];
+        $targetRedirect = $initData['redirect_url'];
+
+        PaymentHelper::createPayment(
+            $userId,
+            'phonepe',
+            $amount,
+            $gateway['currency'],
+            $internalId,
+            $merchantTxnId,
+            [
+                'redirect_url' => $targetRedirect,
+                'phonepe_init' => $initData
+            ]
+        );
+
+        echo json_encode([
+            'success' => true,
+            'gateway' => 'phonepe',
+            'internal_payment_id' => $internalId,
+            'redirect_url' => $targetRedirect
+        ]);
+        exit;
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY 7: PAYU
+    // -------------------------------------------------------------
+    if ($gateway['code'] === 'payu') {
+        $payu = new PayUService($gateway);
+        if (!$payu->isConfigured()) {
+            echo json_encode([
+                'success' => false,
+                'error' => 'PayU merchant credentials (Merchant Key and Merchant Salt) are not configured by the administrator.'
+            ]);
+            exit;
+        }
+
+        $internalId = PaymentHelper::generateInternalId('payu');
+
+        PaymentHelper::createPayment(
+            $userId,
+            'payu',
+            $amount,
+            $gateway['currency'],
+            $internalId,
+            $internalId,
+            ['checkout' => 'form_post']
+        );
+
+        echo json_encode([
+            'success' => true,
+            'gateway' => 'payu',
+            'internal_payment_id' => $internalId,
+            'redirect_url' => '/payment/checkout?internal_id=' . urlencode($internalId)
+        ]);
+        exit;
+    }
+
+    // -------------------------------------------------------------
+    // FALLBACK: OTHER CONFIGURED GATEWAY
+    // -------------------------------------------------------------
     $apiKey = trim($gateway['api_key'] ?? '');
     $secretKey = trim($gateway['secret_key'] ?? '');
 
@@ -332,7 +515,6 @@ try {
         exit;
     }
 
-    // Insert pending record
     $ins = $db->prepare("
         INSERT INTO transactions (user_id, amount, type, payment_method, gateway_code, currency, status, transaction_id, created_at)
         VALUES (?, ?, 'deposit', ?, ?, ?, 'pending', ?, NOW())

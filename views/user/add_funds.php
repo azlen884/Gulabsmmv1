@@ -119,7 +119,13 @@ $bonusPercent = (float)get_setting('deposit_bonus_percent', '10');
                       <?php elseif ($gw['code'] === 'bank_transfer'): ?>
                         <i data-lucide="building" class="w-5 h-5"></i>
                       <?php elseif ($gw['code'] === 'razorpay'): ?>
-                        <i data-lucide="zap" class="w-5 h-5"></i>
+                        <i data-lucide="zap" class="w-5 h-5 text-blue-600"></i>
+                      <?php elseif ($gw['code'] === 'cashfree'): ?>
+                        <i data-lucide="layers" class="w-5 h-5 text-violet-600"></i>
+                      <?php elseif ($gw['code'] === 'phonepe'): ?>
+                        <i data-lucide="smartphone" class="w-5 h-5 text-purple-600"></i>
+                      <?php elseif ($gw['code'] === 'payu'): ?>
+                        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i>
                       <?php else: ?>
                         <i data-lucide="coins" class="w-5 h-5"></i>
                       <?php endif; ?>

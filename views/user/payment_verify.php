@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/payments/PaymentHelper.php';
+require_once __DIR__ . '/../../includes/payments/RazorpayService.php';
+require_once __DIR__ . '/../../includes/payments/CashfreeService.php';
+require_once __DIR__ . '/../../includes/payments/PhonePeService.php';
+require_once __DIR__ . '/../../includes/payments/PayUService.php';
 
 if (!is_logged_in()) {
     header("Location: /login");
@@ -8,12 +13,14 @@ if (!is_logged_in()) {
 
 $db = getDB();
 $userId = (int)$_SESSION['user_id'];
-$gatewayCode = trim($_GET['gateway'] ?? '');
+$gatewayCode = trim($_GET['gateway'] ?? $_POST['gateway'] ?? '');
+$internalId = trim($_GET['internal_id'] ?? $_POST['internal_id'] ?? '');
 $sessionId = trim($_GET['session_id'] ?? '');
-$txnRecordId = (int)($_GET['txn_id'] ?? 0);
+$txnRecordId = (int)($_GET['txn_id'] ?? $_POST['txn_id'] ?? 0);
 $paypalToken = trim($_GET['token'] ?? '');
 
 $verified = false;
+$isPending = false;
 $alreadyCredited = false;
 $statusMessage = '';
 $creditedAmount = 0.0;
@@ -24,22 +31,139 @@ $gatewayName = 'Online Gateway';
 
 try {
     // -------------------------------------------------------------
-    // STRIPE VERIFICATION
+    // GATEWAY: RAZORPAY
     // -------------------------------------------------------------
-    if ($gatewayCode === 'stripe') {
+    if ($gatewayCode === 'razorpay') {
+        $rzp = new RazorpayService();
+        $gatewayName = 'Razorpay Secure';
+
+        $rzpPaymentId = trim($_POST['razorpay_payment_id'] ?? $_GET['razorpay_payment_id'] ?? '');
+        $rzpOrderId = trim($_POST['razorpay_order_id'] ?? $_GET['order_id'] ?? '');
+        $rzpSig = trim($_POST['razorpay_signature'] ?? '');
+
+        $postData = null;
+        if (!empty($rzpPaymentId) && !empty($rzpSig)) {
+            $postData = [
+                'razorpay_payment_id' => $rzpPaymentId,
+                'razorpay_order_id' => $rzpOrderId,
+                'razorpay_signature' => $rzpSig
+            ];
+        }
+
+        $res = $rzp->verifyAndProcess($internalId, $postData);
+
+        if (!empty($res['success'])) {
+            $verified = true;
+            $alreadyCredited = !empty($res['already_credited']);
+            $creditedAmount = (float)($res['credited_amount'] ?? 0);
+            $bonusCredited = (float)($res['bonus_amount'] ?? 0);
+            $newBalance = (float)($res['new_balance'] ?? 0);
+            $txnDisplayId = $res['payment_id'] ?? $internalId;
+            $statusMessage = $res['message'] ?? 'Your Razorpay payment was verified successfully.';
+        } elseif (!empty($res['pending'])) {
+            $isPending = true;
+            $statusMessage = $res['message'] ?? 'Payment is awaiting confirmation from Razorpay.';
+            $txnDisplayId = $internalId;
+        } else {
+            throw new Exception($res['error'] ?? 'Razorpay payment verification failed.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY: CASHFREE
+    // -------------------------------------------------------------
+    elseif ($gatewayCode === 'cashfree') {
+        $cf = new CashfreeService();
+        $gatewayName = 'Cashfree Payments';
+        $orderId = trim($_GET['order_id'] ?? '');
+
+        $res = $cf->verifyAndProcess($internalId, $orderId ?: null);
+
+        if (!empty($res['success'])) {
+            $verified = true;
+            $alreadyCredited = !empty($res['already_credited']);
+            $creditedAmount = (float)($res['credited_amount'] ?? 0);
+            $bonusCredited = (float)($res['bonus_amount'] ?? 0);
+            $newBalance = (float)($res['new_balance'] ?? 0);
+            $txnDisplayId = $res['payment_id'] ?? $internalId;
+            $statusMessage = $res['message'] ?? 'Your Cashfree payment was verified successfully.';
+        } elseif (!empty($res['pending'])) {
+            $isPending = true;
+            $statusMessage = $res['message'] ?? 'Payment is awaiting confirmation from Cashfree.';
+            $txnDisplayId = $internalId;
+        } else {
+            throw new Exception($res['error'] ?? 'Cashfree payment verification failed.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY: PHONEPE
+    // -------------------------------------------------------------
+    elseif ($gatewayCode === 'phonepe') {
+        $phonepe = new PhonePeService();
+        $gatewayName = 'PhonePe Payment Gateway';
+        $merchantTxnId = trim($_GET['txn_id'] ?? $_POST['merchantTransactionId'] ?? '');
+
+        $res = $phonepe->verifyAndProcess($internalId, $merchantTxnId ?: null);
+
+        if (!empty($res['success'])) {
+            $verified = true;
+            $alreadyCredited = !empty($res['already_credited']);
+            $creditedAmount = (float)($res['credited_amount'] ?? 0);
+            $bonusCredited = (float)($res['bonus_amount'] ?? 0);
+            $newBalance = (float)($res['new_balance'] ?? 0);
+            $txnDisplayId = $res['payment_id'] ?? $internalId;
+            $statusMessage = $res['message'] ?? 'Your PhonePe payment was verified successfully.';
+        } elseif (!empty($res['pending'])) {
+            $isPending = true;
+            $statusMessage = $res['message'] ?? 'Payment is awaiting confirmation from PhonePe.';
+            $txnDisplayId = $internalId;
+        } else {
+            throw new Exception($res['error'] ?? 'PhonePe payment verification failed.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY: PAYU
+    // -------------------------------------------------------------
+    elseif ($gatewayCode === 'payu') {
+        $payu = new PayUService();
+        $gatewayName = 'PayU India';
+
+        $postData = (!empty($_POST['hash']) || !empty($_POST['status'])) ? $_POST : null;
+        $res = $payu->verifyAndProcess($internalId, $postData);
+
+        if (!empty($res['success'])) {
+            $verified = true;
+            $alreadyCredited = !empty($res['already_credited']);
+            $creditedAmount = (float)($res['credited_amount'] ?? 0);
+            $bonusCredited = (float)($res['bonus_amount'] ?? 0);
+            $newBalance = (float)($res['new_balance'] ?? 0);
+            $txnDisplayId = $res['payment_id'] ?? $internalId;
+            $statusMessage = $res['message'] ?? 'Your PayU payment was verified successfully.';
+        } elseif (!empty($res['pending'])) {
+            $isPending = true;
+            $statusMessage = $res['message'] ?? 'Payment is awaiting confirmation from PayU.';
+            $txnDisplayId = $internalId;
+        } else {
+            throw new Exception($res['error'] ?? 'PayU payment verification failed.');
+        }
+    }
+
+    // -------------------------------------------------------------
+    // GATEWAY: STRIPE
+    // -------------------------------------------------------------
+    elseif ($gatewayCode === 'stripe') {
         if (empty($sessionId)) {
             throw new Exception("Missing Stripe Checkout Session ID.");
         }
 
-        // Fetch gateway config
         $gw = $db->query("SELECT * FROM payment_gateways WHERE code = 'stripe' LIMIT 1")->fetch();
         if (!$gw || empty($gw['secret_key'])) {
             throw new Exception("Stripe gateway configuration not found.");
         }
 
         $gatewayName = $gw['name'];
-
-        // Find transaction
         $tStmt = $db->prepare("SELECT * FROM transactions WHERE transaction_id = ? OR (gateway_code = 'stripe' AND user_id = ? AND status = 'pending') ORDER BY id DESC LIMIT 1");
         $tStmt->execute([$sessionId, $userId]);
         $txn = $tStmt->fetch();
@@ -51,96 +175,59 @@ try {
         $txnDisplayId = $txn['transaction_id'];
         $creditedAmount = (float)$txn['amount'];
 
-        // Duplicate payment protection
         if ($txn['status'] === 'completed') {
             $verified = true;
             $alreadyCredited = true;
             $statusMessage = "This payment was already verified and credited to your wallet balance.";
             $newBalance = (float)$db->query("SELECT balance FROM users WHERE id = $userId")->fetchColumn();
         } else {
-            // Verify session with Stripe API directly
             $ch = curl_init('https://api.stripe.com/v1/checkout/sessions/' . urlencode($sessionId));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Authorization: Bearer ' . $gw['secret_key']
-            ]);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $gw['secret_key']]);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
 
             $res = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $curlError = curl_error($ch);
             curl_close($ch);
-
-            if ($curlError) {
-                throw new Exception("Stripe connection error: " . $curlError);
-            }
 
             $session = json_decode($res, true);
 
             if ($httpCode === 200 && ($session['payment_status'] ?? '') === 'paid') {
-                // Verified real payment!
                 $db->beginTransaction();
-
-                // Bonus calculation
                 $bonusPercent = (float)get_setting('deposit_bonus_percent', '10');
                 $bonusCredited = round(($bonusPercent / 100.0) * $creditedAmount, 2);
                 $totalToCredit = $creditedAmount + $bonusCredited;
 
-                // Credit user balance
                 $db->prepare("UPDATE users SET balance = balance + ? WHERE id = ?")->execute([$totalToCredit, $userId]);
+                $db->prepare("UPDATE transactions SET status = 'completed', transaction_id = ?, gateway_response = ?, updated_at = NOW() WHERE id = ?")
+                   ->execute([$sessionId, json_encode(['payment_intent' => $session['payment_intent'] ?? '', 'status' => $session['payment_status']]), $txn['id']]);
 
-                // Update transaction status
-                $db->prepare("
-                    UPDATE transactions 
-                    SET status = 'completed', transaction_id = ?, gateway_response = ?, updated_at = NOW() 
-                    WHERE id = ?
-                ")->execute([$sessionId, json_encode(['payment_intent' => $session['payment_intent'] ?? '', 'status' => $session['payment_status']]), $txn['id']]);
-
-                // Bonus transaction if applicable
                 if ($bonusCredited > 0) {
-                    $db->prepare("
-                        INSERT INTO transactions (user_id, amount, type, payment_method, status, transaction_id, created_at)
-                        VALUES (?, ?, 'bonus', 'Deposit Bonus (10%)', 'completed', ?, NOW())
-                    ")->execute([$userId, $bonusCredited, 'BONUS-' . $sessionId]);
+                    $db->prepare("INSERT INTO transactions (user_id, amount, type, payment_method, status, transaction_id, created_at) VALUES (?, ?, 'bonus', 'Deposit Bonus (10%)', 'completed', ?, NOW())")
+                       ->execute([$userId, $bonusCredited, 'BONUS-' . $sessionId]);
                 }
 
-                // Add notification
-                $db->prepare("
-                    INSERT INTO notifications (user_id, title, message, type)
-                    VALUES (?, 'Funds Added Successfully', ?, 'wallet')
-                ")->execute([
-                    $userId,
-                    "Successfully credited \${$creditedAmount} via Stripe with \${$bonusCredited} bonus."
-                ]);
-
                 $db->commit();
-
                 $verified = true;
                 $statusMessage = "Your payment of $" . number_format($creditedAmount, 2) . " has been verified by Stripe and added to your balance.";
                 $newBalance = (float)$db->query("SELECT balance FROM users WHERE id = $userId")->fetchColumn();
             } else {
-                // Payment was not completed or failed on Stripe
-                $db->prepare("UPDATE transactions SET status = 'failed', gateway_response = ? WHERE id = ?")
-                   ->execute([$res, $txn['id']]);
-                throw new Exception("Payment was not completed by Stripe (Status: " . ($session['payment_status'] ?? 'unknown') . "). No funds were credited.");
+                throw new Exception("Payment was not completed by Stripe (Status: " . ($session['payment_status'] ?? 'unknown') . ").");
             }
         }
     }
 
     // -------------------------------------------------------------
-    // PAYPAL VERIFICATION
+    // GATEWAY: PAYPAL
     // -------------------------------------------------------------
     elseif ($gatewayCode === 'paypal') {
         $orderId = !empty($paypalToken) ? $paypalToken : '';
-        
         $gw = $db->query("SELECT * FROM payment_gateways WHERE code = 'paypal' LIMIT 1")->fetch();
         if (!$gw || empty($gw['api_key']) || empty($gw['secret_key'])) {
             throw new Exception("PayPal gateway credentials not found.");
         }
 
         $gatewayName = $gw['name'];
-
-        // Find transaction
         $tStmt = $db->prepare("SELECT * FROM transactions WHERE (transaction_id = ? OR id = ?) AND user_id = ? LIMIT 1");
         $tStmt->execute([$orderId, $txnRecordId, $userId]);
         $txn = $tStmt->fetch();
@@ -161,7 +248,6 @@ try {
             $isLive = $gw['mode'] === 'live';
             $paypalBase = $isLive ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
 
-            // 1. Get OAuth Access Token
             $ch = curl_init($paypalBase . '/v1/oauth2/token');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -176,16 +262,12 @@ try {
                 throw new Exception("Unable to authenticate with PayPal API.");
             }
 
-            // 2. Capture PayPal Order
             $targetOrderId = !empty($txn['transaction_id']) ? $txn['transaction_id'] : $orderId;
             $ch = curl_init($paypalBase . '/v2/checkout/orders/' . urlencode($targetOrderId) . '/capture');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, '{}');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Authorization: Bearer ' . $accessToken
-            ]);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $accessToken]);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
             $capRes = curl_exec($ch);
             $capHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -195,7 +277,6 @@ try {
 
             if (($capHttp === 200 || $capHttp === 201) && ($capData['status'] ?? '') === 'COMPLETED') {
                 $db->beginTransaction();
-
                 $bonusPercent = (float)get_setting('deposit_bonus_percent', '10');
                 $bonusCredited = round(($bonusPercent / 100.0) * $creditedAmount, 2);
                 $totalToCredit = $creditedAmount + $bonusCredited;
@@ -205,10 +286,8 @@ try {
                    ->execute([$capRes, $txn['id']]);
 
                 if ($bonusCredited > 0) {
-                    $db->prepare("
-                        INSERT INTO transactions (user_id, amount, type, payment_method, status, transaction_id, created_at)
-                        VALUES (?, ?, 'bonus', 'Deposit Bonus (10%)', 'completed', ?, NOW())
-                    ")->execute([$userId, $bonusCredited, 'BONUS-' . $targetOrderId]);
+                    $db->prepare("INSERT INTO transactions (user_id, amount, type, payment_method, status, transaction_id, created_at) VALUES (?, ?, 'bonus', 'Deposit Bonus (10%)', 'completed', ?, NOW())")
+                       ->execute([$userId, $bonusCredited, 'BONUS-' . $targetOrderId]);
                 }
 
                 $db->commit();
@@ -216,13 +295,11 @@ try {
                 $statusMessage = "Your PayPal payment of $" . number_format($creditedAmount, 2) . " has been verified and added to your wallet.";
                 $newBalance = (float)$db->query("SELECT balance FROM users WHERE id = $userId")->fetchColumn();
             } else {
-                $db->prepare("UPDATE transactions SET status = 'failed', gateway_response = ? WHERE id = ?")
-                   ->execute([$capRes, $txn['id']]);
-                throw new Exception("PayPal payment verification did not complete. Status: " . ($capData['status'] ?? 'Incomplete'));
+                throw new Exception("PayPal payment verification did not complete.");
             }
         }
     } else {
-        // Generic gateway or manual
+        // Fallback transaction check
         if ($txnRecordId > 0) {
             $tStmt = $db->prepare("SELECT * FROM transactions WHERE id = ? AND user_id = ? LIMIT 1");
             $tStmt->execute([$txnRecordId, $userId]);
@@ -234,7 +311,8 @@ try {
                 $txnDisplayId = $txn['transaction_id'];
                 $newBalance = (float)$db->query("SELECT balance FROM users WHERE id = $userId")->fetchColumn();
             } else {
-                throw new Exception("Payment status is currently pending verification.");
+                $isPending = true;
+                $statusMessage = "Payment status is currently pending verification.";
             }
         } else {
             throw new Exception("Invalid payment verification request.");
@@ -246,7 +324,7 @@ try {
     $statusMessage = $e->getMessage();
 }
 
-$pageTitle = $verified ? 'Payment Successful - RoseSMM' : 'Payment Verification Failed - RoseSMM';
+$pageTitle = $verified ? 'Payment Successful - RoseSMM' : ($isPending ? 'Payment Pending - RoseSMM' : 'Payment Verification Failed - RoseSMM');
 $activePage = 'wallet';
 require_once __DIR__ . '/../layouts/user_header.php';
 ?>
@@ -260,7 +338,7 @@ require_once __DIR__ . '/../layouts/user_header.php';
       </div>
 
       <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider inline-block mb-2">
-        Payment Verified
+        Payment Verified & Credited
       </span>
 
       <h1 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Funds Credited Successfully!</h1>
@@ -271,21 +349,21 @@ require_once __DIR__ . '/../layouts/user_header.php';
       <!-- Deposit Breakdown -->
       <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6 text-xs text-left space-y-2">
         <div class="flex items-center justify-between text-slate-500">
-          <span>Payment Method:</span>
+          <span>Payment Gateway:</span>
           <span class="font-bold text-slate-800"><?= e($gatewayName) ?></span>
         </div>
         <div class="flex items-center justify-between text-slate-500">
-          <span>Deposit Amount:</span>
+          <span>Credited Deposit:</span>
           <span class="font-extrabold text-slate-800">$<?= number_format($creditedAmount, 2) ?></span>
         </div>
         <?php if ($bonusCredited > 0): ?>
           <div class="flex items-center justify-between text-emerald-600 font-bold">
-            <span>Special 10% Bonus:</span>
+            <span>Special 10% Deposit Bonus:</span>
             <span>+$<?= number_format($bonusCredited, 2) ?></span>
           </div>
         <?php endif; ?>
         <div class="flex items-center justify-between text-slate-500 pt-1 border-t border-slate-200">
-          <span>Transaction ID:</span>
+          <span>Transaction Reference:</span>
           <span class="font-mono text-slate-700 text-[11px] truncate max-w-[200px]"><?= e($txnDisplayId) ?></span>
         </div>
         <div class="flex items-center justify-between text-slate-800 font-black text-sm pt-1 border-t border-slate-200">
@@ -304,6 +382,65 @@ require_once __DIR__ . '/../layouts/user_header.php';
           <span>View Wallet & History</span>
         </a>
       </div>
+    </div>
+
+  <?php elseif ($isPending): ?>
+    <!-- Pending Verification Card -->
+    <div class="bg-white rounded-3xl border border-amber-200 p-8 shadow-sm text-center">
+      <div class="w-16 h-16 rounded-3xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200 shadow-sm">
+        <i data-lucide="clock" class="w-8 h-8 animate-pulse"></i>
+      </div>
+
+      <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold uppercase tracking-wider inline-block mb-2">
+        Payment Pending Confirmation
+      </span>
+
+      <h1 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Awaiting Bank / Gateway Settlement</h1>
+      <p class="text-xs text-slate-500 leading-relaxed mb-6 max-w-md mx-auto">
+        <?= e($statusMessage) ?>
+      </p>
+
+      <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 mb-6 text-left space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Payment Method:</span>
+          <span class="font-bold text-slate-800"><?= e($gatewayName) ?></span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Payment ID:</span>
+          <span class="font-mono text-slate-800"><?= e($internalId ?: $txnDisplayId) ?></span>
+        </div>
+        <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-200 leading-relaxed">
+          If you have already approved the transaction in your bank or UPI app, our automated server webhook will verify it and credit your balance immediately.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button onclick="window.location.reload()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <span>Check Status Now</span>
+        </button>
+        <a href="/wallet" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors flex items-center justify-center gap-2">
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+          <span>Return to Wallet</span>
+        </a>
+      </div>
+
+      <!-- Auto reload poll script -->
+      <?php if (!empty($internalId)): ?>
+        <script>
+          let pollTimer = setInterval(() => {
+            fetch('/api/payment/status?internal_id=<?= urlencode($internalId) ?>')
+              .then(r => r.json())
+              .then(data => {
+                if (data.success && data.credited) {
+                  clearInterval(pollTimer);
+                  window.location.reload();
+                }
+              })
+              .catch(() => {});
+          }, 3500);
+        </script>
+      <?php endif; ?>
     </div>
 
   <?php else: ?>

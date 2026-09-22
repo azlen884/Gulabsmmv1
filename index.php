@@ -62,12 +62,14 @@ $routes = [
     '/profile' => __DIR__ . '/views/user/profile.php',
     '/payment/verify' => __DIR__ . '/views/user/payment_verify.php',
     '/payment/cancel' => __DIR__ . '/views/user/payment_cancel.php',
+    '/payment/checkout' => __DIR__ . '/views/user/checkout.php',
 
     // API Endpoints
     '/api/order/create' => __DIR__ . '/api/order/create.php',
     '/api/funds/add' => __DIR__ . '/api/funds/add.php',
     '/payment/initiate' => __DIR__ . '/api/payment/initiate.php',
     '/payment/webhook' => __DIR__ . '/api/payment/webhook.php',
+    '/api/payment/status' => __DIR__ . '/api/payment/status.php',
     '/api/currency/switch' => __DIR__ . '/api/currency/switch.php',
     '/api/tickets/create' => __DIR__ . '/api/tickets/create.php',
     '/api/tickets/reply' => __DIR__ . '/api/tickets/reply.php',

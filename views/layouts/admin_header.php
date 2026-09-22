@@ -86,6 +86,9 @@ $adminPage = $adminPage ?? 'dashboard';
       <a href="/admin/transactions" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
         <i data-lucide="receipt" class="w-4 h-4"></i> Transactions
       </a>
+      <a href="/admin/payment-gateways" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="credit-card" class="w-4 h-4"></i> Payment Gateways
+      </a>
       <a href="/admin/currencies" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
         <i data-lucide="coins" class="w-4 h-4"></i> Currencies (INR/USD)
       </a>
@@ -155,6 +158,9 @@ $adminPage = $adminPage ?? 'dashboard';
         </a>
         <a href="/admin/transactions" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
           <i data-lucide="receipt" class="w-4 h-4"></i> Transactions
+        </a>
+        <a href="/admin/payment-gateways" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="credit-card" class="w-4 h-4"></i> Payment Gateways
         </a>
         <a href="/admin/currencies" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
           <i data-lucide="coins" class="w-4 h-4"></i> Currencies (INR/USD)

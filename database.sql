@@ -69,6 +69,9 @@ CREATE TABLE `services` (
   `description` TEXT,
   `type` ENUM('default', 'custom_comments', 'subscriptions', 'package') DEFAULT 'default',
   `rate` DECIMAL(10, 4) NOT NULL,
+  `original_rate` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+  `margin_type` ENUM('percentage', 'fixed') NOT NULL DEFAULT 'percentage',
+  `margin_value` DECIMAL(10, 4) NOT NULL DEFAULT 30.0000,
   `min_quantity` INT NOT NULL DEFAULT 100,
   `max_quantity` INT NOT NULL DEFAULT 100000,
   `dripfeed` TINYINT(1) DEFAULT 0,
@@ -76,6 +79,28 @@ CREATE TABLE `services` (
   `status` ENUM('active', 'inactive') DEFAULT 'active',
   `sort_order` INT DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `payment_gateways`;
+CREATE TABLE `payment_gateways` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `code` VARCHAR(50) NOT NULL UNIQUE,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT NULL,
+  `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'inactive',
+  `mode` ENUM('test', 'live') NOT NULL DEFAULT 'test',
+  `api_key` VARCHAR(255) NULL,
+  `secret_key` VARCHAR(255) NULL,
+  `webhook_secret` VARCHAR(255) NULL,
+  `merchant_id` VARCHAR(255) NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'USD',
+  `min_amount` DECIMAL(10, 2) NOT NULL DEFAULT 5.00,
+  `max_amount` DECIMAL(10, 2) NOT NULL DEFAULT 5000.00,
+  `fee_percent` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+  `parameters` TEXT NULL,
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `orders`;
@@ -103,9 +128,12 @@ CREATE TABLE `transactions` (
   `charge` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
   `currency` VARCHAR(10) DEFAULT 'USD',
   `payment_method` VARCHAR(100) DEFAULT 'manual',
+  `gateway_code` VARCHAR(50) DEFAULT NULL,
   `transaction_id` VARCHAR(100) DEFAULT NULL,
-  `status` ENUM('pending', 'completed', 'failed') DEFAULT 'completed',
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `gateway_response` TEXT DEFAULT NULL,
+  `status` ENUM('pending', 'completed', 'failed', 'cancelled') DEFAULT 'pending',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `sliders`;

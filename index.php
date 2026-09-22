@@ -55,10 +55,14 @@ $routes = [
     '/support' => __DIR__ . '/views/user/support.php',
     '/notifications' => __DIR__ . '/views/user/notifications.php',
     '/profile' => __DIR__ . '/views/user/profile.php',
+    '/payment/verify' => __DIR__ . '/views/user/payment_verify.php',
+    '/payment/cancel' => __DIR__ . '/views/user/payment_cancel.php',
 
     // API Endpoints
     '/api/order/create' => __DIR__ . '/api/order/create.php',
     '/api/funds/add' => __DIR__ . '/api/funds/add.php',
+    '/payment/initiate' => __DIR__ . '/api/payment/initiate.php',
+    '/payment/webhook' => __DIR__ . '/api/payment/webhook.php',
     '/api/currency/switch' => __DIR__ . '/api/currency/switch.php',
     '/api/tickets/create' => __DIR__ . '/api/tickets/create.php',
     '/api/tickets/reply' => __DIR__ . '/api/tickets/reply.php',
@@ -74,6 +78,7 @@ $routes = [
     '/admin/provider-services' => __DIR__ . '/views/admin/provider_services.php',
     '/admin/categories' => __DIR__ . '/views/admin/categories.php',
     '/admin/transactions' => __DIR__ . '/views/admin/transactions.php',
+    '/admin/payment-gateways' => __DIR__ . '/views/admin/payment_gateways.php',
     '/admin/currencies' => __DIR__ . '/views/admin/currencies.php',
     '/admin/sliders' => __DIR__ . '/views/admin/sliders.php',
     '/admin/tickets' => __DIR__ . '/views/admin/tickets.php',

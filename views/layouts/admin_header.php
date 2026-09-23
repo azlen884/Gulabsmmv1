@@ -201,6 +201,12 @@ $adminPage = $adminPage ?? 'dashboard';
         </div>
         <span>Website Theme</span>
       </a>
+      <a href="/admin/child-panels" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'child-panels' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'child-panels' ? 'bg-white/20 border border-white/30 text-white' : 'bg-rose-500/15 border border-rose-500/30 text-rose-400' ?>">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Child Panels</span>
+      </a>
     </nav>
   </div>
 
@@ -369,6 +375,12 @@ $adminPage = $adminPage ?? 'dashboard';
             <i data-lucide="palette" class="w-3.5 h-3.5"></i>
           </div>
           <span>Website Theme</span>
+        </a>
+        <a href="/admin/child-panels" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'child-panels' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'child-panels' ? 'bg-white/20 border border-white/30 text-white' : 'bg-rose-500/15 border border-rose-500/30 text-rose-400' ?>">
+            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Child Panels</span>
         </a>
       </nav>
     </div>

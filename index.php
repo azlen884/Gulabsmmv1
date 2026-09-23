@@ -70,6 +70,10 @@ $routes = [
     '/payment/verify' => __DIR__ . '/views/user/payment_verify.php',
     '/payment/cancel' => __DIR__ . '/views/user/payment_cancel.php',
     '/payment/checkout' => __DIR__ . '/views/user/checkout.php',
+    '/child-panels' => __DIR__ . '/views/user/child_panels.php',
+    '/child-panel' => __DIR__ . '/views/user/child_panel_view.php',
+    '/child-panel/view' => __DIR__ . '/views/user/child_panel_view.php',
+    '/child-panel-portal' => __DIR__ . '/views/child_panel/index.php',
 
     // API Endpoints
     '/api/order/create' => __DIR__ . '/api/order/create.php',
@@ -117,7 +121,23 @@ $routes = [
     '/admin/notifications' => __DIR__ . '/views/admin/notifications.php',
     '/admin/settings' => __DIR__ . '/views/admin/settings.php',
     '/admin/theme' => __DIR__ . '/views/admin/theme.php',
+    '/admin/child-panels' => __DIR__ . '/views/admin/child_panels.php',
+    '/admin/child-panel' => __DIR__ . '/views/admin/child_panel_view.php',
+    '/admin/child-panel-view' => __DIR__ . '/views/admin/child_panel_view.php',
 ];
+
+// Check if incoming domain belongs to an active Child Panel (Multi-Tenant Routing)
+$httpHost = $_SERVER['HTTP_HOST'] ?? '';
+$hostClean = strtolower(preg_replace('#:\d+$#', '', $httpHost));
+if (!empty($hostClean) && !in_array($hostClean, ['localhost', '127.0.0.1', '::1']) && strpos($hostClean, 'ais-') === false && strpos($hostClean, 'run.app') === false) {
+    require_once __DIR__ . '/config/database.php';
+    require_once __DIR__ . '/includes/ChildPanelHelper.php';
+    $tenantCp = ChildPanelHelper::resolveCurrentTenant();
+    if ($tenantCp) {
+        require __DIR__ . '/views/child_panel/index.php';
+        exit;
+    }
+}
 
 if (isset($routes[$cleanUri])) {
     require $routes[$cleanUri];

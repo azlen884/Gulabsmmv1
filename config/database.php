@@ -4,10 +4,27 @@
  * Real MySQL / MariaDB PDO Connection
  */
 
+// Ensure output buffering is active so redirects can always send headers safely
+if (ob_get_level() === 0) {
+    ob_start();
+}
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.cookie_httponly', 1);
-    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.use_only_cookies', '1');
+
+    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+
+    session_set_cookie_params([
+        'lifetime' => 86400 * 30,
+        'path' => '/',
+        'domain' => '',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => $isHttps ? 'None' : 'Lax'
+    ]);
     session_start();
 }
 

@@ -73,7 +73,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES (?, 'Welcome to RoseSMM!', 'Your account has been created successfully. Claim your 10% deposit bonus today!', 'promo')
             ")->execute([$newUserId]);
 
-            header("Location: /dashboard");
+            // Persist session to storage before terminating request
+            session_write_close();
+
+            $targetUrl = '/dashboard';
+            if (!headers_sent()) {
+                header("Location: " . $targetUrl, true, 302);
+            }
+            // Fallback redirect representation to prevent any blank white page
+            echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . htmlspecialchars($targetUrl) . '">';
+            echo '<script>window.location.replace(' . json_encode($targetUrl) . ');</script></head>';
+            echo '<body><p>Registration successful! Redirecting to dashboard... <a href="' . htmlspecialchars($targetUrl) . '">Click here</a></p></body></html>';
             exit;
         }
     }

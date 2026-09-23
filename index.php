@@ -4,6 +4,11 @@
  * Handles all clean URLs on Apache, Nginx, LiteSpeed, and PHP CLI
  */
 
+// Start output buffering to prevent headers already sent issues across all routes
+if (ob_get_level() === 0) {
+    ob_start();
+}
+
 // Determine requested URI
 $rawUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($rawUri, PHP_URL_PATH);

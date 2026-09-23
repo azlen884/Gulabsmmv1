@@ -28,11 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['user_currency'] = $user['currency'] ?: 'USD';
 
-                if ($user['role'] === 'admin') {
-                    header("Location: /admin");
-                } else {
-                    header("Location: /dashboard");
+                session_write_close();
+
+                $targetUrl = ($user['role'] === 'admin') ? '/admin' : '/dashboard';
+                if (!headers_sent()) {
+                    header("Location: " . $targetUrl, true, 302);
                 }
+                echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . htmlspecialchars($targetUrl) . '">';
+                echo '<script>window.location.replace(' . json_encode($targetUrl) . ');</script></head>';
+                echo '<body><p>Logged in successfully! Redirecting... <a href="' . htmlspecialchars($targetUrl) . '">Click here</a></p></body></html>';
                 exit;
             }
         } else {

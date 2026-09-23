@@ -126,6 +126,8 @@ class ChildPanelHelper {
 
         $plan = $plans[$planKey];
         $price = (float)$plan['price'];
+        // Plan price converted to USD for base balance deduction
+        $priceUSD = convert_price($price, $plan['currency'] ?? 'INR', 'USD');
         $cleanDomain = self::sanitizeDomain($domain);
 
         if (!self::isValidDomain($cleanDomain)) {
@@ -171,27 +173,27 @@ class ChildPanelHelper {
                 return ['success' => false, 'error' => 'User not found.'];
             }
 
-            if ((float)$user['balance'] < $price) {
+            if ((float)$user['balance'] < $priceUSD) {
                 $db->rollBack();
-                $diff = $price - (float)$user['balance'];
+                $diff = $priceUSD - (float)$user['balance'];
                 return [
                     'success' => false,
-                    'error' => "Insufficient wallet balance. You need " . $plan['symbol'] . number_format($diff, 2) . " more. Please add funds first.",
+                    'error' => "Insufficient wallet balance. You need " . format_price($diff) . " more. Please add funds first.",
                     'insufficient_balance' => true,
-                    'required' => $price,
+                    'required' => $priceUSD,
                     'current' => (float)$user['balance']
                 ];
             }
 
-            // Deduct balance
-            $newBalance = (float)$user['balance'] - $price;
+            // Deduct balance in USD
+            $newBalance = (float)$user['balance'] - $priceUSD;
             $updateUser = $db->prepare("UPDATE users SET balance = ? WHERE id = ?");
             $updateUser->execute([$newBalance, $userId]);
 
             // Record transaction
             $txId = 'CP-' . strtoupper(substr(uniqid(), 7)) . '-' . mt_rand(100, 999);
             $txStmt = $db->prepare("INSERT INTO transactions (user_id, type, amount, charge, currency, payment_method, transaction_id, status) VALUES (?, 'order', ?, ?, ?, ?, ?, 'completed')");
-            $txStmt->execute([$userId, $price, $price, $plan['currency'], 'wallet_balance', $txId]);
+            $txStmt->execute([$userId, $priceUSD, $priceUSD, 'USD', 'wallet_balance', $txId]);
 
             // Configured nameservers at provisioning time
             $ns = self::getNameservers();

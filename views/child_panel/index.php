@@ -1,7 +1,7 @@
 <?php
 /**
  * RoseSMM - Multi-Tenant Provisioned Child Panel Application
- * Renders the live branded SMM panel on the customer's custom domain
+ * Renders the live branded SMM panel on the customer's custom domain with full currency conversion support
  */
 
 require_once __DIR__ . '/../../config/database.php';
@@ -13,7 +13,7 @@ $db = getDB();
 $tenant = ChildPanelHelper::resolveCurrentTenant();
 
 if (!$tenant) {
-    // If accessing child panel preview directly without ID
+    // If accessing child panel preview directly with query parameter
     $previewId = (int)($_GET['child_panel'] ?? 0);
     if ($previewId > 0) {
         $stmt = $db->prepare("SELECT * FROM child_panels WHERE id = ?");
@@ -40,6 +40,12 @@ if ($tenant['status'] === 'pending_approval') {
     exit;
 }
 
+// Active currency resolution
+$userCurrency = get_user_currency();
+$currencies = get_currencies();
+$currencyInfo = get_currency_info($userCurrency);
+$currSymbol = $currencyInfo['symbol'] ?? '$';
+
 // Session scoping for Child Panel user authentication
 $cpSessionKey = 'cp_user_' . $tenant['id'];
 $cpUser = $_SESSION[$cpSessionKey] ?? null;
@@ -63,21 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'register') {
             $err = "Username or email is already registered on this panel.";
         } else {
             $hash = password_hash($regPass, PASSWORD_BCRYPT);
+            // $1.00 USD welcome bonus converted to selected currency
+            $bonusAmount = convert_price(1.00, 'USD', $userCurrency);
             $ins = $db->prepare("
                 INSERT INTO child_panel_users (child_panel_id, username, email, password, balance, currency, status)
-                VALUES (?, ?, ?, ?, 100.0000, ?, 'active')
+                VALUES (?, ?, ?, ?, ?, ?, 'active')
             ");
-            $ins->execute([$tenant['id'], $regUser, $regEmail, $hash, $tenant['currency'] ?: 'INR']);
+            $ins->execute([$tenant['id'], $regUser, $regEmail, $hash, $bonusAmount, $userCurrency]);
             $newUid = $db->lastInsertId();
 
             $_SESSION[$cpSessionKey] = [
                 'id' => $newUid,
                 'username' => $regUser,
                 'email' => $regEmail,
-                'balance' => 100.0000
+                'balance' => (float)$bonusAmount
             ];
             $cpUser = $_SESSION[$cpSessionKey];
-            $msg = "Account created successfully! Welcome bonus ₹100 credited.";
+            $msg = "Account created successfully! Welcome bonus " . format_price(1.00, $userCurrency, 'USD') . " credited.";
             $action = 'dashboard';
         }
     }
@@ -142,8 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'place_order') {
                 $srv = $extStmt->fetch();
                 if ($srv) {
                     $serviceName = $srv['name'];
-                    $unitRate = (float)$srv['selling_rate'];
-                    $costRate = (float)$srv['original_rate'];
+                    $retailUSD = (float)$srv['selling_rate'];
+                    // Converted selling rate in user's active currency
+                    $unitRate = convert_price($retailUSD, 'USD', $userCurrency);
+                    $costRate = (float)$srv['original_rate']; // wholesale cost in USD
                     $extProvId = $srv['external_provider_id'];
                     $extSrvId = $srv['external_service_id'];
                 }
@@ -154,10 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'place_order') {
                 $srv = $pStmt->fetch();
                 if ($srv) {
                     $serviceName = $srv['name'];
-                    $baseRate = (float)$srv['rate'];
+                    $baseRateUSD = convert_price((float)$srv['rate'], $srv['currency'] ?? 'USD', 'USD');
                     $marginPct = (float)$tenant['price_margin_percent'];
-                    $unitRate = round($baseRate * (1 + ($marginPct / 100)), 4);
-                    $costRate = $baseRate;
+                    $retailUSD = round($baseRateUSD * (1 + ($marginPct / 100)), 4);
+                    // Server-side calculation uses the exact configured currency exchange rate
+                    $unitRate = convert_price($retailUSD, 'USD', $userCurrency);
+                    $costRate = $baseRateUSD; // wholesale cost in USD
                     $parentSrvId = $srv['id'];
                 }
             }
@@ -174,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'place_order') {
                 $currentBal = (float)$ubStmt->fetchColumn();
 
                 if ($currentBal < $charge) {
-                    $err = "Insufficient balance on your panel account. Order cost: ₹" . number_format($charge, 2) . ", your balance: ₹" . number_format($currentBal, 2);
+                    $err = "Insufficient balance on your panel account. Order cost: " . $currSymbol . number_format($charge, 2) . ", your balance: " . $currSymbol . number_format($currentBal, 2);
                 } else {
                     $newBal = $currentBal - $charge;
                     $db->prepare("UPDATE child_panel_users SET balance = ? WHERE id = ?")->execute([$newBal, $cpUser['id']]);
@@ -312,7 +324,7 @@ if ($cpUser) {
   <header class="bg-white border-b border-slate-200/80 sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="?action=home" class="flex items-center gap-2 font-black text-lg text-slate-900 tracking-tight">
+        <a href="?action=home<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="flex items-center gap-2 font-black text-lg text-slate-900 tracking-tight">
           <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-500 to-pink-500 text-white flex items-center justify-center font-black shadow-sm">
             <?= strtoupper(substr($tenant['panel_name'], 0, 1)) ?>
           </div>
@@ -321,20 +333,37 @@ if ($cpUser) {
       </div>
 
       <nav class="hidden md:flex items-center gap-5 text-xs font-bold text-slate-600">
-        <a href="?action=services" class="hover:text-rose-600 transition-colors">Services</a>
+        <a href="?action=services<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="hover:text-rose-600 transition-colors">Services</a>
         <?php if ($cpUser): ?>
-          <a href="?action=order" class="hover:text-rose-600 transition-colors">New Order</a>
-          <a href="?action=orders" class="hover:text-rose-600 transition-colors">Order History</a>
+          <a href="?action=order<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="hover:text-rose-600 transition-colors">New Order</a>
+          <a href="?action=orders<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="hover:text-rose-600 transition-colors">Order History</a>
         <?php endif; ?>
       </nav>
 
       <div class="flex items-center gap-3">
+        <!-- Live Currency Selector -->
+        <div class="relative" id="cp-currency-container">
+          <button type="button" onclick="document.getElementById('cp-currency-dropdown').classList.toggle('hidden')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors bg-white shadow-xs">
+            <span><?= $userCurrency === 'INR' ? '🇮🇳' : ($userCurrency === 'USD' ? '🇺🇸' : ($userCurrency === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
+            <span><?= e($userCurrency) ?></span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+          </button>
+          <div id="cp-currency-dropdown" class="hidden absolute right-0 mt-2 w-36 bg-white border border-slate-200 rounded-2xl shadow-xl py-1.5 z-50">
+            <?php foreach ($currencies as $c): ?>
+              <button type="button" onclick="switchChildPanelCurrency('<?= e($c['code']) ?>')" class="w-full text-left px-3.5 py-2 text-xs flex items-center justify-between hover:bg-rose-50 transition-colors <?= $userCurrency === $c['code'] ? 'text-rose-600 font-bold bg-rose-50/70' : 'text-slate-700' ?>">
+                <span><?= e($c['name']) ?></span>
+                <span class="font-mono text-[11px] text-slate-400"><?= e($c['symbol']) ?></span>
+              </button>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
         <?php if ($cpUser): ?>
           <div class="px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-xs font-bold text-slate-700">
-            Balance: <span class="text-rose-600 font-black">₹<?= number_format($cpUser['balance'], 2) ?></span>
+            Balance: <span class="text-rose-600 font-black"><?= $currSymbol ?><?= number_format($cpUser['balance'], 2) ?></span>
           </div>
           <span class="text-xs font-bold text-slate-700 hidden sm:inline"><?= e($cpUser['username']) ?></span>
-          <a href="?action=logout" class="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-rose-600 hover:bg-slate-100 transition-colors">
+          <a href="?action=logout<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-rose-600 hover:bg-slate-100 transition-colors">
             Logout
           </a>
         <?php else: ?>
@@ -383,7 +412,7 @@ if ($cpUser) {
             <span>Get Started</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
-          <a href="?action=services" class="px-6 py-3 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-sm shadow-xs transition-colors">
+          <a href="?action=services<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="px-6 py-3 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-sm shadow-xs transition-colors">
             View Price List
           </a>
         </div>
@@ -408,7 +437,7 @@ if ($cpUser) {
             </button>
           </div>
         <?php else: ?>
-          <form method="POST" action="?action=place_order" class="space-y-4">
+          <form method="POST" action="?action=place_order<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="space-y-4">
             <input type="hidden" name="action" value="place_order">
 
             <div>
@@ -417,11 +446,19 @@ if ($cpUser) {
                 <optgroup label="Main Services">
                   <?php foreach ($parentServices as $ps): ?>
                     <?php 
-                      $base = (float)$ps['rate'];
-                      $retail = round($base * (1 + ((float)$tenant['price_margin_percent'] / 100)), 3);
+                      $baseUSD = convert_price((float)$ps['rate'], $ps['currency'] ?? 'USD', 'USD');
+                      $marginPct = (float)$tenant['price_margin_percent'];
+                      $retailUSD = $baseUSD * (1 + ($marginPct / 100));
+                      $convertedRetail = convert_price($retailUSD, 'USD', $userCurrency);
+                      $formattedRetail = format_price($retailUSD, $userCurrency, 'USD');
                     ?>
-                    <option value="<?= $ps['id'] ?>" data-source="parent" data-rate="<?= $retail ?>">
-                      <?= e($ps['name']) ?> - ₹<?= number_format($retail, 3) ?> / 1k
+                    <option 
+                      value="<?= $ps['id'] ?>" 
+                      data-source="parent" 
+                      data-rate="<?= $convertedRetail ?>"
+                      data-symbol="<?= e($currSymbol) ?>"
+                    >
+                      <?= e($ps['name']) ?> - <?= $formattedRetail ?> / 1k
                     </option>
                   <?php endforeach; ?>
                 </optgroup>
@@ -429,8 +466,18 @@ if ($cpUser) {
                 <?php if (!empty($importedServices)): ?>
                   <optgroup label="Exclusive Imported Services">
                     <?php foreach ($importedServices as $is): ?>
-                      <option value="<?= $is['id'] ?>" data-source="external" data-rate="<?= (float)$is['selling_rate'] ?>">
-                        <?= e($is['name']) ?> - $<?= number_format($is['selling_rate'], 3) ?> / 1k
+                      <?php
+                        $extUSD = (float)$is['selling_rate'];
+                        $convertedExt = convert_price($extUSD, 'USD', $userCurrency);
+                        $formattedExt = format_price($extUSD, $userCurrency, 'USD');
+                      ?>
+                      <option 
+                        value="<?= $is['id'] ?>" 
+                        data-source="external" 
+                        data-rate="<?= $convertedExt ?>"
+                        data-symbol="<?= e($currSymbol) ?>"
+                      >
+                        <?= e($is['name']) ?> - <?= $formattedExt ?> / 1k
                       </option>
                     <?php endforeach; ?>
                   </optgroup>
@@ -451,7 +498,7 @@ if ($cpUser) {
 
             <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-center justify-between text-xs">
               <span class="text-slate-500 font-medium">Estimated Charge:</span>
-              <span class="font-mono font-black text-rose-600 text-base" id="calc-charge">₹0.00</span>
+              <span class="font-mono font-black text-rose-600 text-base" id="calc-charge"><?= e($currSymbol) ?>0.00</span>
             </div>
 
             <button type="submit" class="w-full py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5">
@@ -463,13 +510,20 @@ if ($cpUser) {
           <script>
           function updatePrice() {
             const sel = document.getElementById('service-select');
+            if (!sel || !sel.options[sel.selectedIndex]) return;
             const opt = sel.options[sel.selectedIndex];
             const rate = parseFloat(opt.getAttribute('data-rate')) || 0;
+            const symbol = opt.getAttribute('data-symbol') || <?= json_encode($currSymbol) ?>;
             const src = opt.getAttribute('data-source') || 'parent';
-            document.getElementById('source-type').value = src;
-            const qty = parseInt(document.getElementById('order-qty').value) || 0;
+            const srcInput = document.getElementById('source-type');
+            if (srcInput) srcInput.value = src;
+            const qtyInput = document.getElementById('order-qty');
+            const qty = parseInt(qtyInput ? qtyInput.value : 0) || 0;
             const total = (rate / 1000) * qty;
-            document.getElementById('calc-charge').innerText = '₹' + total.toFixed(2);
+            const calcEl = document.getElementById('calc-charge');
+            if (calcEl) {
+              calcEl.innerText = symbol + total.toFixed(2);
+            }
           }
           document.addEventListener('DOMContentLoaded', updatePrice);
           </script>
@@ -502,7 +556,7 @@ if ($cpUser) {
                     <tr>
                       <td class="py-2.5 font-mono font-bold text-slate-600">#<?= $o['id'] ?></td>
                       <td class="py-2.5 font-bold"><?= number_format($o['quantity']) ?></td>
-                      <td class="py-2.5 font-mono font-bold text-slate-800">₹<?= number_format($o['charge'], 2) ?></td>
+                      <td class="py-2.5 font-mono font-bold text-slate-800"><?= $currSymbol ?><?= number_format($o['charge'], 2) ?></td>
                       <td class="py-2.5">
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
                           <?= ucfirst($o['status']) ?>
@@ -524,7 +578,7 @@ if ($cpUser) {
               <i data-lucide="layers" class="w-4 h-4 text-rose-500"></i>
               <span>Catalog Services (<?= count($parentServices) + count($importedServices) ?>)</span>
             </h3>
-            <span class="text-xs text-slate-400 font-medium">Instant automated fulfillment</span>
+            <span class="text-xs text-slate-400 font-medium">Instant automated fulfillment (<?= e($userCurrency) ?>)</span>
           </div>
 
           <div class="overflow-x-auto">
@@ -540,25 +594,29 @@ if ($cpUser) {
               <tbody class="divide-y divide-slate-100 font-medium">
                 <?php foreach ($parentServices as $ps): ?>
                   <?php 
-                    $base = (float)$ps['rate'];
-                    $retail = round($base * (1 + ((float)$tenant['price_margin_percent'] / 100)), 3);
+                    $baseUSD = convert_price((float)$ps['rate'], $ps['currency'] ?? 'USD', 'USD');
+                    $marginPct = (float)$tenant['price_margin_percent'];
+                    $retailUSD = $baseUSD * (1 + ($marginPct / 100));
                   ?>
                   <tr class="hover:bg-slate-50 transition-colors">
                     <td class="py-2.5 font-bold text-slate-800 max-w-xs truncate"><?= e($ps['name']) ?></td>
                     <td class="py-2.5 text-slate-500"><?= e($ps['category_name']) ?></td>
-                    <td class="py-2.5 font-mono font-bold text-rose-600">₹<?= number_format($retail, 3) ?></td>
+                    <td class="py-2.5 font-mono font-bold text-rose-600"><?= format_price($retailUSD, $userCurrency, 'USD') ?></td>
                     <td class="py-2.5 font-mono text-slate-400"><?= $ps['min_quantity'] ?> - <?= number_format($ps['max_quantity']) ?></td>
                   </tr>
                 <?php endforeach; ?>
 
                 <?php foreach ($importedServices as $is): ?>
+                  <?php
+                    $extUSD = (float)$is['selling_rate'];
+                  ?>
                   <tr class="hover:bg-slate-50 transition-colors bg-purple-50/20">
                     <td class="py-2.5 font-bold text-slate-800 max-w-xs truncate">
                       <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 font-bold uppercase mr-1">Pro</span>
                       <?= e($is['name']) ?>
                     </td>
                     <td class="py-2.5 text-slate-500"><?= e($is['category_name']) ?></td>
-                    <td class="py-2.5 font-mono font-bold text-purple-700">$<?= number_format($is['selling_rate'], 3) ?></td>
+                    <td class="py-2.5 font-mono font-bold text-purple-700"><?= format_price($extUSD, $userCurrency, 'USD') ?></td>
                     <td class="py-2.5 font-mono text-slate-400"><?= $is['min_quantity'] ?> - <?= number_format($is['max_quantity']) ?></td>
                   </tr>
                 <?php endforeach; ?>
@@ -593,7 +651,7 @@ if ($cpUser) {
         </button>
       </div>
 
-      <form method="POST" action="?action=login" class="space-y-3 text-xs">
+      <form method="POST" action="?action=login<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="space-y-3 text-xs">
         <input type="hidden" name="action" value="login">
         <div>
           <label class="block font-bold text-slate-500 uppercase tracking-wider mb-1">Username or Email</label>
@@ -619,7 +677,7 @@ if ($cpUser) {
         </button>
       </div>
 
-      <form method="POST" action="?action=register" class="space-y-3 text-xs">
+      <form method="POST" action="?action=register<?= !empty($_GET['child_panel']) ? '&child_panel=' . (int)$_GET['child_panel'] : '' ?>" class="space-y-3 text-xs">
         <input type="hidden" name="action" value="register">
         <div>
           <label class="block font-bold text-slate-500 uppercase tracking-wider mb-1">Choose Username</label>
@@ -640,6 +698,32 @@ if ($cpUser) {
     </div>
   </div>
 
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    function switchChildPanelCurrency(curr) {
+      fetch('/api/currency/switch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currency: curr })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        }
+      })
+      .catch(err => console.error(err));
+    }
+
+    // Close currency dropdown when clicked outside
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('cp-currency-container');
+      const dropdown = document.getElementById('cp-currency-dropdown');
+      if (container && dropdown && !container.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  </script>
 </body>
 </html>

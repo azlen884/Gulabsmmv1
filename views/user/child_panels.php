@@ -257,8 +257,8 @@ require_once __DIR__ . '/../layouts/user_header.php';
 
           <div class="my-6">
             <div class="flex items-baseline gap-1">
-              <span class="text-3xl sm:text-4xl font-black text-slate-900"><?= $plans['basic']['symbol'] ?><?= number_format($plans['basic']['price'], 0) ?></span>
-              <span class="text-xs text-slate-400 font-bold"><?= $plans['basic']['currency'] ?> / month</span>
+              <span class="text-3xl sm:text-4xl font-black text-slate-900"><?= format_price($plans['basic']['price'], null, $plans['basic']['currency']) ?></span>
+              <span class="text-xs text-slate-400 font-bold">/ month</span>
             </div>
             <div class="text-[11px] text-rose-600 font-semibold mt-1">Deducted from your wallet balance</div>
           </div>
@@ -283,7 +283,7 @@ require_once __DIR__ . '/../layouts/user_header.php';
           </div>
         </div>
 
-        <button type="button" onclick="selectPlan('basic', '<?= $plans['basic']['name'] ?>', <?= $plans['basic']['price'] ?>)" class="mt-8 w-full py-3 rounded-2xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white font-bold text-xs transition-colors flex items-center justify-center gap-2">
+        <button type="button" onclick="selectPlan('basic', '<?= $plans['basic']['name'] ?>', '<?= format_price($plans['basic']['price'], null, $plans['basic']['currency']) ?>')" class="mt-8 w-full py-3 rounded-2xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white font-bold text-xs transition-colors flex items-center justify-center gap-2">
           <span>Select Basic Plan</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
@@ -307,8 +307,8 @@ require_once __DIR__ . '/../layouts/user_header.php';
 
           <div class="my-6">
             <div class="flex items-baseline gap-1">
-              <span class="text-3xl sm:text-4xl font-black text-slate-900"><?= $plans['advanced']['symbol'] ?><?= number_format($plans['advanced']['price'], 0) ?></span>
-              <span class="text-xs text-slate-400 font-bold"><?= $plans['advanced']['currency'] ?> / month</span>
+              <span class="text-3xl sm:text-4xl font-black text-slate-900"><?= format_price($plans['advanced']['price'], null, $plans['advanced']['currency']) ?></span>
+              <span class="text-xs text-slate-400 font-bold">/ month</span>
             </div>
             <div class="text-[11px] text-purple-600 font-semibold mt-1">Deducted from your wallet balance</div>
           </div>
@@ -324,7 +324,7 @@ require_once __DIR__ . '/../layouts/user_header.php';
           </div>
         </div>
 
-        <button type="button" onclick="selectPlan('advanced', '<?= $plans['advanced']['name'] ?>', <?= $plans['advanced']['price'] ?>)" class="mt-8 w-full py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-purple-600/20">
+        <button type="button" onclick="selectPlan('advanced', '<?= $plans['advanced']['name'] ?>', '<?= format_price($plans['advanced']['price'], null, $plans['advanced']['currency']) ?>')" class="mt-8 w-full py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-purple-600/20">
           <span>Select Advanced Plan</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
@@ -492,15 +492,14 @@ require_once __DIR__ . '/../layouts/user_header.php';
 </div>
 
 <script>
-function selectPlan(key, name, price) {
+function selectPlan(key, name, formattedPrice) {
   document.getElementById('input-plan').value = key;
   document.getElementById('selected-plan-badge').innerText = 'Selected: ' + name;
   document.getElementById('selected-plan-badge').className = key === 'advanced' 
     ? 'px-3.5 py-1.5 rounded-xl bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200' 
     : 'px-3.5 py-1.5 rounded-xl bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200';
   
-  const symbol = '<?= $plans['basic']['symbol'] ?>';
-  document.getElementById('total-price-display').innerText = symbol + Number(price).toFixed(2);
+  document.getElementById('total-price-display').innerText = formattedPrice;
   
   const box = document.getElementById('order-form-box');
   box.scrollIntoView({ behavior: 'smooth' });

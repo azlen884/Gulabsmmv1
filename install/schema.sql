@@ -78,6 +78,9 @@ CREATE TABLE `services` (
   `min_quantity` INT NOT NULL DEFAULT 100,
   `max_quantity` INT NOT NULL DEFAULT 100000,
   `dripfeed` TINYINT(1) DEFAULT 0,
+  `refill_enabled` TINYINT(1) DEFAULT 0,
+  `refill_days` INT DEFAULT 30,
+  `refill_limit` INT DEFAULT 5,
   `badge` VARCHAR(50) DEFAULT '',
   `status` ENUM('active', 'inactive') DEFAULT 'active',
   `sort_order` INT DEFAULT 0,
@@ -137,6 +140,7 @@ CREATE TABLE `orders` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
   `service_id` INT NOT NULL,
+  `provider_id` INT DEFAULT NULL,
   `link` VARCHAR(500) NOT NULL,
   `quantity` INT NOT NULL,
   `charge` DECIMAL(12, 4) NOT NULL,
@@ -144,6 +148,15 @@ CREATE TABLE `orders` (
   `remains` INT DEFAULT 0,
   `status` ENUM('pending', 'processing', 'in_progress', 'completed', 'partial', 'canceled') DEFAULT 'pending',
   `provider_order_id` VARCHAR(100) DEFAULT NULL,
+  `is_dripfeed` TINYINT(1) DEFAULT 0,
+  `dripfeed_id` INT DEFAULT NULL,
+  `refill_status` ENUM('none', 'eligible', 'pending', 'processing', 'completed', 'rejected', 'failed') DEFAULT 'none',
+  `refill_count` INT DEFAULT 0,
+  `last_refill_at` DATETIME DEFAULT NULL,
+  `refund_status` ENUM('none', 'pending', 'refunded', 'partial_refunded', 'failed') DEFAULT 'none',
+  `refunded_amount` DECIMAL(12, 4) DEFAULT 0.0000,
+  `coupon_id` INT DEFAULT NULL,
+  `discount_amount` DECIMAL(12, 4) DEFAULT 0.0000,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -657,14 +670,154 @@ ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
 -- Seed Default Ticket Automation Rules
 INSERT INTO `ticket_automation_rules` (`name`, `is_enabled`, `trigger_event`, `condition_match_type`, `keyword_contains`, `priority_filter`, `category_filter`, `action_auto_reply`, `reply_message`, `action_change_status`, `action_change_priority`, `rule_priority`) VALUES
 ('Urgent Priority Fast Response', 1, 'ticket_created', 'all', '', 'high', 'all', 1, 'Hello! Your high priority ticket has been escalated to our senior technical response team. We are actively reviewing your case.', 'answered', 'high', 1),
-('Drop & Refill Fast Help', 1, 'ticket_created', 'any', 'drop,refill,fell,decrease', 'all', 'all', 1, 'Hi there! If you are inquiring about a drop on your order, please make sure your account is public. Eligible refill services can be refilled automatically through the Auto Refill system or Order History tab.', 'answered', NULL, 2);
+('Drop & Refill Fast Help', 1, 'ticket_created', 'any', 'drop,refill,fell,decrease', 'all', 'all', 1, 'Hi there! If you are inquiring about a drop on your order, please make sure your account is public. Eligible refill services can be refilled automatically through the Auto Refill system or Order History tab.', 'answered', NULL, 2)
+ON DUPLICATE KEY UPDATE `reply_message` = VALUES(`reply_message`);
 
 -- Seed Default Coupons
 INSERT INTO `coupons` (`code`, `description`, `discount_type`, `discount_value`, `min_order_amount`, `max_discount`, `total_usage_limit`, `per_user_limit`, `used_count`, `is_enabled`, `starts_at`, `expires_at`) VALUES
 ('WELCOME10', 'Welcome 10% Discount on any order over $1.00', 'percentage', 10.0000, 1.0000, 15.0000, 500, 2, 0, 1, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 30 DAY)),
-('ROSE2OFF', 'Flat $2.00 Off on orders above $5.00', 'fixed', 2.0000, 5.0000, 2.0000, 200, 1, 0, 1, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 15 DAY));
+('ROSE2OFF', 'Flat $2.00 Off on orders above $5.00', 'fixed', 2.0000, 5.0000, 2.0000, 200, 1, 0, 1, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 15 DAY))
+ON DUPLICATE KEY UPDATE `description` = VALUES(`description`);
 
 -- Seed Default Flash Sale
 INSERT INTO `flash_sales` (`title`, `description`, `banner_text`, `discount_type`, `discount_value`, `applies_to`, `target_ids`, `starts_at`, `ends_at`, `is_enabled`, `badge_text`) VALUES
-('Weekend Engagement Flash Sale', 'Get a massive 15% instant discount across all Instagram & YouTube services!', '⚡ FLASH SALE: Extra 15% OFF Instagram & YouTube services! Limited time only! ⚡', 'percentage', 15.0000, 'category', '1,2', DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 7 DAY), 1, '15% OFF');
+('Weekend Engagement Flash Sale', 'Get a massive 15% instant discount across all Instagram & YouTube services!', '⚡ FLASH SALE: Extra 15% OFF Instagram & YouTube services! Limited time only! ⚡', 'percentage', 15.0000, 'category', '1,2', DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 7 DAY), 1, '15% OFF')
+ON DUPLICATE KEY UPDATE `description` = VALUES(`description`);
+
+-- 15. Child Panels System
+DROP TABLE IF EXISTS `child_panels`;
+CREATE TABLE IF NOT EXISTS `child_panels` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `plan` ENUM('basic', 'advanced') NOT NULL DEFAULT 'basic',
+  `domain` VARCHAR(191) NOT NULL UNIQUE,
+  `panel_name` VARCHAR(150) NOT NULL,
+  `admin_username` VARCHAR(100) NOT NULL,
+  `admin_email` VARCHAR(191) NOT NULL,
+  `admin_password_hash` VARCHAR(255) NOT NULL,
+  `status` ENUM('pending_payment', 'pending_approval', 'approved', 'active', 'suspended', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending_approval',
+  `payment_status` ENUM('unpaid', 'paid', 'refunded') NOT NULL DEFAULT 'unpaid',
+  `payment_amount` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
+  `payment_currency` VARCHAR(10) NOT NULL DEFAULT 'INR',
+  `payment_method` VARCHAR(100) NOT NULL DEFAULT 'wallet_balance',
+  `payment_ref` VARCHAR(191) DEFAULT NULL,
+  `dns_status` ENUM('pending_dns', 'verifying', 'dns_connected', 'verification_failed') NOT NULL DEFAULT 'pending_dns',
+  `dns_last_checked` DATETIME DEFAULT NULL,
+  `dns_details` TEXT DEFAULT NULL,
+  `ssl_status` ENUM('ssl_pending', 'ssl_active', 'ssl_failed') NOT NULL DEFAULT 'ssl_pending',
+  `ssl_last_checked` DATETIME DEFAULT NULL,
+  `ssl_details` TEXT DEFAULT NULL,
+  `nameserver_1` VARCHAR(191) DEFAULT NULL,
+  `nameserver_2` VARCHAR(191) DEFAULT NULL,
+  `branding_logo` VARCHAR(255) DEFAULT NULL,
+  `branding_favicon` VARCHAR(255) DEFAULT NULL,
+  `theme` VARCHAR(50) NOT NULL DEFAULT 'default',
+  `support_email` VARCHAR(191) DEFAULT NULL,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'INR',
+  `currency_symbol` VARCHAR(10) NOT NULL DEFAULT '₹',
+  `price_margin_percent` DECIMAL(5, 2) NOT NULL DEFAULT 15.00,
+  `external_api_enabled` TINYINT(1) NOT NULL DEFAULT 0,
+  `admin_notes` TEXT DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expires_at` DATETIME DEFAULT NULL,
+  KEY `idx_child_panel_user` (`user_id`),
+  KEY `idx_child_panel_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 16. Child Panel Users
+DROP TABLE IF EXISTS `child_panel_users`;
+CREATE TABLE IF NOT EXISTS `child_panel_users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `child_panel_id` INT NOT NULL,
+  `username` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(191) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `full_name` VARCHAR(150) DEFAULT NULL,
+  `balance` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'INR',
+  `status` ENUM('active', 'suspended') NOT NULL DEFAULT 'active',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `idx_cpu_panel_user` (`child_panel_id`, `username`),
+  KEY `idx_cpu_panel` (`child_panel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 17. Child Panel External Providers
+DROP TABLE IF EXISTS `child_panel_providers`;
+CREATE TABLE IF NOT EXISTS `child_panel_providers` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `child_panel_id` INT NOT NULL,
+  `name` VARCHAR(150) NOT NULL,
+  `api_url` VARCHAR(255) NOT NULL,
+  `api_key` VARCHAR(255) NOT NULL,
+  `balance` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
+  `currency` VARCHAR(10) NOT NULL DEFAULT 'USD',
+  `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_cpp_panel` (`child_panel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 18. Child Panel Services
+DROP TABLE IF EXISTS `child_panel_services`;
+CREATE TABLE IF NOT EXISTS `child_panel_services` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `child_panel_id` INT NOT NULL,
+  `source_type` ENUM('parent', 'external') NOT NULL DEFAULT 'parent',
+  `external_provider_id` INT DEFAULT NULL,
+  `external_service_id` VARCHAR(50) DEFAULT NULL,
+  `parent_service_id` INT DEFAULT NULL,
+  `category_name` VARCHAR(150) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `description` TEXT DEFAULT NULL,
+  `original_rate` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+  `selling_rate` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+  `margin_type` ENUM('percentage', 'fixed') NOT NULL DEFAULT 'percentage',
+  `margin_value` DECIMAL(10, 4) NOT NULL DEFAULT 20.0000,
+  `min_quantity` INT NOT NULL DEFAULT 10,
+  `max_quantity` INT NOT NULL DEFAULT 100000,
+  `status` ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_cps_panel` (`child_panel_id`),
+  KEY `idx_cps_provider` (`external_provider_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 19. Child Panel Orders
+DROP TABLE IF EXISTS `child_panel_orders`;
+CREATE TABLE IF NOT EXISTS `child_panel_orders` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `child_panel_id` INT NOT NULL,
+  `child_panel_user_id` INT DEFAULT NULL,
+  `service_id` INT NOT NULL,
+  `source_type` ENUM('parent', 'external') NOT NULL,
+  `parent_order_id` INT DEFAULT NULL,
+  `external_order_id` VARCHAR(100) DEFAULT NULL,
+  `link` TEXT NOT NULL,
+  `quantity` INT NOT NULL,
+  `charge` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
+  `cost` DECIMAL(12, 4) NOT NULL DEFAULT 0.0000,
+  `status` ENUM('pending', 'in_progress', 'completed', 'partial', 'canceled', 'refunded') NOT NULL DEFAULT 'pending',
+  `api_response` TEXT DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_cpo_panel` (`child_panel_id`),
+  KEY `idx_cpo_user` (`child_panel_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed Settings for Child Panels
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
+('child_panel_system_enabled', '1'),
+('child_panel_basic_price', '1499.00'),
+('child_panel_advanced_price', '3499.00'),
+('child_panel_currency', 'INR'),
+('child_panel_ns1', 'ns1.rosesmm.com'),
+('child_panel_ns2', 'ns2.rosesmm.com'),
+('child_panel_server_ip', '127.0.0.1')
+ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
+
+-- Seed Demo Child Panel (Apex SMM Services)
+INSERT INTO `child_panels` (`id`, `user_id`, `plan`, `domain`, `panel_name`, `admin_username`, `admin_email`, `admin_password_hash`, `status`, `payment_status`, `payment_amount`, `payment_currency`, `payment_method`, `payment_ref`, `dns_status`, `dns_last_checked`, `dns_details`, `ssl_status`, `ssl_last_checked`, `ssl_details`, `nameserver_1`, `nameserver_2`, `branding_logo`, `branding_favicon`, `theme`, `support_email`, `currency`, `currency_symbol`, `price_margin_percent`, `external_api_enabled`, `admin_notes`, `created_at`, `updated_at`, `expires_at`) VALUES
+(1, 1, 'advanced', 'test-reseller-domain.com', 'Apex SMM Services', 'apexadmin', 'admin@apexreseller.com', '$2y$10$zPSm3YTqW5IKDlYDeI.pZ.UanSQICBU3wO9ccJXFRZVldbrK2QCfu', 'approved', 'paid', 3499.0000, 'INR', 'wallet_balance', 'CP-4A7B44-695', 'dns_connected', NOW(), '{"status":"connected"}', 'ssl_active', NOW(), '{"status":"active"}', 'ns1.rosesmm.com', 'ns2.rosesmm.com', NULL, NULL, 'default', 'support@apexreseller.com', 'INR', '₹', 15.00, 1, 'Demo child panel pre-configured', NOW(), NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY))
+ON DUPLICATE KEY UPDATE `panel_name` = VALUES(`panel_name`);
+
 

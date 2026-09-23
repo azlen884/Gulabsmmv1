@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../includes/MassOrderHelper.php';
 
 $db = getDB();
 $userCurrency = get_user_currency();
-$services = $db->query("SELECT id, name, category_id, rate, currency, min_quantity, max_quantity FROM services WHERE status = 'active' ORDER BY category_id ASC, id ASC")->fetchAll();
+$services = $db->query("SELECT id, name, category_id, rate, min_quantity, max_quantity FROM services WHERE status = 'active' ORDER BY category_id ASC, id ASC")->fetchAll();
 
 $userBalance = (float)$user['balance'];
 $formattedBalance = format_price($userBalance, $userCurrency, 'USD');

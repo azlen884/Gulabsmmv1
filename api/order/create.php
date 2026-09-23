@@ -168,9 +168,9 @@ if ($flashSale['has_sale']) {
 
 // Record order transaction
 $db->prepare("
-    INSERT INTO transactions (user_id, order_id, amount, charge, type, payment_method, status, transaction_id, created_at)
-    VALUES (?, ?, ?, 0.0000, 'order', 'Wallet Balance', 'completed', ?, NOW())
-")->execute([$userId, $orderId, $charge, 'ORD-' . $orderId]);
+    INSERT INTO transactions (user_id, amount, charge, type, payment_method, status, transaction_id, created_at)
+    VALUES (?, ?, 0.0000, 'order', 'Wallet Balance', 'completed', ?, NOW())
+")->execute([$userId, $charge, 'ORD-' . $orderId]);
 
 // Insert customer notification
 $db->prepare("

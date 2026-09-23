@@ -291,9 +291,9 @@ class MassOrderHelper {
 
                 // Insert transaction record
                 $db->prepare("
-                    INSERT INTO transactions (user_id, order_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
-                    VALUES (?, ?, 'order', ?, 0.0000, 'USD', 'Wallet (Mass Order)', ?, 'completed', NOW())
-                ")->execute([$userId, $orderId, $it['charge'], 'MASS-ORD-' . $orderId]);
+                    INSERT INTO transactions (user_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
+                    VALUES (?, 'order', ?, 0.0000, 'USD', 'Wallet (Mass Order)', ?, 'completed', NOW())
+                ")->execute([$userId, $it['charge'], 'MASS-ORD-' . $orderId]);
 
                 $successfulCount++;
                 $orderResults[] = [

@@ -87,10 +87,10 @@ class RefundHelper {
             // Create wallet transaction record
             $txnId = 'REF-' . $orderId . '-' . time();
             $tIns = $db->prepare("
-                INSERT INTO transactions (user_id, order_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
-                VALUES (?, ?, 'refund', ?, 0.0000, 'USD', 'System Refund', ?, 'completed', NOW())
+                INSERT INTO transactions (user_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
+                VALUES (?, 'refund', ?, 0.0000, 'USD', 'System Refund', ?, 'completed', NOW())
             ");
-            $tIns->execute([$userId, $orderId, $refundAmount, $txnId]);
+            $tIns->execute([$userId, $refundAmount, $txnId]);
             $walletTxnId = $db->lastInsertId();
 
             // Record in refund_records table
@@ -220,10 +220,10 @@ class RefundHelper {
 
             $txnId = 'REF-' . $orderId . '-' . time();
             $tIns = $db->prepare("
-                INSERT INTO transactions (user_id, order_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
-                VALUES (?, ?, 'refund', ?, 0.0000, 'USD', 'System Refund', ?, 'completed', NOW())
+                INSERT INTO transactions (user_id, type, amount, charge, currency, payment_method, transaction_id, status, created_at)
+                VALUES (?, 'refund', ?, 0.0000, 'USD', 'System Refund', ?, 'completed', NOW())
             ");
-            $tIns->execute([$userId, $orderId, $amount, $txnId]);
+            $tIns->execute([$userId, $amount, $txnId]);
             $walletTxnId = $db->lastInsertId();
 
             $db->prepare("

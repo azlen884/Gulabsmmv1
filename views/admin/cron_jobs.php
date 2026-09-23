@@ -38,7 +38,7 @@ $jobs = $db->query("SELECT * FROM cron_jobs ORDER BY id ASC")->fetchAll();
 // Fetch recent execution logs
 $logs = $db->query("
     SELECT l.*, c.name AS job_name
-    FROM cron_job_logs l
+    FROM cron_logs l
     LEFT JOIN cron_jobs c ON l.cron_job_id = c.id
     ORDER BY l.id DESC LIMIT 40
 ")->fetchAll();
@@ -250,7 +250,7 @@ $cronToken = 'rose_cron_secret_key_2026';
               <tr>
                 <td class="py-2.5 px-3 font-mono text-slate-400">#<?= $l['id'] ?></td>
                 <td class="py-2.5 px-3 font-bold text-slate-800">
-                  <?= e($l['job_name'] ?: 'Task #' . $l['cron_job_id']) ?>
+                  <?= e($l['job_name'] ?: ($l['task_key'] ?? ('Task #' . $l['cron_job_id']))) ?>
                 </td>
                 <td class="py-2.5 px-3">
                   <?php if ($l['status'] === 'success'): ?>
@@ -260,7 +260,7 @@ $cronToken = 'rose_cron_secret_key_2026';
                   <?php endif; ?>
                 </td>
                 <td class="py-2.5 px-3 font-mono text-slate-600">
-                  <?= $l['execution_time_ms'] ?> ms
+                  <?= $l['duration_ms'] ?? $l['execution_time_ms'] ?? 0 ?> ms
                 </td>
                 <td class="py-2.5 px-3 font-mono text-[11px] text-slate-600 max-w-sm truncate" title="<?= e($l['output']) ?>">
                   <?= e($l['output']) ?>

@@ -253,7 +253,450 @@ class ChildPanelHelper {
     }
 
     /**
-     * Perform REAL domain DNS verification using actual nameserver and A-record checks
+     * Normalize nameserver for robust comparison (lowercase, trimmed, strip protocol/port/trailing dots)
+     */
+    public static function normalizeNameserver($ns) {
+        if ($ns === null) return '';
+        $ns = trim((string)$ns);
+        $ns = preg_replace('#^https?://#i', '', $ns);
+        $ns = preg_replace('#:\d+$#', '', $ns);
+        $ns = strtolower($ns);
+        return rtrim($ns, '.');
+    }
+
+    /**
+     * Build RFC 1035 DNS binary query packet
+     */
+    public static function buildDnsPacket($domain, $type = 2, $rd = 0) {
+        $id = pack('n', mt_rand(1, 65535));
+        $flags = ($rd ? "\x01\x00" : "\x00\x00");
+        $qdcount = "\x00\x01";
+        $header = $id . $flags . $qdcount . "\x00\x00\x00\x00\x00\x00";
+
+        $qname = '';
+        foreach (explode('.', trim($domain, '.')) as $label) {
+            $qname .= chr(strlen($label)) . $label;
+        }
+        $qname .= "\x00";
+        $qtype = pack('n', $type);
+        $qclass = pack('n', 1); // IN class
+        return $header . $qname . $qtype . $qclass;
+    }
+
+    /**
+     * Parse DNS wire format label with compression pointer support
+     */
+    public static function parseDnsLabel($data, &$offset) {
+        $name = '';
+        $jumped = false;
+        $initialOffset = $offset;
+        $length = strlen($data);
+        $steps = 0;
+
+        while ($offset < $length && $steps < 100) {
+            $steps++;
+            $len = ord($data[$offset]);
+            if ($len === 0) {
+                $offset++;
+                break;
+            }
+            if (($len & 0xC0) === 0xC0) {
+                if (!$jumped) {
+                    $initialOffset = $offset + 2;
+                    $jumped = true;
+                }
+                $offset = (($len & 0x3F) << 8) | ord($data[$offset + 1]);
+                continue;
+            }
+            $offset++;
+            $name .= substr($data, $offset, $len) . '.';
+            $offset += $len;
+        }
+
+        if ($jumped) {
+            $offset = $initialOffset;
+        }
+        return self::normalizeNameserver($name);
+    }
+
+    /**
+     * Parse binary DNS response packet into answers, authority, and additional sections
+     */
+    public static function parseDnsPacket($data) {
+        if (strlen($data) < 12) return false;
+        $header = unpack('nid/nflags/nqdcount/nancount/nnscount/narcount', substr($data, 0, 12));
+        $offset = 12;
+
+        for ($i = 0; $i < $header['qdcount']; $i++) {
+            self::parseDnsLabel($data, $offset);
+            $offset += 4; // qtype (2) + qclass (2)
+        }
+
+        $records = ['answers' => [], 'authority' => [], 'additional' => []];
+
+        $parseSection = function($count, &$target) use ($data, &$offset) {
+            for ($i = 0; $i < $count && $offset < strlen($data); $i++) {
+                $name = self::parseDnsLabel($data, $offset);
+                if ($offset + 10 > strlen($data)) break;
+                $meta = unpack('ntype/nclass/Nttl/nrdlength', substr($data, $offset, 10));
+                $offset += 10;
+                $type = $meta['type'];
+                $rdlength = $meta['rdlength'];
+
+                if ($type === 2) { // NS record
+                    $nsTarget = self::parseDnsLabel($data, $offset);
+                    $target[] = ['name' => $name, 'type' => 'NS', 'target' => $nsTarget];
+                } elseif ($type === 1) { // A record
+                    $ip = inet_ntop(substr($data, $offset, 4));
+                    $target[] = ['name' => $name, 'type' => 'A', 'ip' => $ip];
+                    $offset += $rdlength;
+                } else {
+                    $offset += $rdlength;
+                }
+            }
+        };
+
+        $parseSection($header['ancount'], $records['answers']);
+        $parseSection($header['nscount'], $records['authority']);
+        $parseSection($header['arcount'], $records['additional']);
+
+        return $records;
+    }
+
+    /**
+     * Send UDP DNS query to specific server
+     */
+    public static function queryDnsUdp($server, $domain, $type = 2, $rd = 0, $timeout = 2) {
+        $pkt = self::buildDnsPacket($domain, $type, $rd);
+        $sock = @fsockopen("udp://$server", 53, $errno, $errstr, $timeout);
+        if (!$sock) return false;
+        stream_set_timeout($sock, $timeout);
+        fwrite($sock, $pkt);
+        $resp = fread($sock, 4096);
+        fclose($sock);
+        return self::parseDnsPacket($resp);
+    }
+
+    /**
+     * Authoritative Root -> TLD delegation nameserver query
+     */
+    public static function getAuthoritativeNameservers($domain) {
+        $rootServers = [
+            '198.41.0.4',     // a.root-servers.net
+            '199.9.14.201',    // b.root-servers.net
+            '192.33.4.12',     // c.root-servers.net
+            '199.7.91.13',     // d.root-servers.net
+            '192.203.230.10'   // e.root-servers.net
+        ];
+
+        $rootPkt = false;
+        foreach ($rootServers as $root) {
+            $rootPkt = self::queryDnsUdp($root, $domain, 2, 0, 2);
+            if ($rootPkt && (!empty($rootPkt['authority']) || !empty($rootPkt['answers']))) {
+                break;
+            }
+        }
+        if (!$rootPkt) return [];
+
+        $tldIps = [];
+        foreach ($rootPkt['additional'] as $add) {
+            if ($add['type'] === 'A' && !empty($add['ip'])) {
+                $tldIps[] = $add['ip'];
+            }
+        }
+
+        if (empty($tldIps)) {
+            foreach ($rootPkt['authority'] as $ns) {
+                $ip = @gethostbyname($ns['target']);
+                if ($ip && $ip !== $ns['target']) {
+                    $tldIps[] = $ip;
+                }
+            }
+        }
+
+        $detected = [];
+        foreach ($tldIps as $tldIp) {
+            $tldPkt = self::queryDnsUdp($tldIp, $domain, 2, 0, 2);
+            if ($tldPkt) {
+                foreach ($tldPkt['answers'] as $ans) {
+                    if ($ans['type'] === 'NS' && !empty($ans['target'])) {
+                        $detected[] = self::normalizeNameserver($ans['target']);
+                    }
+                }
+                foreach ($tldPkt['authority'] as $auth) {
+                    if ($auth['type'] === 'NS' && !empty($auth['target'])) {
+                        $detected[] = self::normalizeNameserver($auth['target']);
+                    }
+                }
+                if (!empty($detected)) break;
+            }
+        }
+
+        return array_values(array_unique(array_filter($detected)));
+    }
+
+    /**
+     * WHOIS authoritative nameserver lookup
+     */
+    public static function getWhoisNameservers($domain) {
+        $domain = strtolower(trim($domain));
+        $parts = explode('.', $domain);
+        $tld = end($parts);
+
+        $whoisMap = [
+            'in' => ['whois-aws.nixiregistry.in', 'whois.registry.in'],
+            'com' => ['whois.verisign-grs.com'],
+            'net' => ['whois.verisign-grs.com'],
+            'org' => ['whois.publicinterestregistry.org', 'whois.pir.org'],
+            'io' => ['whois.nic.io'],
+            'co' => ['whois.nic.co'],
+            'ai' => ['whois.nic.ai'],
+            'me' => ['whois.nic.me'],
+            'xyz' => ['whois.nic.xyz'],
+            'online' => ['whois.nic.online'],
+            'site' => ['whois.nic.site'],
+            'store' => ['whois.nic.store'],
+            'tech' => ['whois.nic.tech']
+        ];
+
+        $servers = $whoisMap[$tld] ?? [];
+        if (empty($servers)) {
+            // Dynamic TLD discovery via IANA
+            $ianaRes = @file_get_contents('https://dns.google/resolve?name=whois.iana.org&type=A');
+            $ianaIp = null;
+            if ($ianaRes) {
+                $ianaData = json_decode($ianaRes, true);
+                $ianaIp = $ianaData['Answer'][0]['data'] ?? null;
+            }
+            if ($ianaIp) {
+                $ianaFp = @fsockopen($ianaIp, 43, $errno, $errstr, 2);
+                if ($ianaFp) {
+                    stream_set_timeout($ianaFp, 2);
+                    fwrite($ianaFp, $tld . "\r\n");
+                    $ianaOut = '';
+                    while (!feof($ianaFp)) {
+                        $ianaOut .= fgets($ianaFp, 256);
+                        if (strlen($ianaOut) > 8192) break;
+                    }
+                    fclose($ianaFp);
+                    if (preg_match('/whois:\s*([a-z0-9\.\-]+)/i', $ianaOut, $m)) {
+                        $servers[] = trim($m[1]);
+                    }
+                }
+            }
+        }
+
+        foreach ($servers as $server) {
+            $ip = @gethostbyname($server);
+            if (!$ip || $ip === $server) {
+                $dohRes = @file_get_contents('https://dns.google/resolve?name=' . urlencode($server) . '&type=A');
+                if ($dohRes) {
+                    $dData = json_decode($dohRes, true);
+                    $ip = $dData['Answer'][0]['data'] ?? null;
+                }
+            }
+            if (!$ip) continue;
+
+            $fp = @fsockopen($ip, 43, $errno, $errstr, 3);
+            if (!$fp) continue;
+
+            stream_set_timeout($fp, 3);
+            fwrite($fp, $domain . "\r\n");
+            $out = '';
+            while (!feof($fp)) {
+                $out .= fgets($fp, 256);
+                if (strlen($out) > 32768) break;
+            }
+            fclose($fp);
+
+            $nsList = [];
+            if (preg_match_all('/(?:name\s*server|nserver):\s*([a-z0-9\.\-]+)/i', $out, $matches)) {
+                foreach ($matches[1] as $ns) {
+                    $clean = self::normalizeNameserver($ns);
+                    if (!empty($clean) && strpos($clean, '.') !== false) {
+                        $nsList[] = $clean;
+                    }
+                }
+            }
+
+            if (!empty($nsList)) {
+                return array_values(array_unique($nsList));
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * DNS-over-HTTPS (DoH) nameserver query via Google and Cloudflare
+     */
+    public static function getDohNameservers($domain) {
+        $detected = [];
+        $dohPending = false;
+        $ctx = stream_context_create([
+            'http' => [
+                'timeout' => 3,
+                'header' => "Accept: application/dns-json\r\n"
+            ]
+        ]);
+
+        // 1. Google DoH
+        $gJson = @file_get_contents('https://dns.google/resolve?name=' . urlencode($domain) . '&type=NS', false, $ctx);
+        if ($gJson) {
+            $gData = json_decode($gJson, true);
+            if (!empty($gData['Answer'])) {
+                foreach ($gData['Answer'] as $ans) {
+                    if (($ans['type'] ?? 0) === 2 && !empty($ans['data'])) {
+                        $detected[] = self::normalizeNameserver($ans['data']);
+                    }
+                }
+            }
+            if (!empty($gData['Authority'])) {
+                foreach ($gData['Authority'] as $auth) {
+                    if (($auth['type'] ?? 0) === 2 && !empty($auth['data'])) {
+                        $detected[] = self::normalizeNameserver($auth['data']);
+                    }
+                }
+            }
+            if (($gData['Status'] ?? 0) === 2) {
+                $dohPending = true;
+            }
+        }
+
+        // 2. Cloudflare DoH
+        $cfJson = @file_get_contents('https://cloudflare-dns.com/dns-query?name=' . urlencode($domain) . '&type=NS', false, $ctx);
+        if ($cfJson) {
+            $cfData = json_decode($cfJson, true);
+            if (!empty($cfData['Answer'])) {
+                foreach ($cfData['Answer'] as $ans) {
+                    if (($ans['type'] ?? 0) === 2 && !empty($ans['data'])) {
+                        $detected[] = self::normalizeNameserver($ans['data']);
+                    }
+                }
+            }
+            if (!empty($cfData['Authority'])) {
+                foreach ($cfData['Authority'] as $auth) {
+                    if (($auth['type'] ?? 0) === 2 && !empty($auth['data'])) {
+                        $detected[] = self::normalizeNameserver($auth['data']);
+                    }
+                }
+            }
+            if (($cfData['Status'] ?? 0) === 2) {
+                $dohPending = true;
+            }
+        }
+
+        return [
+            'ns' => array_values(array_unique(array_filter($detected))),
+            'pending' => $dohPending
+        ];
+    }
+
+    /**
+     * Multi-layered authoritative DNS resolution combining Root/TLD iterative lookup,
+     * WHOIS registry data, public DoH, and native PHP DNS records.
+     */
+    public static function resolveAuthoritativeDns($domain) {
+        $domain = self::sanitizeDomain($domain);
+        if (!self::isValidDomain($domain)) {
+            return [
+                'valid' => false,
+                'detected_ns' => [],
+                'status' => 'invalid_domain',
+                'propagation_pending' => false,
+                'lookup_failed' => false
+            ];
+        }
+
+        $allDetected = [];
+        $propagationPending = false;
+        $anyLookupSucceeded = false;
+
+        // 1. Authoritative Root -> TLD delegation lookup (Pure-PHP UDP port 53)
+        try {
+            $authNs = self::getAuthoritativeNameservers($domain);
+            if (!empty($authNs)) {
+                $anyLookupSucceeded = true;
+                foreach ($authNs as $ns) {
+                    $norm = self::normalizeNameserver($ns);
+                    if (!empty($norm)) {
+                        $allDetected[] = $norm;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            error_log('[ChildPanelHelper DNS Auth] ' . $e->getMessage());
+        }
+
+        // 2. WHOIS / Registry Query
+        try {
+            $whoisNs = self::getWhoisNameservers($domain);
+            if (!empty($whoisNs)) {
+                $anyLookupSucceeded = true;
+                foreach ($whoisNs as $ns) {
+                    $norm = self::normalizeNameserver($ns);
+                    if (!empty($norm)) {
+                        $allDetected[] = $norm;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            error_log('[ChildPanelHelper DNS Whois] ' . $e->getMessage());
+        }
+
+        // 3. DNS-over-HTTPS (Google & Cloudflare)
+        try {
+            $dohResult = self::getDohNameservers($domain);
+            if (!empty($dohResult['ns'])) {
+                $anyLookupSucceeded = true;
+                foreach ($dohResult['ns'] as $ns) {
+                    $norm = self::normalizeNameserver($ns);
+                    if (!empty($norm)) {
+                        $allDetected[] = $norm;
+                    }
+                }
+            }
+            if (!empty($dohResult['pending'])) {
+                $anyLookupSucceeded = true;
+                $propagationPending = true;
+            }
+        } catch (\Throwable $e) {
+            error_log('[ChildPanelHelper DNS DoH] ' . $e->getMessage());
+        }
+
+        // 4. Native PHP dns_get_record
+        if (function_exists('dns_get_record')) {
+            try {
+                $records = @dns_get_record($domain, DNS_NS);
+                if (!empty($records) && is_array($records)) {
+                    $anyLookupSucceeded = true;
+                    foreach ($records as $r) {
+                        if (!empty($r['target'])) {
+                            $norm = self::normalizeNameserver($r['target']);
+                            if (!empty($norm)) {
+                                $allDetected[] = $norm;
+                            }
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {
+                // Ignore
+            }
+        }
+
+        $uniqueDetected = array_values(array_unique(array_filter($allDetected)));
+
+        return [
+            'valid' => true,
+            'detected_ns' => $uniqueDetected,
+            'status' => 'ok',
+            'propagation_pending' => $propagationPending,
+            'lookup_failed' => (!$anyLookupSucceeded && empty($uniqueDetected))
+        ];
+    }
+
+    /**
+     * Perform REAL domain DNS verification using authoritative nameserver delegation
      */
     public static function verifyDomain($panelId) {
         $db = getDB();
@@ -265,96 +708,114 @@ class ChildPanelHelper {
             return ['success' => false, 'error' => 'Child Panel not found.'];
         }
 
-        $domain = $panel['domain'];
-        $configuredNs = self::getNameservers();
-        $expectedNs1 = strtolower($panel['nameserver_1'] ?: $configuredNs['ns1']);
-        $expectedNs2 = strtolower($panel['nameserver_2'] ?: $configuredNs['ns2']);
+        $domain = self::sanitizeDomain($panel['domain']);
+        $now = date('Y-m-d H:i:s');
 
-        $detectedNs = [];
-        $detectedA = [];
+        // 1. Domain syntax validation
+        if (!self::isValidDomain($domain)) {
+            $matchReason = 'Please enter a valid domain name.';
+            $details = [
+                'checked_at' => $now,
+                'expected_ns' => [],
+                'detected_ns' => [],
+                'matched' => false,
+                'reason' => $matchReason
+            ];
+            $upStmt = $db->prepare("UPDATE child_panels SET dns_status = 'verification_failed', dns_last_checked = ?, dns_details = ? WHERE id = ?");
+            $upStmt->execute([$now, json_encode($details), $panelId]);
+
+            return [
+                'success' => false,
+                'dns_matched' => false,
+                'dns_status' => 'verification_failed',
+                'ssl_status' => $panel['ssl_status'] ?? 'ssl_pending',
+                'panel_status' => $panel['status'],
+                'details' => $details,
+                'error' => $matchReason,
+                'message' => $matchReason
+            ];
+        }
+
+        // 2. Expected nameservers configuration
+        $configuredNs = self::getNameservers();
+        $expectedNs1 = self::normalizeNameserver($panel['nameserver_1'] ?: $configuredNs['ns1']);
+        $expectedNs2 = self::normalizeNameserver($panel['nameserver_2'] ?: $configuredNs['ns2']);
+        $expectedList = array_values(array_filter([$expectedNs1, $expectedNs2]));
+
+        // 3. Resolve authoritative DNS
+        $dnsRes = self::resolveAuthoritativeDns($domain);
+
+        // 4. Handle complete DNS lookup / network timeout failure
+        if ($dnsRes['lookup_failed']) {
+            $matchReason = 'DNS lookup could not be completed. Please try again.';
+            $dnsStatus = 'pending_dns';
+            $details = [
+                'checked_at' => $now,
+                'expected_ns' => $expectedList,
+                'detected_ns' => [],
+                'matched' => false,
+                'reason' => $matchReason
+            ];
+            $upStmt = $db->prepare("UPDATE child_panels SET dns_status = ?, dns_last_checked = ?, dns_details = ? WHERE id = ?");
+            $upStmt->execute([$dnsStatus, $now, json_encode($details), $panelId]);
+
+            return [
+                'success' => true,
+                'dns_matched' => false,
+                'dns_status' => $dnsStatus,
+                'ssl_status' => $panel['ssl_status'] ?? 'ssl_pending',
+                'panel_status' => $panel['status'],
+                'details' => $details,
+                'error' => $matchReason,
+                'message' => $matchReason
+            ];
+        }
+
+        $detectedNs = $dnsRes['detected_ns'];
+
+        // 5. Compare detected nameservers with expected nameservers
+        $ns1Match = (!empty($expectedNs1) && in_array($expectedNs1, $detectedNs, true));
+        $ns2Match = (!empty($expectedNs2) && in_array($expectedNs2, $detectedNs, true));
+
+        $hasExpected2 = (!empty($expectedNs2) && $expectedNs2 !== $expectedNs1);
+        $allExpectedMatch = $hasExpected2 ? ($ns1Match && $ns2Match) : $ns1Match;
+        $anyExpectedMatch = ($ns1Match || $ns2Match);
+
         $dnsMatched = false;
         $matchReason = '';
+        $dnsStatus = 'pending_dns';
 
-        // 1. Query NS records using PHP native dns_get_record
-        if (function_exists('dns_get_record')) {
-            $nsRecords = @dns_get_record($domain, DNS_NS);
-            if (!empty($nsRecords) && is_array($nsRecords)) {
-                foreach ($nsRecords as $r) {
-                    if (!empty($r['target'])) {
-                        $detectedNs[] = strtolower(rtrim($r['target'], '.'));
-                    }
-                }
-            }
-
-            // Also check A records
-            $aRecords = @dns_get_record($domain, DNS_A);
-            if (!empty($aRecords) && is_array($aRecords)) {
-                foreach ($aRecords as $r) {
-                    if (!empty($r['ip'])) {
-                        $detectedA[] = $r['ip'];
-                    }
-                }
-            }
-        }
-
-        // Fallback or supplementary IP resolution
-        $resolvedIp = @gethostbyname($domain);
-        if ($resolvedIp && $resolvedIp !== $domain && !in_array($resolvedIp, $detectedA)) {
-            $detectedA[] = $resolvedIp;
-        }
-
-        // Check NS match: Does detected NS match our expected nameservers?
-        $ns1Match = false;
-        $ns2Match = false;
-        foreach ($detectedNs as $ns) {
-            if (stripos($ns, $expectedNs1) !== false || stripos($expectedNs1, $ns) !== false) {
-                $ns1Match = true;
-            }
-            if (stripos($ns, $expectedNs2) !== false || stripos($expectedNs2, $ns) !== false) {
-                $ns2Match = true;
-            }
-        }
-
-        // Check if either NS matched OR the domain points to server IP / localhost / server host
-        $serverIp = $configuredNs['server_ip'];
-        $serverHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        $ipMatch = false;
-
-        foreach ($detectedA as $ip) {
-            if ($ip === $serverIp || $ip === '127.0.0.1' || $ip === '::1') {
-                $ipMatch = true;
-            }
-        }
-
-        if ($ns1Match && $ns2Match) {
+        if ($allExpectedMatch) {
+            // Nameservers correct
             $dnsMatched = true;
-            $matchReason = "Nameservers successfully pointing to $expectedNs1 and $expectedNs2.";
-        } elseif ($ns1Match || $ns2Match) {
-            // Partial NS propagation
-            $dnsMatched = true;
-            $matchReason = "Nameserver partially detected ($expectedNs1). DNS is propagating.";
-        } elseif ($ipMatch) {
-            $dnsMatched = true;
-            $matchReason = "Domain A-Record is correctly pointed to server IP ($serverIp).";
-        } elseif (empty($detectedNs) && empty($detectedA)) {
-            $matchReason = "No DNS records found for $domain yet. Please ensure nameservers are saved at your registrar and allow time for propagation.";
+            $matchReason = 'DNS verification successful.';
+            $dnsStatus = 'dns_connected';
+        } elseif ($anyExpectedMatch) {
+            // One expected nameserver detected, but propagation still pending for the other
+            $dnsMatched = false;
+            $matchReason = 'Nameserver changes were detected but DNS propagation is still in progress. Please check again shortly.';
+            $dnsStatus = 'pending_dns';
+        } elseif (empty($detectedNs)) {
+            // Domain is valid and registered, but delegation propagation is still pending
+            $dnsMatched = false;
+            $matchReason = 'Nameserver changes were detected but DNS propagation is still in progress. Please check again shortly.';
+            $dnsStatus = 'pending_dns';
         } else {
-            $foundList = !empty($detectedNs) ? implode(', ', $detectedNs) : implode(', ', $detectedA);
-            $matchReason = "Detected: [$foundList]. Expected nameservers: $expectedNs1, $expectedNs2. Waiting for DNS propagation.";
+            // Nameservers were detected, but they do NOT point to expected nameservers
+            $dnsMatched = false;
+            $matchReason = 'Nameservers are not pointing to the required nameservers yet.';
+            $dnsStatus = 'verification_failed';
         }
 
-        $now = date('Y-m-d H:i:s');
-        $dnsStatus = $dnsMatched ? 'dns_connected' : 'verification_failed';
         $details = [
             'checked_at' => $now,
-            'expected_ns' => [$expectedNs1, $expectedNs2],
+            'expected_ns' => $expectedList,
             'detected_ns' => $detectedNs,
-            'detected_ips' => $detectedA,
             'matched' => $dnsMatched,
             'reason' => $matchReason
         ];
 
-        // Check SSL handshake
+        // SSL check if DNS matched
         $sslStatus = $panel['ssl_status'];
         if ($dnsMatched) {
             $sslCheck = self::checkSslHandshake($domain);
@@ -364,7 +825,7 @@ class ChildPanelHelper {
             $sslDetails = json_encode(['status' => 'waiting_for_dns']);
         }
 
-        // If domain is connected and status was approved, panel can now transition to active!
+        // If DNS verified and status was approved, transition panel to active
         $newPanelStatus = $panel['status'];
         if ($dnsMatched && in_array($panel['status'], ['approved', 'active'])) {
             $newPanelStatus = 'active';
@@ -399,6 +860,7 @@ class ChildPanelHelper {
             'ssl_status' => $sslStatus,
             'panel_status' => $newPanelStatus,
             'details' => $details,
+            'error' => $matchReason,
             'message' => $matchReason
         ];
     }

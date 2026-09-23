@@ -116,69 +116,99 @@ $unreadCount = (int)$notifStmt->fetchColumn();
 
       <!-- Navigation Links -->
       <nav class="space-y-1">
-        <a href="/dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'dashboard' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="layout-grid" class="w-4 h-4"></i>
+        <a href="/dashboard" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'dashboard' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'dashboard' ? 'bg-indigo-100 text-indigo-600 border border-indigo-200' : 'bg-indigo-50 border border-indigo-100/80 text-indigo-500' ?>">
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Dashboard</span>
         </a>
-        <a href="/order" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'order' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+        <a href="/order" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'order' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'order' ? 'bg-rose-100 text-rose-600 border border-rose-200' : 'bg-rose-50 border border-rose-100/80 text-rose-500' ?>">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          </div>
           <span>New Order</span>
         </a>
-        <a href="/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'orders' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="clock" class="w-4 h-4"></i>
+        <a href="/orders" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'orders' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'orders' ? 'bg-sky-100 text-sky-600 border border-sky-200' : 'bg-sky-50 border border-sky-100/80 text-sky-500' ?>">
+            <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Order History</span>
         </a>
-        <a href="/mass-order" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'mass-order' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="layers" class="w-4 h-4"></i>
+        <a href="/mass-order" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'mass-order' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'mass-order' ? 'bg-purple-100 text-purple-600 border border-purple-200' : 'bg-purple-50 border border-purple-100/80 text-purple-500' ?>">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Mass Order</span>
         </a>
-        <a href="/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'drip-feed' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="repeat" class="w-4 h-4"></i>
+        <a href="/drip-feed" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'drip-feed' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'drip-feed' ? 'bg-cyan-100 text-cyan-600 border border-cyan-200' : 'bg-cyan-50 border border-cyan-100/80 text-cyan-500' ?>">
+            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Drip-Feed</span>
         </a>
-        <a href="/refills" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'refills' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <a href="/refills" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'refills' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'refills' ? 'bg-teal-100 text-teal-600 border border-teal-200' : 'bg-teal-50 border border-teal-100/80 text-teal-500' ?>">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Auto Refill</span>
         </a>
-        <a href="/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'flash-sales' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="zap" class="w-4 h-4 text-rose-500"></i>
+        <a href="/flash-sales" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'flash-sales' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'flash-sales' ? 'bg-amber-100 text-amber-600 border border-amber-200' : 'bg-amber-50 border border-amber-100/80 text-amber-500' ?>">
+            <i data-lucide="zap" class="w-3.5 h-3.5 fill-amber-400/20"></i>
+          </div>
           <span>Flash Deals</span>
         </a>
-        <a href="/services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'services' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="list" class="w-4 h-4"></i>
+        <a href="/services" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'services' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'services' ? 'bg-violet-100 text-violet-600 border border-violet-200' : 'bg-violet-50 border border-violet-100/80 text-violet-500' ?>">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Services</span>
         </a>
-        <a href="/wallet" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="wallet" class="w-4 h-4"></i>
+        <a href="/wallet" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'wallet' ? 'bg-emerald-100 text-emerald-600 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-500' ?>">
+            <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Wallet</span>
         </a>
-        <a href="/referrals" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="gift" class="w-4 h-4"></i>
+        <a href="/referrals" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-pink-100 text-pink-600 border border-pink-200' : 'bg-pink-50 border border-pink-100/80 text-pink-500' ?>">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Refer & Earn</span>
         </a>
-        <a href="/add-funds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'add-funds' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <a href="/add-funds" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'add-funds' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'add-funds' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-600' ?>">
+            <i data-lucide="circle-dollar-sign" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Add Funds</span>
         </a>
-        <a href="/support" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'support' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="message-square" class="w-4 h-4"></i>
+        <a href="/support" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'support' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'support' ? 'bg-orange-100 text-orange-600 border border-orange-200' : 'bg-orange-50 border border-orange-100/80 text-orange-500' ?>">
+            <i data-lucide="headset" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Support Tickets</span>
         </a>
-        <a href="/notifications" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'notifications' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <div class="flex items-center gap-3">
-            <i data-lucide="bell" class="w-4 h-4"></i>
-            <span>Notifications</span>
+        <a href="/notifications" class="group flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'notifications' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'notifications' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-blue-50 border border-blue-100/80 text-blue-500' ?>">
+              <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+            </div>
+            <span class="truncate">Notifications</span>
           </div>
           <?php if ($unreadCount > 0): ?>
-            <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-rose-500 text-white"><?= $unreadCount ?></span>
+            <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-rose-500 text-white shrink-0"><?= $unreadCount ?></span>
           <?php endif; ?>
         </a>
-        <a href="/profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'profile' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <i data-lucide="user" class="w-4 h-4"></i>
+        <a href="/profile" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'profile' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'profile' ? 'bg-slate-200 text-slate-800 border border-slate-300' : 'bg-slate-100 border border-slate-200/80 text-slate-600' ?>">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Profile</span>
         </a>
-        <a href="/logout" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 transition-colors">
-          <i data-lucide="log-out" class="w-4 h-4"></i>
+        <a href="/logout" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 transition-colors">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 bg-rose-50 border border-rose-100/80 text-rose-500">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          </div>
           <span>Logout</span>
         </a>
       </nav>
@@ -226,50 +256,100 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         </button>
       </div>
       <nav class="space-y-1">
-        <a href="/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'dashboard' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="layout-grid" class="w-4 h-4"></i> Dashboard
+        <a href="/dashboard" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'dashboard' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'dashboard' ? 'bg-indigo-100 text-indigo-600 border border-indigo-200' : 'bg-indigo-50 border border-indigo-100/80 text-indigo-500' ?>">
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Dashboard</span>
         </a>
-        <a href="/order" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'order' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="shopping-cart" class="w-4 h-4"></i> New Order
+        <a href="/order" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'order' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'order' ? 'bg-rose-100 text-rose-600 border border-rose-200' : 'bg-rose-50 border border-rose-100/80 text-rose-500' ?>">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>New Order</span>
         </a>
-        <a href="/orders" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'orders' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="clock" class="w-4 h-4"></i> Order History
+        <a href="/orders" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'orders' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'orders' ? 'bg-sky-100 text-sky-600 border border-sky-200' : 'bg-sky-50 border border-sky-100/80 text-sky-500' ?>">
+            <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Order History</span>
         </a>
-        <a href="/mass-order" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'mass-order' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="layers" class="w-4 h-4"></i> Mass Order
+        <a href="/mass-order" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'mass-order' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'mass-order' ? 'bg-purple-100 text-purple-600 border border-purple-200' : 'bg-purple-50 border border-purple-100/80 text-purple-500' ?>">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Mass Order</span>
         </a>
-        <a href="/drip-feed" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'drip-feed' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="repeat" class="w-4 h-4"></i> Drip-Feed
+        <a href="/drip-feed" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'drip-feed' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'drip-feed' ? 'bg-cyan-100 text-cyan-600 border border-cyan-200' : 'bg-cyan-50 border border-cyan-100/80 text-cyan-500' ?>">
+            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Drip-Feed</span>
         </a>
-        <a href="/refills" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'refills' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="shield-check" class="w-4 h-4"></i> Auto Refill
+        <a href="/refills" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'refills' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'refills' ? 'bg-teal-100 text-teal-600 border border-teal-200' : 'bg-teal-50 border border-teal-100/80 text-teal-500' ?>">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Auto Refill</span>
         </a>
-        <a href="/flash-sales" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'flash-sales' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="zap" class="w-4 h-4 text-rose-500"></i> Flash Deals
+        <a href="/flash-sales" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'flash-sales' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'flash-sales' ? 'bg-amber-100 text-amber-600 border border-amber-200' : 'bg-amber-50 border border-amber-100/80 text-amber-500' ?>">
+            <i data-lucide="zap" class="w-3.5 h-3.5 fill-amber-400/20"></i>
+          </div>
+          <span>Flash Deals</span>
         </a>
-        <a href="/services" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'services' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="list" class="w-4 h-4"></i> Services
+        <a href="/services" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'services' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'services' ? 'bg-violet-100 text-violet-600 border border-violet-200' : 'bg-violet-50 border border-violet-100/80 text-violet-500' ?>">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Services</span>
         </a>
-        <a href="/wallet" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'wallet' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="wallet" class="w-4 h-4"></i> Wallet
+        <a href="/wallet" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'wallet' ? 'bg-emerald-100 text-emerald-600 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-500' ?>">
+            <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Wallet</span>
         </a>
-        <a href="/referrals" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn
+        <a href="/referrals" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= in_array($activePage, ['referrals', 'refer-earn']) ? 'bg-pink-100 text-pink-600 border border-pink-200' : 'bg-pink-50 border border-pink-100/80 text-pink-500' ?>">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Refer & Earn</span>
         </a>
-        <a href="/add-funds" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'add-funds' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Funds
+        <a href="/add-funds" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'add-funds' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'add-funds' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-600' ?>">
+            <i data-lucide="circle-dollar-sign" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Add Funds</span>
         </a>
-        <a href="/support" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'support' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="message-square" class="w-4 h-4"></i> Support Tickets
+        <a href="/support" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'support' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'support' ? 'bg-orange-100 text-orange-600 border border-orange-200' : 'bg-orange-50 border border-orange-100/80 text-orange-500' ?>">
+            <i data-lucide="headset" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Support Tickets</span>
         </a>
-        <a href="/notifications" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'notifications' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="bell" class="w-4 h-4"></i> Notifications
+        <a href="/notifications" class="group flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'notifications' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'notifications' ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-blue-50 border border-blue-100/80 text-blue-500' ?>">
+              <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+            </div>
+            <span class="truncate">Notifications</span>
+          </div>
+          <?php if ($unreadCount > 0): ?>
+            <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-rose-500 text-white shrink-0"><?= $unreadCount ?></span>
+          <?php endif; ?>
         </a>
-        <a href="/profile" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'profile' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="user" class="w-4 h-4"></i> Profile
+        <a href="/profile" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'profile' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'profile' ? 'bg-slate-200 text-slate-800 border border-slate-300' : 'bg-slate-100 border border-slate-200/80 text-slate-600' ?>">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Profile</span>
         </a>
-        <a href="/logout" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-rose-500">
-          <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+        <a href="/logout" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 transition-colors">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 bg-rose-50 border border-rose-100/80 text-rose-500">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Logout</span>
         </a>
       </nav>
     </div>

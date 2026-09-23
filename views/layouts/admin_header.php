@@ -63,74 +63,143 @@ $adminPage = $adminPage ?? 'dashboard';
 
     <!-- Admin Mobile Navigation Items -->
     <nav class="space-y-1 text-xs font-semibold">
-      <a href="/admin" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'dashboard' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+      <a href="/admin" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'dashboard' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'dashboard' ? 'bg-white/20 border border-white/30 text-white' : 'bg-indigo-500/15 border border-indigo-500/30 text-indigo-400' ?>">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Dashboard</span>
       </a>
-      <a href="/admin/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+      <a href="/admin/orders" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'orders' ? 'bg-white/20 border border-white/30 text-white' : 'bg-sky-500/15 border border-sky-500/30 text-sky-400' ?>">
+          <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Orders</span>
       </a>
-      <a href="/admin/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="repeat" class="w-4 h-4 text-blue-400"></i> Drip-Feed Orders
+      <a href="/admin/drip-feed" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'drip-feed' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+          <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Drip-Feed Orders</span>
       </a>
-      <a href="/admin/refill" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400"></i> Auto Refill
+      <a href="/admin/refill" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'refill' ? 'bg-white/20 border border-white/30 text-white' : 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400' ?>">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Auto Refill</span>
       </a>
-      <a href="/admin/refunds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="wallet" class="w-4 h-4 text-amber-400"></i> Auto Refund
+      <a href="/admin/refunds" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'refunds' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+          <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Auto Refund</span>
       </a>
-      <a href="/admin/coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="tag" class="w-4 h-4 text-purple-400"></i> Coupons & Discounts
+      <a href="/admin/coupons" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'coupons' ? 'bg-white/20 border border-white/30 text-white' : 'bg-purple-500/15 border border-purple-500/30 text-purple-400' ?>">
+          <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Coupons & Discounts</span>
       </a>
-      <a href="/admin/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="zap" class="w-4 h-4 text-rose-400"></i> Flash Sales
+      <a href="/admin/flash-sales" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'flash-sales' ? 'bg-white/20 border border-white/30 text-white' : 'bg-rose-500/15 border border-rose-500/30 text-rose-400' ?>">
+          <i data-lucide="zap" class="w-3.5 h-3.5 fill-rose-400/20"></i>
+        </div>
+        <span>Flash Sales</span>
       </a>
-      <a href="/admin/ticket-automation" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="bot" class="w-4 h-4 text-cyan-400"></i> Ticket Automation
+      <a href="/admin/ticket-automation" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'ticket-automation' ? 'bg-white/20 border border-white/30 text-white' : 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-400' ?>">
+          <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Ticket Automation</span>
       </a>
-      <a href="/admin/cron-jobs" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="clock-4" class="w-4 h-4 text-green-400"></i> Cron Automation
+      <a href="/admin/cron-jobs" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'cron-jobs' ? 'bg-white/20 border border-white/30 text-white' : 'bg-green-500/15 border border-green-500/30 text-green-400' ?>">
+          <i data-lucide="clock-4" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Cron Automation</span>
       </a>
-      <a href="/admin/users" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="users" class="w-4 h-4"></i> Users
+      <a href="/admin/users" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'users' ? 'bg-white/20 border border-white/30 text-white' : 'bg-indigo-500/15 border border-indigo-500/30 text-indigo-400' ?>">
+          <i data-lucide="users" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Users</span>
       </a>
-      <a href="/admin/services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'services' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="layers" class="w-4 h-4"></i> Services
+      <a href="/admin/services" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'services' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'services' ? 'bg-white/20 border border-white/30 text-white' : 'bg-violet-500/15 border border-violet-500/30 text-violet-400' ?>">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Services</span>
       </a>
-      <a href="/admin/categories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'categories' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="folder" class="w-4 h-4"></i> Categories
+      <a href="/admin/categories" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'categories' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'categories' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+          <i data-lucide="folder" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Categories</span>
       </a>
-      <a href="/admin/providers" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'providers' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="server" class="w-4 h-4"></i> Providers
+      <a href="/admin/providers" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'providers' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'providers' ? 'bg-white/20 border border-white/30 text-white' : 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-400' ?>">
+          <i data-lucide="server" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Providers</span>
       </a>
-      <a href="/admin/provider-services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'provider-services' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="download" class="w-4 h-4"></i> Import Services
+      <a href="/admin/provider-services" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'provider-services' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'provider-services' ? 'bg-white/20 border border-white/30 text-white' : 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400' ?>">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Import Services</span>
       </a>
-      <a href="/admin/transactions" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="receipt" class="w-4 h-4"></i> Transactions
+      <a href="/admin/transactions" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'transactions' ? 'bg-white/20 border border-white/30 text-white' : 'bg-teal-500/15 border border-teal-500/30 text-teal-400' ?>">
+          <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Transactions</span>
       </a>
-      <a href="/admin/referrals" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn
+      <a href="/admin/referrals" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-white/20 border border-white/30 text-white' : 'bg-pink-500/15 border border-pink-500/30 text-pink-400' ?>">
+          <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Refer & Earn</span>
       </a>
-      <a href="/admin/payment-gateways" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="credit-card" class="w-4 h-4"></i> Payment Gateways
+      <a href="/admin/payment-gateways" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'payment-gateways' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+          <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Payment Gateways</span>
       </a>
-      <a href="/admin/currencies" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="coins" class="w-4 h-4"></i> Currencies (INR/USD)
+      <a href="/admin/currencies" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'currencies' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+          <i data-lucide="coins" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Currencies (INR/USD)</span>
       </a>
-      <a href="/admin/sliders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'sliders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="image" class="w-4 h-4"></i> Sliders & Banners
+      <a href="/admin/sliders" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'sliders' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'sliders' ? 'bg-white/20 border border-white/30 text-white' : 'bg-purple-500/15 border border-purple-500/30 text-purple-400' ?>">
+          <i data-lucide="image" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Sliders & Banners</span>
       </a>
-      <a href="/admin/tickets" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="message-square" class="w-4 h-4"></i> Support Tickets
+      <a href="/admin/tickets" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'tickets' ? 'bg-white/20 border border-white/30 text-white' : 'bg-orange-500/15 border border-orange-500/30 text-orange-400' ?>">
+          <i data-lucide="headset" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Support Tickets</span>
       </a>
-      <a href="/admin/notifications" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'notifications' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="bell" class="w-4 h-4"></i> Broadcast Notifications
+      <a href="/admin/notifications" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'notifications' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'notifications' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+          <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Broadcast Notifications</span>
       </a>
-      <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="settings" class="w-4 h-4"></i> System Settings
+      <a href="/admin/settings" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'settings' ? 'bg-white/20 border border-white/30 text-white' : 'bg-slate-700/50 border border-slate-600/50 text-slate-300' ?>">
+          <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>System Settings</span>
       </a>
-      <a href="/admin/theme" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-        <i data-lucide="palette" class="w-4 h-4"></i> Website Theme
+      <a href="/admin/theme" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'theme' ? 'bg-white/20 border border-white/30 text-white' : 'bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-400' ?>">
+          <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Website Theme</span>
       </a>
     </nav>
   </div>
@@ -163,85 +232,154 @@ $adminPage = $adminPage ?? 'dashboard';
 
       <!-- Admin Navigation -->
       <nav class="space-y-1 text-xs font-semibold">
-        <a href="/admin" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'dashboard' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+        <a href="/admin" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'dashboard' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'dashboard' ? 'bg-white/20 border border-white/30 text-white' : 'bg-indigo-500/15 border border-indigo-500/30 text-indigo-400' ?>">
+            <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Dashboard</span>
         </a>
-        <a href="/admin/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+        <a href="/admin/orders" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'orders' ? 'bg-white/20 border border-white/30 text-white' : 'bg-sky-500/15 border border-sky-500/30 text-sky-400' ?>">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Orders</span>
         </a>
-        <a href="/admin/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="repeat" class="w-4 h-4 text-blue-400"></i> Drip-Feed Orders
+        <a href="/admin/drip-feed" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'drip-feed' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Drip-Feed Orders</span>
         </a>
-        <a href="/admin/refill" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400"></i> Auto Refill
+        <a href="/admin/refill" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'refill' ? 'bg-white/20 border border-white/30 text-white' : 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400' ?>">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Auto Refill</span>
         </a>
-        <a href="/admin/refunds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="wallet" class="w-4 h-4 text-amber-400"></i> Auto Refund
+        <a href="/admin/refunds" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'refunds' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+            <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Auto Refund</span>
         </a>
-        <a href="/admin/coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="tag" class="w-4 h-4 text-purple-400"></i> Coupons & Discounts
+        <a href="/admin/coupons" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'coupons' ? 'bg-white/20 border border-white/30 text-white' : 'bg-purple-500/15 border border-purple-500/30 text-purple-400' ?>">
+            <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Coupons & Discounts</span>
         </a>
-        <a href="/admin/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="zap" class="w-4 h-4 text-rose-400"></i> Flash Sales
+        <a href="/admin/flash-sales" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'flash-sales' ? 'bg-white/20 border border-white/30 text-white' : 'bg-rose-500/15 border border-rose-500/30 text-rose-400' ?>">
+            <i data-lucide="zap" class="w-3.5 h-3.5 fill-rose-400/20"></i>
+          </div>
+          <span>Flash Sales</span>
         </a>
-        <a href="/admin/ticket-automation" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="bot" class="w-4 h-4 text-cyan-400"></i> Ticket Automation
+        <a href="/admin/ticket-automation" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'ticket-automation' ? 'bg-white/20 border border-white/30 text-white' : 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-400' ?>">
+            <i data-lucide="bot" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Ticket Automation</span>
         </a>
-        <a href="/admin/cron-jobs" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="clock-4" class="w-4 h-4 text-green-400"></i> Cron Automation
+        <a href="/admin/cron-jobs" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'cron-jobs' ? 'bg-white/20 border border-white/30 text-white' : 'bg-green-500/15 border border-green-500/30 text-green-400' ?>">
+            <i data-lucide="clock-4" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Cron Automation</span>
         </a>
-        <a href="/admin/users" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="users" class="w-4 h-4"></i> Users
+        <a href="/admin/users" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'users' ? 'bg-white/20 border border-white/30 text-white' : 'bg-indigo-500/15 border border-indigo-500/30 text-indigo-400' ?>">
+            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Users</span>
         </a>
-        <a href="/admin/services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'services' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="layers" class="w-4 h-4"></i> Services
+        <a href="/admin/services" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'services' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'services' ? 'bg-white/20 border border-white/30 text-white' : 'bg-violet-500/15 border border-violet-500/30 text-violet-400' ?>">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Services</span>
         </a>
-        <a href="/admin/categories" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'categories' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="folder" class="w-4 h-4"></i> Categories
+        <a href="/admin/categories" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'categories' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'categories' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+            <i data-lucide="folder" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Categories</span>
         </a>
-        <a href="/admin/providers" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'providers' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="server" class="w-4 h-4"></i> Providers
+        <a href="/admin/providers" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'providers' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'providers' ? 'bg-white/20 border border-white/30 text-white' : 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-400' ?>">
+            <i data-lucide="server" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Providers</span>
         </a>
-        <a href="/admin/provider-services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'provider-services' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="download" class="w-4 h-4"></i> Import Services
+        <a href="/admin/provider-services" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'provider-services' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'provider-services' ? 'bg-white/20 border border-white/30 text-white' : 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400' ?>">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Import Services</span>
         </a>
-        <a href="/admin/transactions" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="receipt" class="w-4 h-4"></i> Transactions
+        <a href="/admin/transactions" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'transactions' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'transactions' ? 'bg-white/20 border border-white/30 text-white' : 'bg-teal-500/15 border border-teal-500/30 text-teal-400' ?>">
+            <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Transactions</span>
         </a>
-        <a href="/admin/referrals" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn
+        <a href="/admin/referrals" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= in_array($adminPage, ['referrals', 'refer-earn']) ? 'bg-white/20 border border-white/30 text-white' : 'bg-pink-500/15 border border-pink-500/30 text-pink-400' ?>">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Refer & Earn</span>
         </a>
-        <a href="/admin/payment-gateways" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="credit-card" class="w-4 h-4"></i> Payment Gateways
+        <a href="/admin/payment-gateways" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'payment-gateways' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'payment-gateways' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Payment Gateways</span>
         </a>
-        <a href="/admin/currencies" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="coins" class="w-4 h-4"></i> Currencies (INR/USD)
+        <a href="/admin/currencies" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'currencies' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'currencies' ? 'bg-white/20 border border-white/30 text-white' : 'bg-amber-500/15 border border-amber-500/30 text-amber-400' ?>">
+            <i data-lucide="coins" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Currencies (INR/USD)</span>
         </a>
-        <a href="/admin/sliders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'sliders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="image" class="w-4 h-4"></i> Sliders & Banners
+        <a href="/admin/sliders" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'sliders' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'sliders' ? 'bg-white/20 border border-white/30 text-white' : 'bg-purple-500/15 border border-purple-500/30 text-purple-400' ?>">
+            <i data-lucide="image" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Sliders & Banners</span>
         </a>
-        <a href="/admin/tickets" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="message-square" class="w-4 h-4"></i> Support Tickets
+        <a href="/admin/tickets" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'tickets' ? 'bg-white/20 border border-white/30 text-white' : 'bg-orange-500/15 border border-orange-500/30 text-orange-400' ?>">
+            <i data-lucide="headset" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Support Tickets</span>
         </a>
-        <a href="/admin/notifications" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'notifications' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="bell" class="w-4 h-4"></i> Broadcast Notifications
+        <a href="/admin/notifications" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'notifications' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'notifications' ? 'bg-white/20 border border-white/30 text-white' : 'bg-blue-500/15 border border-blue-500/30 text-blue-400' ?>">
+            <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Broadcast Notifications</span>
         </a>
-        <a href="/admin/settings" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="settings" class="w-4 h-4"></i> System Settings
+        <a href="/admin/settings" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'settings' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'settings' ? 'bg-white/20 border border-white/30 text-white' : 'bg-slate-700/50 border border-slate-600/50 text-slate-300' ?>">
+            <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>System Settings</span>
         </a>
-        <a href="/admin/theme" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
-          <i data-lucide="palette" class="w-4 h-4"></i> Website Theme
+        <a href="/admin/theme" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'theme' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'theme' ? 'bg-white/20 border border-white/30 text-white' : 'bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-400' ?>">
+            <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Website Theme</span>
         </a>
       </nav>
     </div>
 
     <!-- Admin User info in sidebar -->
-    <div class="p-5 border-t border-slate-800 flex items-center justify-between text-xs">
+    <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs">
       <div>
         <div class="font-bold text-white"><?= e($adminUser['full_name'] ?: 'Administrator') ?></div>
         <div class="text-[11px] text-slate-400">admin@rosesmm.com</div>
       </div>
-      <a href="/logout" class="text-rose-400 hover:text-rose-300" title="Logout">
+      <a href="/logout" class="w-8 h-8 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:text-rose-300 hover:bg-rose-500/25 transition-all flex items-center justify-center shrink-0" title="Logout">
         <i data-lucide="log-out" class="w-4 h-4"></i>
       </a>
     </div>

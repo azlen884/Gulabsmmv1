@@ -14,12 +14,17 @@ if ($ticketId > 0 && !empty($message)) {
     $userId = $_SESSION['user_id'];
 
     // Verify ticket ownership
-    $stmt = $db->prepare("SELECT id FROM tickets WHERE id = ? AND user_id = ?");
+    $stmt = $db->prepare("SELECT id, subject, priority FROM tickets WHERE id = ? AND user_id = ?");
     $stmt->execute([$ticketId, $userId]);
-    if ($stmt->fetch()) {
+    $ticket = $stmt->fetch();
+    if ($ticket) {
         $db->prepare("INSERT INTO ticket_messages (ticket_id, user_id, message, is_admin) VALUES (?, ?, ?, 0)")
             ->execute([$ticketId, $userId, $message]);
         $db->prepare("UPDATE tickets SET status = 'open', updated_at = NOW() WHERE id = ?")->execute([$ticketId]);
+
+        // Trigger Ticket Automation Rules
+        require_once __DIR__ . '/../../includes/TicketAutomationHelper.php';
+        TicketAutomationHelper::processEvent($ticketId, 'ticket_replied', $message, $ticket['priority'], $ticket['subject']);
     }
 }
 

@@ -128,8 +128,24 @@ $unreadCount = (int)$notifStmt->fetchColumn();
           <i data-lucide="clock" class="w-4 h-4"></i>
           <span>Order History</span>
         </a>
-        <a href="/services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'services' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+        <a href="/mass-order" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'mass-order' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
           <i data-lucide="layers" class="w-4 h-4"></i>
+          <span>Mass Order</span>
+        </a>
+        <a href="/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'drip-feed' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <i data-lucide="repeat" class="w-4 h-4"></i>
+          <span>Drip-Feed</span>
+        </a>
+        <a href="/refills" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'refills' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Auto Refill</span>
+        </a>
+        <a href="/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'flash-sales' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <i data-lucide="zap" class="w-4 h-4 text-rose-500"></i>
+          <span>Flash Deals</span>
+        </a>
+        <a href="/services" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'services' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
+          <i data-lucide="list" class="w-4 h-4"></i>
           <span>Services</span>
         </a>
         <a href="/wallet" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
@@ -219,8 +235,20 @@ $unreadCount = (int)$notifStmt->fetchColumn();
         <a href="/orders" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'orders' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="clock" class="w-4 h-4"></i> Order History
         </a>
+        <a href="/mass-order" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'mass-order' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
+          <i data-lucide="layers" class="w-4 h-4"></i> Mass Order
+        </a>
+        <a href="/drip-feed" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'drip-feed' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
+          <i data-lucide="repeat" class="w-4 h-4"></i> Drip-Feed
+        </a>
+        <a href="/refills" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'refills' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Auto Refill
+        </a>
+        <a href="/flash-sales" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'flash-sales' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
+          <i data-lucide="zap" class="w-4 h-4 text-rose-500"></i> Flash Deals
+        </a>
         <a href="/services" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'services' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
-          <i data-lucide="layers" class="w-4 h-4"></i> Services
+          <i data-lucide="list" class="w-4 h-4"></i> Services
         </a>
         <a href="/wallet" class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium <?= $activePage === 'wallet' ? 'bg-rose-50 text-rose-600' : 'text-slate-600' ?>">
           <i data-lucide="wallet" class="w-4 h-4"></i> Wallet

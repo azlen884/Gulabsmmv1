@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/CouponHelper.php';
+require_once __DIR__ . '/../../includes/FlashSaleHelper.php';
+require_once __DIR__ . '/../../includes/DripFeedHelper.php';
 
 header('Content-Type: application/json');
 
@@ -13,8 +16,10 @@ $input = json_decode(file_get_contents('php://input'), true) ?: $_POST;
 $serviceId = isset($input['service_id']) ? (int)$input['service_id'] : 0;
 $link = isset($input['link']) ? trim($input['link']) : '';
 $quantity = isset($input['quantity']) ? (int)$input['quantity'] : 0;
+$isDripfeed = !empty($input['is_dripfeed']);
 $runs = isset($input['runs']) ? (int)$input['runs'] : 1;
 $interval = isset($input['interval']) ? (int)$input['interval'] : 0;
+$couponCode = isset($input['coupon_code']) ? trim($input['coupon_code']) : '';
 
 if ($serviceId <= 0 || empty($link) || $quantity <= 0) {
     echo json_encode(['success' => false, 'error' => 'Please provide valid service, link and quantity.']);
@@ -23,6 +28,13 @@ if ($serviceId <= 0 || empty($link) || $quantity <= 0) {
 
 $db = getDB();
 $userId = $_SESSION['user_id'];
+
+// If dripfeed requested with runs > 1
+if ($isDripfeed && $runs > 1) {
+    $dfRes = DripFeedHelper::createDripFeed($userId, $serviceId, $link, $quantity, $runs, $interval);
+    echo json_encode($dfRes);
+    exit;
+}
 
 // Get Service
 $sStmt = $db->prepare("SELECT * FROM services WHERE id = ? AND status = 'active'");
@@ -34,19 +46,38 @@ if (!$service) {
     exit;
 }
 
-$minQty = isset($service['min_quantity']) ? (int)$service['min_quantity'] : (int)($service['min'] ?? 10);
-$maxQty = isset($service['max_quantity']) ? (int)$service['max_quantity'] : (int)($service['max'] ?? 100000);
+$minQty = isset($service['min_quantity']) ? (int)$service['min_quantity'] : 10;
+$maxQty = isset($service['max_quantity']) ? (int)$service['max_quantity'] : 100000;
 
 if ($quantity < $minQty || $quantity > $maxQty) {
     echo json_encode(['success' => false, 'error' => "Quantity must be between $minQty and $maxQty."]);
     exit;
 }
 
-// Calculate total charge in base currency (USD)
+// Check base rate and active flash sale
 $serviceBaseCurr = $service['currency'] ?? 'USD';
 $serviceRateInUSD = convert_price($service['rate'], $serviceBaseCurr, 'USD');
-$totalQuantity = $quantity * max(1, $runs);
-$charge = round(($serviceRateInUSD / 1000.0) * $totalQuantity, 4);
+
+$flashSale = FlashSaleHelper::getDiscountForService($serviceId, $service['category_id'], $serviceRateInUSD);
+$effectiveRateUSD = $flashSale['has_sale'] ? $flashSale['rate'] : $serviceRateInUSD;
+
+// Subtotal before coupon
+$subtotalCharge = round(($effectiveRateUSD / 1000.0) * $quantity, 4);
+
+// Validate Coupon if provided
+$couponData = null;
+$discountAmount = 0.0;
+if (!empty($couponCode)) {
+    $cRes = CouponHelper::validateCoupon($couponCode, $userId, $subtotalCharge, $serviceId, $service['category_id']);
+    if (!$cRes['valid']) {
+        echo json_encode(['success' => false, 'error' => $cRes['error']]);
+        exit;
+    }
+    $couponData = $cRes;
+    $discountAmount = $cRes['discount_amount'];
+}
+
+$charge = max(0, round($subtotalCharge - $discountAmount, 4));
 
 $userCurrency = get_user_currency();
 $formattedCharge = format_price($charge, $userCurrency, 'USD');
@@ -78,7 +109,7 @@ if (!empty($service['provider_id']) && !empty($service['provider_service_id'])) 
     $pStmt->execute([$service['provider_id']]);
     $provider = $pStmt->fetch();
 
-    if ($provider) {
+    if ($provider && !empty($provider['api_url']) && !empty($provider['api_key'])) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $provider['api_url']);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -87,9 +118,7 @@ if (!empty($service['provider_id']) && !empty($service['provider_service_id'])) 
             'action' => 'add',
             'service' => $service['provider_service_id'],
             'link' => $link,
-            'quantity' => $quantity,
-            'runs' => $runs,
-            'interval' => $interval
+            'quantity' => $quantity
         ]));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -104,10 +133,13 @@ if (!empty($service['provider_id']) && !empty($service['provider_service_id'])) 
     }
 }
 
+// Initial refill status: if service supports refill, mark as 'eligible'
+$initialRefillStatus = !empty($service['refill_enabled']) ? 'eligible' : 'none';
+
 // Insert into orders
 $insOrder = $db->prepare("
-    INSERT INTO orders (user_id, service_id, provider_id, provider_order_id, link, quantity, charge, start_count, remains, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending')
+    INSERT INTO orders (user_id, service_id, provider_id, provider_order_id, link, quantity, charge, start_count, remains, status, refill_status, coupon_id, discount_amount, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending', ?, ?, ?, NOW())
 ");
 $insOrder->execute([
     $userId,
@@ -115,26 +147,39 @@ $insOrder->execute([
     $service['provider_id'] ?: null,
     $providerOrderId,
     $link,
-    $totalQuantity,
+    $quantity,
     $charge,
-    $totalQuantity
+    $quantity,
+    $initialRefillStatus,
+    $couponData ? $couponData['coupon_id'] : null,
+    $discountAmount
 ]);
 $orderId = $db->lastInsertId();
 
+// Record coupon usage if applied
+if ($couponData) {
+    CouponHelper::applyUsage($couponData['coupon_id'], $userId, $orderId, $discountAmount, $subtotalCharge, $charge);
+}
+
+// Record flash sale purchase if applicable
+if ($flashSale['has_sale']) {
+    FlashSaleHelper::recordPurchase($flashSale['sale_id']);
+}
+
 // Record order transaction
 $db->prepare("
-    INSERT INTO transactions (user_id, order_id, amount, type, payment_method, status, transaction_id)
-    VALUES (?, ?, ?, 'order', 'Wallet Balance', 'completed', ?)
+    INSERT INTO transactions (user_id, order_id, amount, charge, type, payment_method, status, transaction_id, created_at)
+    VALUES (?, ?, ?, 0.0000, 'order', 'Wallet Balance', 'completed', ?, NOW())
 ")->execute([$userId, $orderId, $charge, 'ORD-' . $orderId]);
 
 // Insert customer notification
 $db->prepare("
-    INSERT INTO notifications (user_id, title, message, type)
-    VALUES (?, ?, ?, 'order')
+    INSERT INTO notifications (user_id, title, message, type, created_at)
+    VALUES (?, ?, ?, 'order', NOW())
 ")->execute([
     $userId,
     "Order #$orderId Received",
-    "Your order for {$service['name']} (Quantity: " . number_format($totalQuantity) . ") is being processed."
+    "Your order for {$service['name']} (Quantity: " . number_format($quantity) . ") is being processed."
 ]);
 
 $db->commit();
@@ -147,6 +192,9 @@ echo json_encode([
     'success' => true,
     'order_id' => $orderId,
     'charge' => $charge,
+    'subtotal' => $subtotalCharge,
+    'discount' => $discountAmount,
+    'flash_sale' => $flashSale['has_sale'] ? $flashSale['sale_title'] : null,
     'converted_charge' => convert_price($charge, 'USD', $userCurrency),
     'formatted_charge' => $formattedCharge,
     'balance' => $newBalance,

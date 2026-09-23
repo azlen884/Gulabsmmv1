@@ -2,6 +2,7 @@
 $pageTitle = 'Orders Manager - Admin Console';
 $adminPage = 'orders';
 require_once __DIR__ . '/../layouts/admin_header.php';
+require_once __DIR__ . '/../../includes/RefundHelper.php';
 
 $db = getDB();
 
@@ -12,7 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $allowed = ['pending', 'processing', 'in_progress', 'completed', 'partial', 'cancelled'];
     if (in_array($newStatus, $allowed)) {
         $db->prepare("UPDATE orders SET status = ? WHERE id = ?")->execute([$newStatus, $orderId]);
+        $refundRes = RefundHelper::handleOrderStateChange($orderId, $newStatus);
         $msg = "Order #$orderId status updated to $newStatus.";
+        if (!empty($refundRes['refunded'])) {
+            $msg .= " Auto-refund of \${$refundRes['amount']} credited to customer wallet.";
+        }
     }
 }
 
@@ -109,7 +114,32 @@ $orders = $stmt->fetchAll();
             <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full truncate max-w-[160px]">
               <?= e($o['category_name']) ?>
             </span>
-            <span class="text-xs text-slate-400 whitespace-nowrap">
+
+            <?php if (!empty($o['is_dripfeed'])): ?>
+              <a href="/admin/drip-feed?search=<?= $o['id'] ?>" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 inline-flex items-center gap-1">
+                <i data-lucide="repeat" class="w-3 h-3"></i> Drip-Feed
+              </a>
+            <?php endif; ?>
+
+            <?php if ((float)($o['discount_amount'] ?? 0) > 0): ?>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200 inline-flex items-center gap-1">
+                <i data-lucide="tag" class="w-3 h-3"></i> -$<?= number_format($o['discount_amount'], 4) ?>
+              </span>
+            <?php endif; ?>
+
+            <?php if (in_array($o['refill_status'] ?? '', ['pending', 'processing', 'completed'])): ?>
+              <a href="/admin/refill?search=<?= $o['id'] ?>" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center gap-1">
+                <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refill: <?= ucfirst($o['refill_status']) ?>
+              </a>
+            <?php endif; ?>
+
+            <?php if (in_array($o['refund_status'] ?? '', ['refunded', 'partial_refunded'])): ?>
+              <a href="/admin/refunds?search=<?= $o['id'] ?>" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 inline-flex items-center gap-1">
+                <i data-lucide="wallet" class="w-3 h-3"></i> Refunded: $<?= number_format($o['refunded_amount'], 4) ?>
+              </a>
+            <?php endif; ?>
+
+            <span class="text-xs text-slate-400 whitespace-nowrap ml-auto">
               <?= date('d M Y, h:i A', strtotime($o['created_at'])) ?>
             </span>
           </div>

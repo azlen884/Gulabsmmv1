@@ -131,6 +131,77 @@ $recentOrders = $db->query("
   <?php endif; ?>
 </div>
 
+<!-- Automation & Advanced Feature Hub -->
+<div class="mb-6">
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
+      <i data-lucide="sparkles" class="w-4 h-4 text-rose-500"></i>
+      Automation & Commerce Engines
+    </h3>
+    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+      All 8 Systems Operational
+    </span>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+    <a href="/admin/ticket-automation" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="bot" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Auto Tickets</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Auto-reply & rules</div>
+    </a>
+
+    <a href="/admin/cron-jobs" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-green-50 text-green-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="clock-4" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Cron Jobs</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">5 Task Runners</div>
+    </a>
+
+    <a href="/admin/refill" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Auto Refill</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Drop protection</div>
+    </a>
+
+    <a href="/admin/refunds" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="wallet" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Auto Refund</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Cancel & partials</div>
+    </a>
+
+    <a href="/admin/drip-feed" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="repeat" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Drip-Feed</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Batch orders</div>
+    </a>
+
+    <a href="/admin/coupons" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="tag" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Coupons</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Promo codes</div>
+    </a>
+
+    <a href="/admin/flash-sales" class="bg-white p-3.5 rounded-2xl border border-slate-200 hover:border-rose-400 hover:shadow-sm transition-all text-center group">
+      <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+        <i data-lucide="zap" class="w-4 h-4"></i>
+      </div>
+      <div class="font-bold text-xs text-slate-800">Flash Sales</div>
+      <div class="text-[10px] text-slate-400 mt-0.5">Deals & badges</div>
+    </a>
+  </div>
+</div>
+
 <!-- Admin Quick Navigation Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
   <a href="/admin/providers" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-rose-400 transition-all block shadow-sm">

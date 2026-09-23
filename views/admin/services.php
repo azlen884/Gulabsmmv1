@@ -40,13 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $max = max($min, (int)($_POST['max_quantity'] ?? 100000));
             $desc = trim($_POST['description'] ?? '');
             $status = in_array($_POST['status'] ?? '', ['active', 'inactive']) ? $_POST['status'] : 'active';
+            $refillEnabled = !empty($_POST['refill_enabled']) ? 1 : 0;
+            $refillDays = max(1, (int)($_POST['refill_days'] ?? 30));
+            $refillLimit = max(1, (int)($_POST['refill_limit'] ?? 10));
+            $dripfeedEnabled = !empty($_POST['dripfeed_enabled']) ? 1 : 0;
 
             if ($catId > 0 && !empty($name) && $rate > 0) {
                 $stmt = $db->prepare("
-                    INSERT INTO services (category_id, name, type, rate, original_rate, margin_type, margin_value, min_quantity, max_quantity, description, status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO services (category_id, name, type, rate, original_rate, margin_type, margin_value, min_quantity, max_quantity, description, status, refill_enabled, refill_days, refill_limit, dripfeed_enabled)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$catId, $name, $type, $rate, $originalRate, $marginType, $marginVal, $min, $max, $desc, $status]);
+                $stmt->execute([$catId, $name, $type, $rate, $originalRate, $marginType, $marginVal, $min, $max, $desc, $status, $refillEnabled, $refillDays, $refillLimit, $dripfeedEnabled]);
                 $msg = "New service \"$name\" created successfully with selling price $$rate.";
             } else {
                 $err = "Please provide a valid service name, category, and rate.";
@@ -71,14 +75,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $max = max($min, (int)($_POST['max_quantity'] ?? 100000));
             $desc = trim($_POST['description'] ?? '');
             $status = in_array($_POST['status'] ?? '', ['active', 'inactive']) ? $_POST['status'] : 'active';
+            $refillEnabled = !empty($_POST['refill_enabled']) ? 1 : 0;
+            $refillDays = max(1, (int)($_POST['refill_days'] ?? 30));
+            $refillLimit = max(1, (int)($_POST['refill_limit'] ?? 10));
+            $dripfeedEnabled = !empty($_POST['dripfeed_enabled']) ? 1 : 0;
 
             if ($svcId > 0 && $catId > 0 && !empty($name) && $rate > 0) {
                 $stmt = $db->prepare("
                     UPDATE services 
-                    SET category_id = ?, name = ?, rate = ?, original_rate = ?, margin_type = ?, margin_value = ?, min_quantity = ?, max_quantity = ?, description = ?, status = ?
+                    SET category_id = ?, name = ?, rate = ?, original_rate = ?, margin_type = ?, margin_value = ?, min_quantity = ?, max_quantity = ?, description = ?, status = ?, refill_enabled = ?, refill_days = ?, refill_limit = ?, dripfeed_enabled = ?
                     WHERE id = ?
                 ");
-                $stmt->execute([$catId, $name, $rate, $originalRate, $marginType, $marginVal, $min, $max, $desc, $status, $svcId]);
+                $stmt->execute([$catId, $name, $rate, $originalRate, $marginType, $marginVal, $min, $max, $desc, $status, $refillEnabled, $refillDays, $refillLimit, $dripfeedEnabled, $svcId]);
                 $msg = "Service #$svcId (\"$name\") updated successfully. Final rate: $$rate.";
             } else {
                 $err = "Invalid service update parameters.";
@@ -414,6 +422,32 @@ require_once __DIR__ . '/../layouts/admin_header.php';
         <textarea name="description" rows="2" placeholder="Details about speed, guarantee, refill..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs"></textarea>
       </div>
 
+      <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+            <input type="checkbox" name="refill_enabled" value="1" checked class="w-4 h-4 rounded text-rose-600">
+            <span>Enable Refill Button</span>
+          </label>
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <div>
+              <span class="text-[10px] text-slate-500 font-semibold block">Warranty (Days)</span>
+              <input type="number" name="refill_days" value="30" min="1" class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs">
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-500 font-semibold block">Max Limit</span>
+              <input type="number" name="refill_limit" value="10" min="1" class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs">
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+            <input type="checkbox" name="dripfeed_enabled" value="1" checked class="w-4 h-4 rounded text-rose-600">
+            <span>Enable Drip-Feed</span>
+          </label>
+          <p class="text-[10px] text-slate-400 mt-2">Allows buyers to schedule batch delivery runs.</p>
+        </div>
+      </div>
+
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Status</label>
         <select name="status" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
@@ -494,6 +528,32 @@ require_once __DIR__ . '/../layouts/admin_header.php';
         <textarea name="description" id="edit-description" rows="2" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs"></textarea>
       </div>
 
+      <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+            <input type="checkbox" name="refill_enabled" id="edit-refill-enabled" value="1" class="w-4 h-4 rounded text-rose-600">
+            <span>Enable Refill Button</span>
+          </label>
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <div>
+              <span class="text-[10px] text-slate-500 font-semibold block">Warranty (Days)</span>
+              <input type="number" name="refill_days" id="edit-refill-days" value="30" min="1" class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs">
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-500 font-semibold block">Max Limit</span>
+              <input type="number" name="refill_limit" id="edit-refill-limit" value="10" min="1" class="w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs">
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="flex items-center gap-2 text-xs font-bold text-slate-700">
+            <input type="checkbox" name="dripfeed_enabled" id="edit-dripfeed-enabled" value="1" class="w-4 h-4 rounded text-rose-600">
+            <span>Enable Drip-Feed</span>
+          </label>
+          <p class="text-[10px] text-slate-400 mt-2">Allows buyers to schedule batch delivery runs.</p>
+        </div>
+      </div>
+
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">Status</label>
         <select name="status" id="edit-status" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
@@ -549,6 +609,10 @@ function openEditServiceModal(s) {
   document.getElementById('edit-max-qty').value = s.max_quantity;
   document.getElementById('edit-description').value = s.description || '';
   document.getElementById('edit-status').value = s.status;
+  document.getElementById('edit-refill-enabled').checked = s.refill_enabled == 1;
+  document.getElementById('edit-refill-days').value = s.refill_days || 30;
+  document.getElementById('edit-refill-limit').value = s.refill_limit || 10;
+  document.getElementById('edit-dripfeed-enabled').checked = s.dripfeed_enabled == 1;
   document.getElementById('edit-service-modal').classList.remove('hidden');
 }
 </script>

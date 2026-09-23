@@ -69,6 +69,27 @@ $adminPage = $adminPage ?? 'dashboard';
       <a href="/admin/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
         <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
       </a>
+      <a href="/admin/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="repeat" class="w-4 h-4 text-blue-400"></i> Drip-Feed Orders
+      </a>
+      <a href="/admin/refill" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400"></i> Auto Refill
+      </a>
+      <a href="/admin/refunds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="wallet" class="w-4 h-4 text-amber-400"></i> Auto Refund
+      </a>
+      <a href="/admin/coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="tag" class="w-4 h-4 text-purple-400"></i> Coupons & Discounts
+      </a>
+      <a href="/admin/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="zap" class="w-4 h-4 text-rose-400"></i> Flash Sales
+      </a>
+      <a href="/admin/ticket-automation" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="bot" class="w-4 h-4 text-cyan-400"></i> Ticket Automation
+      </a>
+      <a href="/admin/cron-jobs" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+        <i data-lucide="clock-4" class="w-4 h-4 text-green-400"></i> Cron Automation
+      </a>
       <a href="/admin/users" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
         <i data-lucide="users" class="w-4 h-4"></i> Users
       </a>
@@ -147,6 +168,27 @@ $adminPage = $adminPage ?? 'dashboard';
         </a>
         <a href="/admin/orders" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'orders' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
           <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+        </a>
+        <a href="/admin/drip-feed" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'drip-feed' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="repeat" class="w-4 h-4 text-blue-400"></i> Drip-Feed Orders
+        </a>
+        <a href="/admin/refill" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refill' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-400"></i> Auto Refill
+        </a>
+        <a href="/admin/refunds" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'refunds' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="wallet" class="w-4 h-4 text-amber-400"></i> Auto Refund
+        </a>
+        <a href="/admin/coupons" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'coupons' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="tag" class="w-4 h-4 text-purple-400"></i> Coupons & Discounts
+        </a>
+        <a href="/admin/flash-sales" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'flash-sales' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="zap" class="w-4 h-4 text-rose-400"></i> Flash Sales
+        </a>
+        <a href="/admin/ticket-automation" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'ticket-automation' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="bot" class="w-4 h-4 text-cyan-400"></i> Ticket Automation
+        </a>
+        <a href="/admin/cron-jobs" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'cron-jobs' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
+          <i data-lucide="clock-4" class="w-4 h-4 text-green-400"></i> Cron Automation
         </a>
         <a href="/admin/users" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-colors <?= $adminPage === 'users' ? 'bg-rose-600 text-white font-bold' : 'hover:bg-slate-800 hover:text-white' ?>">
           <i data-lucide="users" class="w-4 h-4"></i> Users

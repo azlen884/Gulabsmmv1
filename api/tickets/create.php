@@ -21,6 +21,10 @@ if (!empty($subject) && !empty($message)) {
     $db->prepare("INSERT INTO ticket_messages (ticket_id, user_id, message, is_admin) VALUES (?, ?, ?, 0)")
         ->execute([$ticketId, $userId, $message]);
 
+    // Trigger Ticket Automation Rules (auto-reply, auto-tag priority/status)
+    require_once __DIR__ . '/../../includes/TicketAutomationHelper.php';
+    TicketAutomationHelper::processEvent($ticketId, 'ticket_created', $message, $priority, $subject);
+
     header("Location: /support?ticket_id=" . $ticketId);
     exit;
 }

@@ -70,8 +70,13 @@ $tickets = $allTicketsStmt->fetchAll();
           </div>
           <div class="min-w-0 flex-1">
             <div class="flex items-center justify-between mb-1 gap-2">
-              <span class="text-xs font-bold text-slate-800 truncate">
-                <?= $msg['is_admin'] ? 'RoseSMM Support Agent' : e($msg['full_name'] ?: 'You') ?>
+              <span class="text-xs font-bold text-slate-800 truncate flex items-center gap-1.5">
+                <?php if ($msg['is_admin']): ?>
+                  <span class="text-rose-600 font-black">RoseSMM Support</span>
+                  <span class="px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 text-[10px] font-bold">Staff / Automated</span>
+                <?php else: ?>
+                  <?= e($msg['full_name'] ?: 'You') ?>
+                <?php endif; ?>
               </span>
               <span class="text-[10px] text-slate-400 shrink-0 whitespace-nowrap">
                 <?= date('d M Y, h:i A', strtotime($msg['created_at'])) ?>

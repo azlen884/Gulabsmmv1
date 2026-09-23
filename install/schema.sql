@@ -396,3 +396,275 @@ INSERT INTO `teams` (`name`, `leader_id`, `members_count`, `wins`) VALUES
 INSERT INTO `matches` (`tournament_id`, `team1_name`, `team2_name`, `score1`, `score2`, `status`, `match_time`) VALUES
 (2, 'Rose Warriors', 'Alpha Strikers', 2, 1, 'live', NOW()),
 (1, 'Cyber Knights', 'Phantom Squad', 0, 0, 'scheduled', DATE_ADD(NOW(), INTERVAL 5 DAY));
+
+-- =========================================================================
+-- 8 SMM PANEL ADVANCED AUTOMATION & SALES FEATURES SCHEMA
+-- =========================================================================
+
+-- 1. Services Enhancements for Refill
+ALTER TABLE `services` ADD COLUMN IF NOT EXISTS `refill_enabled` TINYINT(1) DEFAULT 0 AFTER `dripfeed`;
+ALTER TABLE `services` ADD COLUMN IF NOT EXISTS `refill_days` INT DEFAULT 30 AFTER `refill_enabled`;
+ALTER TABLE `services` ADD COLUMN IF NOT EXISTS `refill_limit` INT DEFAULT 5 AFTER `refill_days`;
+
+-- 2. Orders Enhancements for Refill, Refund, Drip-Feed, Coupon
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `provider_id` INT DEFAULT NULL AFTER `service_id`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `is_dripfeed` TINYINT(1) DEFAULT 0 AFTER `provider_order_id`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `dripfeed_id` INT DEFAULT NULL AFTER `is_dripfeed`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `refill_status` ENUM('none', 'eligible', 'pending', 'processing', 'completed', 'rejected', 'failed') DEFAULT 'none' AFTER `dripfeed_id`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `refill_count` INT DEFAULT 0 AFTER `refill_status`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `last_refill_at` DATETIME DEFAULT NULL AFTER `refill_count`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `refund_status` ENUM('none', 'pending', 'refunded', 'partial_refunded', 'failed') DEFAULT 'none' AFTER `last_refill_at`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `refunded_amount` DECIMAL(12, 4) DEFAULT 0.0000 AFTER `refund_status`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `coupon_id` INT DEFAULT NULL AFTER `refunded_amount`;
+ALTER TABLE `orders` ADD COLUMN IF NOT EXISTS `discount_amount` DECIMAL(12, 4) DEFAULT 0.0000 AFTER `coupon_id`;
+
+-- 3. Ticket Automation Rules
+CREATE TABLE IF NOT EXISTS `ticket_automation_rules` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(150) NOT NULL,
+  `is_enabled` TINYINT(1) DEFAULT 1,
+  `trigger_event` ENUM('ticket_created', 'ticket_replied', 'status_changed') DEFAULT 'ticket_created',
+  `condition_match_type` ENUM('all', 'any') DEFAULT 'all',
+  `keyword_contains` VARCHAR(255) DEFAULT '',
+  `priority_filter` VARCHAR(50) DEFAULT 'all',
+  `category_filter` VARCHAR(50) DEFAULT 'all',
+  `action_auto_reply` TINYINT(1) DEFAULT 0,
+  `reply_message` TEXT DEFAULT NULL,
+  `action_change_status` VARCHAR(50) DEFAULT NULL,
+  `action_change_priority` VARCHAR(50) DEFAULT NULL,
+  `rule_priority` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 4. Ticket Automation Logs
+CREATE TABLE IF NOT EXISTS `ticket_automation_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `rule_id` INT DEFAULT NULL,
+  `ticket_id` INT NOT NULL,
+  `trigger_event` VARCHAR(50) NOT NULL,
+  `action_taken` TEXT NOT NULL,
+  `status` ENUM('success', 'failed', 'skipped') DEFAULT 'success',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_ticket` (`ticket_id`),
+  KEY `idx_rule` (`rule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. Cron Jobs
+CREATE TABLE IF NOT EXISTS `cron_jobs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(150) NOT NULL,
+  `task_key` VARCHAR(50) NOT NULL UNIQUE,
+  `description` TEXT DEFAULT NULL,
+  `interval_minutes` INT DEFAULT 5,
+  `is_enabled` TINYINT(1) DEFAULT 1,
+  `last_run_at` DATETIME DEFAULT NULL,
+  `next_run_at` DATETIME DEFAULT NULL,
+  `last_status` ENUM('idle', 'running', 'success', 'failed') DEFAULT 'idle',
+  `last_error` TEXT DEFAULT NULL,
+  `execution_count` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 6. Cron Execution Logs
+CREATE TABLE IF NOT EXISTS `cron_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `cron_job_id` INT DEFAULT NULL,
+  `task_key` VARCHAR(50) NOT NULL,
+  `status` ENUM('success', 'failed') NOT NULL,
+  `output` TEXT DEFAULT NULL,
+  `error_message` TEXT DEFAULT NULL,
+  `duration_ms` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_task_key` (`task_key`),
+  KEY `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 7. Auto Refill Requests
+CREATE TABLE IF NOT EXISTS `refill_requests` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `service_id` INT NOT NULL,
+  `provider_id` INT DEFAULT NULL,
+  `provider_order_id` VARCHAR(100) DEFAULT NULL,
+  `provider_refill_id` VARCHAR(100) DEFAULT NULL,
+  `status` ENUM('pending', 'processing', 'completed', 'rejected', 'failed') DEFAULT 'pending',
+  `refill_type` ENUM('auto', 'manual') DEFAULT 'auto',
+  `attempts` INT DEFAULT 1,
+  `provider_response` TEXT DEFAULT NULL,
+  `error_message` TEXT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 8. Auto Refund Records
+CREATE TABLE IF NOT EXISTS `refund_records` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `amount` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'USD',
+  `reason` VARCHAR(255) NOT NULL,
+  `refund_type` ENUM('auto', 'manual') DEFAULT 'auto',
+  `status` ENUM('completed', 'failed') DEFAULT 'completed',
+  `wallet_transaction_id` INT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_order` (`order_id`),
+  KEY `idx_user` (`user_id`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 9. Drip-Feed Orders
+CREATE TABLE IF NOT EXISTS `drip_feed_orders` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `service_id` INT NOT NULL,
+  `link` VARCHAR(500) NOT NULL,
+  `total_quantity` INT NOT NULL,
+  `runs` INT NOT NULL,
+  `interval_minutes` INT NOT NULL,
+  `quantity_per_run` INT NOT NULL,
+  `current_run` INT DEFAULT 0,
+  `status` ENUM('active', 'paused', 'completed', 'canceled') DEFAULT 'active',
+  `total_charge` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'USD',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_user` (`user_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 10. Drip-Feed Batches
+CREATE TABLE IF NOT EXISTS `drip_feed_batches` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `drip_feed_id` INT NOT NULL,
+  `run_number` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  `order_id` INT DEFAULT NULL,
+  `status` ENUM('pending', 'processing', 'completed', 'failed') DEFAULT 'pending',
+  `scheduled_at` DATETIME NOT NULL,
+  `executed_at` DATETIME DEFAULT NULL,
+  `provider_order_id` VARCHAR(100) DEFAULT NULL,
+  `response` TEXT DEFAULT NULL,
+  `error_message` TEXT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_drip_feed` (`drip_feed_id`),
+  KEY `idx_scheduled` (`scheduled_at`, `status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 11. Mass Order Batches
+CREATE TABLE IF NOT EXISTS `mass_order_batches` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `total_orders` INT NOT NULL,
+  `successful_orders` INT DEFAULT 0,
+  `failed_orders` INT DEFAULT 0,
+  `total_charge` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'USD',
+  `raw_input` TEXT NOT NULL,
+  `results_summary` LONGTEXT DEFAULT NULL,
+  `status` ENUM('completed', 'partial', 'failed') DEFAULT 'completed',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 12. Coupons System
+CREATE TABLE IF NOT EXISTS `coupons` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `code` VARCHAR(50) NOT NULL UNIQUE,
+  `description` VARCHAR(255) DEFAULT '',
+  `discount_type` ENUM('percentage', 'fixed') NOT NULL DEFAULT 'percentage',
+  `discount_value` DECIMAL(10, 4) NOT NULL,
+  `min_order_amount` DECIMAL(10, 4) DEFAULT 0.0000,
+  `max_discount` DECIMAL(10, 4) DEFAULT NULL,
+  `total_usage_limit` INT DEFAULT 0,
+  `per_user_limit` INT DEFAULT 1,
+  `used_count` INT DEFAULT 0,
+  `service_ids` TEXT DEFAULT NULL,
+  `category_ids` TEXT DEFAULT NULL,
+  `is_enabled` TINYINT(1) DEFAULT 1,
+  `starts_at` DATETIME DEFAULT NULL,
+  `expires_at` DATETIME DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_code` (`code`),
+  KEY `idx_is_enabled` (`is_enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 13. Coupon Usages
+CREATE TABLE IF NOT EXISTS `coupon_usages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `coupon_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `order_id` INT DEFAULT NULL,
+  `discount_amount` DECIMAL(12, 4) NOT NULL,
+  `original_amount` DECIMAL(12, 4) NOT NULL,
+  `final_amount` DECIMAL(12, 4) NOT NULL,
+  `currency` VARCHAR(10) DEFAULT 'USD',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_coupon` (`coupon_id`),
+  KEY `idx_user` (`user_id`),
+  KEY `idx_order` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 14. Flash Sales System
+CREATE TABLE IF NOT EXISTS `flash_sales` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(150) NOT NULL,
+  `description` TEXT DEFAULT NULL,
+  `banner_text` VARCHAR(255) DEFAULT '⚡ FLASH SALE - SPECIAL LIMITED TIME DISCOUNT! ⚡',
+  `discount_type` ENUM('percentage', 'fixed_discount', 'fixed_price') DEFAULT 'percentage',
+  `discount_value` DECIMAL(10, 4) NOT NULL,
+  `applies_to` ENUM('all', 'category', 'service') DEFAULT 'service',
+  `target_ids` TEXT DEFAULT NULL,
+  `starts_at` DATETIME NOT NULL,
+  `ends_at` DATETIME NOT NULL,
+  `sale_limit` INT DEFAULT 0,
+  `sales_count` INT DEFAULT 0,
+  `is_enabled` TINYINT(1) DEFAULT 1,
+  `badge_text` VARCHAR(50) DEFAULT 'FLASH SALE',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `idx_starts_ends` (`starts_at`, `ends_at`, `is_enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed Settings for 8 Features
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
+('ticket_automation_enabled', '1'),
+('cron_automation_enabled', '1'),
+('auto_refill_enabled', '1'),
+('auto_refund_enabled', '1'),
+('auto_refund_statuses', 'canceled,partial'),
+('dripfeed_enabled', '1'),
+('mass_order_enabled', '1'),
+('coupons_enabled', '1'),
+('flash_sales_enabled', '1')
+ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
+
+-- Seed Default Scheduled Cron Jobs
+INSERT INTO `cron_jobs` (`name`, `task_key`, `description`, `interval_minutes`, `is_enabled`, `next_run_at`, `last_status`) VALUES
+('Auto Refill Engine', 'auto_refill', 'Submits real refill requests to SMM API providers for eligible dropped orders', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle'),
+('Auto Refund Processor', 'auto_refund', 'Automatically credits user wallets for canceled and partial provider orders', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle'),
+('Drip-Feed Batch Runner', 'drip_feed', 'Dispatches scheduled batches for multi-run drip-feed orders to providers', 2, 1, DATE_ADD(NOW(), INTERVAL 2 MINUTE), 'idle'),
+('Flash Sale Engine', 'flash_sale', 'Manages live flash sale statuses, limits, and pricing activations in real-time', 1, 1, DATE_ADD(NOW(), INTERVAL 1 MINUTE), 'idle'),
+('Ticket Automation Sweep', 'ticket_automation', 'Evaluates ticket conditions, triggers auto-replies, and enforces SLA status updates', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
+
+-- Seed Default Ticket Automation Rules
+INSERT INTO `ticket_automation_rules` (`name`, `is_enabled`, `trigger_event`, `condition_match_type`, `keyword_contains`, `priority_filter`, `category_filter`, `action_auto_reply`, `reply_message`, `action_change_status`, `action_change_priority`, `rule_priority`) VALUES
+('Urgent Priority Fast Response', 1, 'ticket_created', 'all', '', 'high', 'all', 1, 'Hello! Your high priority ticket has been escalated to our senior technical response team. We are actively reviewing your case.', 'answered', 'high', 1),
+('Drop & Refill Fast Help', 1, 'ticket_created', 'any', 'drop,refill,fell,decrease', 'all', 'all', 1, 'Hi there! If you are inquiring about a drop on your order, please make sure your account is public. Eligible refill services can be refilled automatically through the Auto Refill system or Order History tab.', 'answered', NULL, 2);
+
+-- Seed Default Coupons
+INSERT INTO `coupons` (`code`, `description`, `discount_type`, `discount_value`, `min_order_amount`, `max_discount`, `total_usage_limit`, `per_user_limit`, `used_count`, `is_enabled`, `starts_at`, `expires_at`) VALUES
+('WELCOME10', 'Welcome 10% Discount on any order over $1.00', 'percentage', 10.0000, 1.0000, 15.0000, 500, 2, 0, 1, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 30 DAY)),
+('ROSE2OFF', 'Flat $2.00 Off on orders above $5.00', 'fixed', 2.0000, 5.0000, 2.0000, 200, 1, 0, 1, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_ADD(NOW(), INTERVAL 15 DAY));
+
+-- Seed Default Flash Sale
+INSERT INTO `flash_sales` (`title`, `description`, `banner_text`, `discount_type`, `discount_value`, `applies_to`, `target_ids`, `starts_at`, `ends_at`, `is_enabled`, `badge_text`) VALUES
+('Weekend Engagement Flash Sale', 'Get a massive 15% instant discount across all Instagram & YouTube services!', '⚡ FLASH SALE: Extra 15% OFF Instagram & YouTube services! Limited time only! ⚡', 'percentage', 15.0000, 'category', '1,2', DATE_SUB(NOW(), INTERVAL 1 HOUR), DATE_ADD(NOW(), INTERVAL 7 DAY), 1, '15% OFF');
+

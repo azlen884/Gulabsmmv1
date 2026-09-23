@@ -32,6 +32,16 @@ function ensureDatabase() {
       }
       if (connected) {
         console.log('[RoseSMM] MariaDB connected successfully.');
+        try {
+          execSync('mariadb -u root -e "CREATE DATABASE IF NOT EXISTS smm_panel; CREATE USER IF NOT EXISTS \'root\'@\'127.0.0.1\' IDENTIFIED BY \'\'; CREATE USER IF NOT EXISTS \'root\'@\'localhost\' IDENTIFIED BY \'\'; ALTER USER \'root\'@\'127.0.0.1\' IDENTIFIED BY \'\'; ALTER USER \'root\'@\'localhost\' IDENTIFIED BY \'\'; GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'127.0.0.1\' WITH GRANT OPTION; GRANT ALL PRIVILEGES ON *.* TO \'root\'@\'localhost\' WITH GRANT OPTION; FLUSH PRIVILEGES;"', { stdio: 'ignore' });
+          const hasTables = execSync('mariadb -u root smm_panel -e "SHOW TABLES;"', { encoding: 'utf8' });
+          if (!hasTables || hasTables.trim().length === 0) {
+            console.log('[RoseSMM] Initializing smm_panel database from database.sql...');
+            execSync('mariadb -u root smm_panel < database.sql', { stdio: 'ignore' });
+          }
+        } catch (dbInitErr) {
+          console.warn('[RoseSMM] Database permission setup notice:', dbInitErr.message);
+        }
       } else {
         console.warn('[RoseSMM] MariaDB start check timed out, continuing...');
       }
@@ -57,6 +67,15 @@ phpServer.on('error', (err) => {
 phpServer.on('exit', (code, signal) => {
   console.log(`[RoseSMM] PHP server exited with code ${code} and signal ${signal}`);
 });
+
+// 3. Periodic Background Cron Job Runner (Every 60s)
+setInterval(() => {
+  try {
+    execSync('php cron.php', { stdio: 'ignore', timeout: 15000 });
+  } catch (cronErr) {
+    // Ignore transient cron errors
+  }
+}, 60000);
 
 process.on('SIGINT', () => {
   phpServer.kill('SIGINT');

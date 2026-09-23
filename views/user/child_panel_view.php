@@ -22,7 +22,10 @@ $stmt->execute([$panelId, $userId]);
 $panel = $stmt->fetch();
 
 if (!$panel) {
-    header("Location: /child-panels");
+    if (!headers_sent()) {
+        header("Location: /child-panels");
+    }
+    echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/child-panels"></head><body><script>window.location.href="/child-panels";</script><p>Child Panel not found. <a href="/child-panels">Return to Child Panels</a></p></body></html>';
     exit;
 }
 

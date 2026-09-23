@@ -16,14 +16,28 @@ $panelId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $stmt = $db->prepare("
     SELECT cp.*, u.username as owner_username, u.email as owner_email, u.balance as owner_balance 
     FROM child_panels cp 
-    JOIN users u ON cp.user_id = u.id 
+    LEFT JOIN users u ON cp.user_id = u.id 
     WHERE cp.id = ?
 ");
 $stmt->execute([$panelId]);
 $panel = $stmt->fetch();
 
 if (!$panel) {
-    header("Location: /admin/child-panels");
+    require_once __DIR__ . '/../layouts/admin_header.php';
+    ?>
+    <div class="max-w-2xl mx-auto my-12 bg-white rounded-3xl border border-slate-200 p-8 shadow-sm text-center">
+      <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="alert-circle" class="w-8 h-8"></i>
+      </div>
+      <h1 class="text-xl font-black text-slate-800 tracking-tight mb-2">Child Panel Not Found</h1>
+      <p class="text-xs text-slate-500 mb-6">The requested Child Panel #<?= htmlspecialchars((string)$panelId) ?> does not exist or has been removed from the database.</p>
+      <a href="/admin/child-panels" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-sm transition-all">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Return to Child Panels</span>
+      </a>
+    </div>
+    <?php
+    require_once __DIR__ . '/../layouts/admin_footer.php';
     exit;
 }
 
@@ -123,20 +137,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $nameservers = ChildPanelHelper::getNameservers();
 $plans = ChildPanelHelper::getPlans();
-$currentPlan = $plans[$panel['plan']] ?? $plans['basic'];
+$currentPlan = $plans[$panel['plan'] ?? 'basic'] ?? ($plans['basic'] ?? ['name' => 'Basic Plan']);
 
-// Decode DNS details
-$dnsDetails = !empty($panel['dns_details']) ? json_decode($panel['dns_details'], true) : [];
+// Decode DNS details safely
+$dnsDetails = [];
+if (!empty($panel['dns_details'])) {
+    $decoded = json_decode($panel['dns_details'], true);
+    if (is_array($decoded)) {
+        $dnsDetails = $decoded;
+    }
+}
 
 // Connected Providers Count (if Advanced)
-$providerCount = (int)$db->prepare("SELECT COUNT(*) FROM child_panel_providers WHERE child_panel_id = ?");
-$providerCount->execute([$panelId]);
-$providersTotal = (int)$providerCount->fetchColumn();
+$providerStmt = $db->prepare("SELECT COUNT(*) FROM child_panel_providers WHERE child_panel_id = ?");
+$providerStmt->execute([$panelId]);
+$providersTotal = (int)$providerStmt->fetchColumn();
 
 // Imported Services Count
-$srvCount = (int)$db->prepare("SELECT COUNT(*) FROM child_panel_services WHERE child_panel_id = ?");
-$srvCount->execute([$panelId]);
-$servicesTotal = (int)$srvCount->fetchColumn();
+$srvStmt = $db->prepare("SELECT COUNT(*) FROM child_panel_services WHERE child_panel_id = ?");
+$srvStmt->execute([$panelId]);
+$servicesTotal = (int)$srvStmt->fetchColumn();
 
 require_once __DIR__ . '/../layouts/admin_header.php';
 ?>

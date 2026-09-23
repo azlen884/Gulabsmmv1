@@ -27,64 +27,124 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($fullName) || empty($username) || empty($email) || empty($password)) {
         $error = 'Please fill out all required fields.';
-    } elseif ($password !== $confirmPassword) {
-        $error = 'Passwords do not match.';
-    } elseif (strlen($password) < 6) {
-        $error = 'Password must be at least 6 characters.';
+    } elseif (strlen($username) < 3 || strlen($username) > 30 || !preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+        $error = 'Username must be 3-30 characters and contain only letters, numbers, and underscores.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters.';
+    } elseif ($password !== $confirmPassword) {
+        $error = 'Passwords do not match. Please re-enter your password.';
     } else {
-        $db = getDB();
-        // Check if username or email already exists
-        $checkStmt = $db->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-        $checkStmt->execute([$username, $email]);
-        if ($checkStmt->fetch()) {
-            $error = 'Username or email is already registered.';
-        } else {
-            $hash = password_hash($password, PASSWORD_BCRYPT);
-            $apiKey = 'rose_' . bin2hex(random_bytes(16));
+        try {
+            $db = getDB();
 
-            $insertStmt = $db->prepare("
-                INSERT INTO users (full_name, username, email, password, role, balance, currency, api_key, status)
-                VALUES (?, ?, ?, ?, 'user', 0.0000, 'USD', ?, 'active')
-            ");
-            $insertStmt->execute([$fullName, $username, $email, $hash, $apiKey]);
-            $newUserId = (int)$db->lastInsertId();
+            // Check if username or email already exists with specific messages
+            $checkStmt = $db->prepare("SELECT id, username, email FROM users WHERE username = ? OR email = ? LIMIT 1");
+            $checkStmt->execute([$username, $email]);
+            $existingUser = $checkStmt->fetch();
 
-            // Generate unique permanent referral code for the new user
-            $userRefCode = ReferralHelper::generateUniqueReferralCode($newUserId, $username);
-            $db->prepare("UPDATE users SET referral_code = ? WHERE id = ?")->execute([$userRefCode, $newUserId]);
+            if ($existingUser) {
+                if (strcasecmp($existingUser['username'], $username) === 0) {
+                    $error = 'This username is already taken. Please choose another username.';
+                } else {
+                    $error = 'An account with this email address already exists. Please sign in or use another email.';
+                }
+            } else {
+                $hash = password_hash($password, PASSWORD_BCRYPT);
+                $apiKey = 'rose_' . bin2hex(random_bytes(16));
 
-            // Server-side permanent referral attribution (anti-tamper & anti-loop)
-            if (!empty($submittedRef)) {
-                ReferralHelper::attributeReferral($newUserId, $submittedRef);
-                unset($_SESSION['pending_ref']);
+                $insertStmt = $db->prepare("
+                    INSERT INTO users (full_name, username, email, password, role, balance, currency, api_key, status)
+                    VALUES (?, ?, ?, ?, 'user', 0.0000, 'USD', ?, 'active')
+                ");
+                $insertStmt->execute([$fullName, $username, $email, $hash, $apiKey]);
+                $newUserId = (int)$db->lastInsertId();
+
+                if ($newUserId > 0) {
+                    // Generate unique permanent referral code for the new user
+                    try {
+                        $userRefCode = ReferralHelper::generateUniqueReferralCode($newUserId, $username);
+                        $db->prepare("UPDATE users SET referral_code = ? WHERE id = ?")->execute([$userRefCode, $newUserId]);
+
+                        // Server-side permanent referral attribution (anti-tamper & anti-loop)
+                        if (!empty($submittedRef)) {
+                            ReferralHelper::attributeReferral($newUserId, $submittedRef);
+                            unset($_SESSION['pending_ref']);
+                        }
+                    } catch (Throwable $refEx) {
+                        error_log("[RoseSMM Registration Notice] Referral hook: " . $refEx->getMessage());
+                    }
+
+                    // Welcome Notification
+                    try {
+                        $db->prepare("
+                            INSERT INTO notifications (user_id, title, message, type)
+                            VALUES (?, 'Welcome to RoseSMM!', 'Your account has been created successfully. Welcome aboard!', 'promo')
+                        ")->execute([$newUserId]);
+                    } catch (Throwable $notifEx) {
+                        error_log("[RoseSMM Registration Notice] Notification hook: " . $notifEx->getMessage());
+                    }
+
+                    // Ensure clean session initialization
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
+                    $_SESSION['user_id'] = $newUserId;
+                    $_SESSION['user_role'] = 'user';
+                    $_SESSION['username'] = $username;
+                    $_SESSION['user_currency'] = 'USD';
+
+                    // Cleanly clear output buffers to prevent whitespace/BOM from breaking redirect headers
+                    while (ob_get_level() > 0) {
+                        ob_end_clean();
+                    }
+
+                    $targetUrl = '/dashboard';
+                    if (!headers_sent()) {
+                        header("Location: " . $targetUrl, true, 302);
+                    }
+
+                    // Complete fallback HTML representation preventing any blank white page
+                    echo '<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=' . htmlspecialchars($targetUrl) . '">
+  <title>Account Created - RoseSMM</title>
+  <script>window.location.replace(' . json_encode($targetUrl) . ');</script>
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; background: #FFF9FA; color: #1e293b; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px;">
+  <div style="background: white; border: 1px solid #FCE4E8; border-radius: 24px; padding: 32px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.08);">
+    <div style="width: 48px; height: 48px; border-radius: 16px; background: #FFF0F3; color: #E11D48; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-weight: bold; font-size: 20px;">✓</div>
+    <h2 style="margin: 0 0 8px; font-size: 20px; font-weight: 800; color: #0f172a;">Welcome to RoseSMM!</h2>
+    <p style="margin: 0 0 20px; font-size: 13px; color: #64748b;">Your account was created successfully. Redirecting you to the dashboard...</p>
+    <a href="' . htmlspecialchars($targetUrl) . '" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #FF3B69, #E11D48); color: white; text-decoration: none; border-radius: 16px; font-weight: bold; font-size: 13px; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);">Proceed to Dashboard →</a>
+  </div>
+</body>
+</html>';
+                    exit;
+                } else {
+                    $error = 'Failed to generate user account record. Please try again.';
+                }
             }
-
-            // Auto-login
-            $_SESSION['user_id'] = $newUserId;
-            $_SESSION['user_role'] = 'user';
-            $_SESSION['username'] = $username;
-            $_SESSION['user_currency'] = 'USD';
-
-            // Welcome Notification
-            $db->prepare("
-                INSERT INTO notifications (user_id, title, message, type)
-                VALUES (?, 'Welcome to RoseSMM!', 'Your account has been created successfully. Claim your 10% deposit bonus today!', 'promo')
-            ")->execute([$newUserId]);
-
-            // Persist session to storage before terminating request
-            session_write_close();
-
-            $targetUrl = '/dashboard';
-            if (!headers_sent()) {
-                header("Location: " . $targetUrl, true, 302);
+        } catch (PDOException $pdoEx) {
+            error_log("[RoseSMM Registration Error] Database query failure: " . $pdoEx->getMessage());
+            if ($pdoEx->getCode() === '23000' || strpos($pdoEx->getMessage(), 'Duplicate entry') !== false) {
+                if (stripos($pdoEx->getMessage(), 'username') !== false) {
+                    $error = 'This username is already taken. Please choose another username.';
+                } elseif (stripos($pdoEx->getMessage(), 'email') !== false) {
+                    $error = 'This email address is already registered. Please sign in or use another email.';
+                } else {
+                    $error = 'An account with this username or email already exists.';
+                }
+            } else {
+                $error = 'Database service error during registration. Please try again or contact support.';
             }
-            // Fallback redirect representation to prevent any blank white page
-            echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' . htmlspecialchars($targetUrl) . '">';
-            echo '<script>window.location.replace(' . json_encode($targetUrl) . ');</script></head>';
-            echo '<body><p>Registration successful! Redirecting to dashboard... <a href="' . htmlspecialchars($targetUrl) . '">Click here</a></p></body></html>';
-            exit;
+        } catch (Throwable $ex) {
+            error_log("[RoseSMM Registration Error] Unexpected error: " . $ex->getMessage());
+            $error = 'An unexpected system error occurred. Please try again.';
         }
     }
 }
@@ -170,6 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input 
           type="text" 
           name="full_name" 
+          value="<?= e($fullName ?? '') ?>"
           required 
           placeholder="e.g. John Doe" 
           class="w-full px-4 py-2.5 bg-rose-50/20 border border-[#FCE4E8] rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:border-rose-400"
@@ -181,6 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input 
           type="text" 
           name="username" 
+          value="<?= e($username ?? '') ?>"
           required 
           placeholder="e.g. johndoe" 
           class="w-full px-4 py-2.5 bg-rose-50/20 border border-[#FCE4E8] rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:border-rose-400"
@@ -192,6 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input 
           type="email" 
           name="email" 
+          value="<?= e($email ?? '') ?>"
           required 
           placeholder="e.g. john@example.com" 
           class="w-full px-4 py-2.5 bg-rose-50/20 border border-[#FCE4E8] rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:border-rose-400"

@@ -43,6 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $settings['telegram_popup_title'] = $telegramTitle;
     $settings['telegram_popup_message'] = $telegramMessage;
 
+    // Notice Popup Settings
+    $noticeEnabled = isset($_POST['notice_popup_enabled']) ? '1' : '0';
+    $noticeTitle = trim($_POST['notice_popup_title'] ?? 'Important Notice');
+    if ($noticeTitle === '') $noticeTitle = 'Important Notice';
+    $noticeMessage = trim($_POST['notice_popup_message'] ?? 'Scheduled maintenance will be carried out tonight.');
+    if ($noticeMessage === '') $noticeMessage = 'Scheduled maintenance will be carried out tonight.';
+
+    $settings['notice_popup_enabled'] = $noticeEnabled;
+    $settings['notice_popup_title'] = $noticeTitle;
+    $settings['notice_popup_message'] = $noticeMessage;
+
     foreach ($settings as $key => $val) {
         $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = ?");
         $stmt->execute([$key, $val, $val]);
@@ -66,6 +77,9 @@ $telegramPopupEnabled = get_setting('telegram_popup_enabled', '0');
 $telegramGroupUrl = get_setting('telegram_group_url', '');
 $telegramPopupTitle = get_setting('telegram_popup_title', 'Stay Connected With Us');
 $telegramPopupMessage = get_setting('telegram_popup_message', 'Join our official Telegram community for important updates, announcements, offers and latest news.');
+$noticePopupEnabled = get_setting('notice_popup_enabled', '0');
+$noticePopupTitle = get_setting('notice_popup_title', 'Important Notice');
+$noticePopupMessage = get_setting('notice_popup_message', 'Scheduled maintenance will be carried out tonight.');
 $activeTheme = get_active_theme();
 $availableThemes = get_available_themes();
 ?>
@@ -235,6 +249,60 @@ $availableThemes = get_available_themes();
                 class="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-sky-500 text-slate-800"
               >
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Notice Popup Setting -->
+      <div class="pt-5 border-t border-slate-100">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
+            <i data-lucide="bell" class="w-4.5 h-4.5"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-800">Admin Notice Popup</h3>
+            <p class="text-[11px] text-slate-400">Display an urgent notice, maintenance alert, or system announcement modal to users.</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 bg-slate-50/70 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Notice Popup Status</div>
+              <div class="text-[11px] text-slate-400">Enable or disable the announcement notice popup on user portal pages.</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input 
+                type="checkbox" 
+                name="notice_popup_enabled" 
+                value="1" 
+                <?= $noticePopupEnabled === '1' ? 'checked' : '' ?> 
+                class="sr-only peer"
+              >
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+            </label>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Notice Title</label>
+            <input 
+              type="text" 
+              name="notice_popup_title" 
+              value="<?= e($noticePopupTitle) ?>" 
+              placeholder="Important Notice" 
+              class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-amber-500 text-slate-800"
+            >
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Notice Content / Message</label>
+            <textarea 
+              name="notice_popup_message" 
+              rows="3" 
+              placeholder="Scheduled maintenance will be carried out tonight..." 
+              class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-amber-500 text-slate-800"
+            ><?= e($noticePopupMessage) ?></textarea>
+            <p class="text-[10px] text-slate-400 mt-1">This message will be displayed in the compact professional notice popup to logged-in users.</p>
           </div>
         </div>
       </div>

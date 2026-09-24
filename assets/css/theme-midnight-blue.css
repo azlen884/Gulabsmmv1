@@ -963,8 +963,10 @@ body.theme-midnight-blue .modal-backdrop {
 
 body.theme-midnight-blue .fixed.inset-0 .bg-white,
 body.theme-midnight-blue #modal .bg-white,
-body.theme-midnight-blue [id*="modal"] .bg-white {
-  background-color: #0B1120 !important;
+body.theme-midnight-blue [id*="modal"] .bg-white,
+body.theme-midnight-blue #telegram-popup-card,
+body.theme-midnight-blue #notice-popup-card {
+  background-color: #0F172A !important;
   border: 1px solid #1E293B !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 99, 235, 0.15) !important;
 }

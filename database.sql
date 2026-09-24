@@ -692,5 +692,12 @@ INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
 ('telegram_popup_message', 'Join our official Telegram community for important updates, announcements, offers and latest news.')
 ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
 
+-- 16. Admin Notice Popup Settings
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
+('notice_popup_enabled', '0'),
+('notice_popup_title', 'Important Notice'),
+('notice_popup_message', 'Scheduled maintenance will be carried out tonight.')
+ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
+
 
 

@@ -69,6 +69,60 @@ $unreadCount = (int)$notifStmt->fetchColumn();
       background: #FCD3DC;
       border-radius: 9999px;
     }
+    /* Base theme styles for Top Navbar & Services Catalog */
+    .navbar-action-btn {
+      background: linear-gradient(135deg, #FF3B69, #E11D48);
+      color: #FFFFFF;
+    }
+    .navbar-action-btn:hover {
+      background: #E11D48;
+    }
+    .navbar-notif-badge {
+      background: #FF3B69;
+      color: #FFFFFF;
+    }
+    .service-header-action-btn {
+      background: linear-gradient(135deg, #FF3B69, #E11D48);
+      color: #FFFFFF;
+    }
+    .service-category-pill {
+      background: #FFF0F3;
+      color: #475569;
+    }
+    .service-category-pill:hover {
+      background: #FFE2E8;
+      color: #E11D48;
+    }
+    .service-category-pill.active {
+      background: #FF3B69;
+      color: #FFFFFF;
+    }
+    .service-item-icon {
+      background: #FFF0F3;
+      color: #FF3B69;
+    }
+    .service-item-cat {
+      background: #FFF0F3;
+      color: #E11D48;
+    }
+    .service-item-badge {
+      background: #FF3B69;
+      color: #FFFFFF;
+    }
+    .service-item-rate {
+      color: #E11D48;
+    }
+    .service-item-btn {
+      background: #FF3B69;
+      color: #FFFFFF;
+    }
+    .service-item-btn:hover {
+      background: #E11D48;
+    }
+    .service-empty-btn {
+      background: #FF3B69;
+      color: #FFFFFF;
+    }
   </style>
   <?php render_theme_head_tags(); ?>
 </head>
@@ -357,85 +411,95 @@ $unreadCount = (int)$notifStmt->fetchColumn();
 
   <!-- Main Content Wrapper -->
   <div class="flex-1 flex flex-col min-w-0">
-    <!-- Top Navbar matching screenshot, responsive on mobile without overflow -->
-    <header class="bg-white border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4">
-      <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
-        <button type="button" onclick="toggleMobileSidebar()" class="p-1.5 sm:p-2 -ml-1 text-slate-500 hover:text-slate-700 lg:hidden shrink-0" aria-label="Open navigation menu">
+    <!-- Modern Premium SaaS Top Navbar -->
+    <header class="user-top-navbar bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-3 sm:px-5 lg:px-8 py-2 sm:py-2.5 flex items-center justify-between gap-2.5 sm:gap-4 sticky top-0 z-30 transition-all">
+      <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-lg">
+        <button type="button" onclick="toggleMobileSidebar()" class="navbar-menu-toggle p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors lg:hidden shrink-0" aria-label="Open navigation menu">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
 
-        <!-- Search Bar -->
+        <!-- Modern Compact Search Bar with Keyboard Hint -->
         <div class="relative w-full min-w-0">
-          <i data-lucide="search" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <i data-lucide="search" class="navbar-search-icon w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none transition-colors"></i>
           <input 
             type="text" 
             id="top-service-search"
-            placeholder="Search services..." 
-            class="w-full pl-8 sm:pl-10 pr-3 sm:pr-9 py-1.5 sm:py-2 text-xs sm:text-sm bg-rose-50/20 border border-[#FCE4E8] rounded-full focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all text-slate-700 placeholder-slate-400"
+            placeholder="Search services, platforms, IDs..." 
+            class="navbar-search-input w-full pl-9 sm:pl-10 pr-12 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all text-slate-700 placeholder-slate-400"
             onkeydown="if(event.key==='Enter') window.location.href='/services?search='+encodeURIComponent(this.value)"
           >
-          <i data-lucide="search" class="w-3 h-3 text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 hidden sm:block"></i>
+          <span class="navbar-search-kbd hidden sm:inline-flex items-center absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-white border border-slate-200 rounded shadow-2xs pointer-events-none">
+            ↵
+          </span>
         </div>
       </div>
 
       <!-- Right Header Actions -->
       <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-        <!-- Notification Bell -->
-        <a href="/notifications" class="relative p-1.5 sm:p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Notifications">
-          <i data-lucide="bell" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-          <?php if ($unreadCount > 0): ?>
-            <span class="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
-              <?= $unreadCount ?>
-            </span>
-          <?php endif; ?>
-        </a>
-
-        <!-- Dark/Light Theme Icon -->
-        <button type="button" class="p-1.5 sm:p-2 rounded-full text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Toggle Dark/Light">
-          <i data-lucide="moon" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-        </button>
-
-        <!-- Currency Selector (Available only for authenticated user as required!) -->
+        <!-- Currency Selector -->
         <div class="relative" id="currency-dropdown-wrapper">
           <button 
             type="button" 
             onclick="toggleCurrencyDropdown()"
-            class="flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full border border-[#FCE4E8] text-[11px] sm:text-xs font-semibold text-slate-700 hover:bg-rose-50/50 transition-colors"
+            class="navbar-currency-btn flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-slate-200 bg-white text-[11px] sm:text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
+            title="Switch Currency"
           >
-            <span><?= $userCurrency === 'INR' ? '🇮🇳' : ($userCurrency === 'USD' ? '🇺🇸' : ($userCurrency === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
-            <span><?= e($userCurrency) ?></span>
-            <i data-lucide="chevron-down" class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400"></i>
+            <span class="text-xs"><?= $userCurrency === 'INR' ? '🇮🇳' : ($userCurrency === 'USD' ? '🇺🇸' : ($userCurrency === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
+            <span class="font-bold"><?= e($userCurrency) ?></span>
+            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 transition-transform"></i>
           </button>
           
-          <div id="currency-dropdown" class="hidden absolute right-0 mt-2 w-36 bg-white border border-[#FCE4E8] rounded-xl shadow-lg py-1 z-30">
+          <div id="currency-dropdown" class="navbar-currency-dropdown hidden absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-2xl shadow-xl py-1.5 z-40">
+            <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Select Currency</div>
             <?php foreach ($currencies as $c): ?>
               <button 
                 type="button" 
                 onclick="changeCurrency('<?= e($c['code']) ?>')" 
-                class="w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-rose-50 transition-colors <?= $userCurrency === $c['code'] ? 'text-rose-600 font-bold bg-rose-50/60' : 'text-slate-700' ?>"
+                class="w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-slate-50 transition-colors <?= $userCurrency === $c['code'] ? 'text-slate-900 font-bold bg-slate-50' : 'text-slate-600' ?>"
               >
-                <span><?= e($c['name']) ?> (<?= e($c['symbol']) ?>)</span>
-                <span><?= e($c['code']) ?></span>
+                <span class="flex items-center gap-1.5">
+                  <span><?= $c['code'] === 'INR' ? '🇮🇳' : ($c['code'] === 'USD' ? '🇺🇸' : ($c['code'] === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
+                  <span><?= e($c['name']) ?></span>
+                </span>
+                <span class="font-mono text-[11px] text-slate-400"><?= e($c['symbol']) ?></span>
               </button>
             <?php endforeach; ?>
           </div>
         </div>
 
-        <!-- Wallet Balance Chip matching screenshot -->
-        <a href="/wallet" class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-[#FCE4E8] bg-white hover:bg-rose-50/30 transition-colors">
-          <div class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">
+        <!-- Wallet Balance Chip -->
+        <a href="/wallet" class="navbar-wallet-chip hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-all shadow-2xs group" title="View Wallet Balance">
+          <div class="navbar-wallet-icon w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 transition-transform group-hover:scale-105">
             <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
           </div>
           <div class="text-left">
-            <span class="block text-xs font-bold text-slate-800"><?= format_price($user['balance']) ?></span>
-            <span class="block text-[9px] text-slate-400 uppercase font-medium leading-none">Wallet Balance</span>
+            <span class="navbar-wallet-text block text-xs font-bold text-slate-800 leading-tight"><?= format_price($user['balance']) ?></span>
+            <span class="block text-[9px] text-slate-400 uppercase font-medium leading-none">Wallet</span>
           </div>
         </a>
 
-        <!-- Add Funds Action Button matching screenshot -->
-        <a href="/add-funds" class="inline-flex items-center gap-1 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-[11px] sm:text-xs font-bold shadow-sm hover:shadow transition-all whitespace-nowrap">
-          <i data-lucide="plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i>
+        <!-- Add Funds Action Button -->
+        <a href="/add-funds" class="navbar-action-btn inline-flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-[11px] sm:text-xs shadow-sm hover:shadow transition-all whitespace-nowrap">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
           <span>Add Funds</span>
+        </a>
+
+        <!-- Notification Bell with Dynamic Badge (Hides completely if unreadCount == 0) -->
+        <a href="/notifications" class="navbar-icon-btn relative p-2 rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Notifications">
+          <i data-lucide="bell" class="w-4 h-4 sm:w-4.5 sm:h-4.5"></i>
+          <?php if ($unreadCount > 0): ?>
+            <span id="header-unread-badge" class="navbar-notif-badge absolute top-1 right-1 min-w-[15px] h-[15px] px-1 text-white text-[9px] font-extrabold rounded-full flex items-center justify-center ring-2 ring-white">
+              <?= $unreadCount ?>
+            </span>
+          <?php endif; ?>
+        </a>
+
+        <!-- User Profile Quick Chip -->
+        <a href="/profile" class="navbar-user-chip flex items-center gap-2 p-1 sm:px-2.5 sm:py-1 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors" title="My Profile (<?= e($user['username']) ?>)">
+          <div class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[11px] uppercase shrink-0">
+            <?= strtoupper(substr($user['username'], 0, 1)) ?>
+          </div>
+          <span class="text-xs font-semibold text-slate-700 hidden md:inline truncate max-w-[85px]"><?= e($user['username']) ?></span>
         </a>
       </div>
     </header>

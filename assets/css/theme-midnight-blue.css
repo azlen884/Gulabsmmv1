@@ -1020,3 +1020,334 @@ body.theme-midnight-blue .focus\:border-rose-500:focus {
   border-color: #3B82F6 !important;
 }
 
+/* -------------------------------------------------------------------------
+ * 22. LANDING PAGE - SERVICES & ROSE SMM DASHBOARD LIVE ROTATING ACTIVITY
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .landing-dashboard-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.theme-midnight-blue .landing-dashboard-logo {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+body.theme-midnight-blue .landing-dashboard-title {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-dashboard-status {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .landing-dashboard-speed {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+  border: 1px solid rgba(37, 99, 235, 0.3) !important;
+}
+
+body.theme-midnight-blue .landing-activity-item {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.theme-midnight-blue .landing-activity-item:hover {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2) !important;
+}
+
+body.theme-midnight-blue .landing-activity-icon {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #60A5FA !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+}
+
+body.theme-midnight-blue .landing-activity-name {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-activity-qty {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .landing-promo-card {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-promo-btn {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .landing-promo-btn:hover {
+  background: #1D4ED8 !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5) !important;
+}
+
+/* Landing Page - Popular Services Overview */
+body.theme-midnight-blue .landing-services-heading {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-services-sub {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .landing-service-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 8px 25px -4px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.theme-midnight-blue .landing-service-card:hover {
+  border-color: #3B82F6 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(37, 99, 235, 0.2) !important;
+}
+
+body.theme-midnight-blue .landing-service-cat {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+}
+
+body.theme-midnight-blue .landing-service-rate {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-service-title {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .landing-service-desc {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .landing-service-btn {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+}
+
+body.theme-midnight-blue .landing-service-btn:hover {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 23. LOGGED-IN USER TOP NAVBAR (MODERN COMPACT SAAS GLASS)
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .user-top-navbar {
+  background: #0B1120 !important;
+  border-bottom: 1px solid #1E293B !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.theme-midnight-blue .navbar-menu-toggle {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .navbar-menu-toggle:hover {
+  color: #FFFFFF !important;
+  background: #1E293B !important;
+}
+
+body.theme-midnight-blue .navbar-search-input {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .navbar-search-input:focus {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+}
+
+body.theme-midnight-blue .navbar-search-icon {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .navbar-search-kbd {
+  background: #0B1120 !important;
+  border-color: #1E293B !important;
+  color: #64748B !important;
+}
+
+body.theme-midnight-blue .navbar-currency-btn {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue .navbar-currency-btn:hover {
+  background: #1E293B !important;
+  border-color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .navbar-currency-dropdown {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.theme-midnight-blue .navbar-wallet-chip {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .navbar-wallet-chip:hover {
+  border-color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .navbar-wallet-icon {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .navbar-wallet-text {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .navbar-action-btn {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .navbar-action-btn:hover {
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5) !important;
+}
+
+body.theme-midnight-blue .navbar-icon-btn {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .navbar-icon-btn:hover {
+  background: #1E293B !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .navbar-notif-badge {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.6) !important;
+}
+
+body.theme-midnight-blue .navbar-user-chip {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 24. LOGGED-IN SERVICES CATALOG & POPULAR SERVICE CARDS
+ * ------------------------------------------------------------------------- */
+body.theme-midnight-blue .service-header-action-btn {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .service-filters-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .service-category-pill {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .service-category-pill:hover {
+  background: #1E293B !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .service-category-pill.active {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.theme-midnight-blue .service-search-input {
+  background: #0F172A !important;
+  border: 1px solid #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .service-search-input:focus {
+  border-color: #3B82F6 !important;
+}
+
+body.theme-midnight-blue .service-item-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+  border-radius: 1.5rem !important;
+}
+
+body.theme-midnight-blue .service-item-card:hover {
+  border-color: #3B82F6 !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.theme-midnight-blue .service-item-icon {
+  background: rgba(37, 99, 235, 0.18) !important;
+  color: #60A5FA !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+}
+
+body.theme-midnight-blue .service-item-cat {
+  background: rgba(37, 99, 235, 0.15) !important;
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue .service-item-badge {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-midnight-blue .service-item-title {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .service-item-desc {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .service-item-rate {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .service-item-btn {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-midnight-blue .service-item-btn:hover {
+  background: #1D4ED8 !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+body.theme-midnight-blue .service-empty-card {
+  background: #0B1120 !important;
+  border: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .service-empty-btn {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+

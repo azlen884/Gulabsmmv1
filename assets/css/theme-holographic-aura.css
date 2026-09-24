@@ -1184,3 +1184,350 @@ body.theme-holographic-aura .text-slate-400:hover {
 body.theme-holographic-aura svg[data-lucide] {
   stroke-width: 2px !important;
 }
+
+/* -------------------------------------------------------------------------
+ * 22. LANDING PAGE - SERVICES & ROSE SMM DASHBOARD LIVE ROTATING ACTIVITY
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .landing-dashboard-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(240, 249, 255, 0.88) 45%, rgba(245, 243, 255, 0.92) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.35) !important;
+  backdrop-filter: blur(16px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+  box-shadow: 0 20px 45px -10px rgba(99, 102, 241, 0.15), 0 0 30px rgba(34, 211, 238, 0.12) !important;
+}
+
+body.theme-holographic-aura .landing-dashboard-logo {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+}
+
+body.theme-holographic-aura .landing-dashboard-title {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .landing-dashboard-status {
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura .landing-dashboard-speed {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(192, 132, 252, 0.18)) !important;
+  color: #4338CA !important;
+  border: 1px solid rgba(192, 132, 252, 0.35) !important;
+}
+
+body.theme-holographic-aura .landing-activity-item {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+body.theme-holographic-aura .landing-activity-item:hover {
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  box-shadow: 0 6px 20px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura .landing-activity-icon {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(192, 132, 252, 0.22)) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(192, 132, 252, 0.25) !important;
+}
+
+body.theme-holographic-aura .landing-activity-name {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .landing-activity-qty {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .landing-promo-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(192, 132, 252, 0.32) !important;
+  color: #0F172A !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.06) !important;
+}
+
+body.theme-holographic-aura .landing-promo-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura .landing-promo-btn:hover {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4), 0 0 15px rgba(34, 211, 238, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+/* Landing Page - Popular Services Overview */
+body.theme-holographic-aura .landing-services-heading {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .landing-services-sub {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .landing-service-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(192, 132, 252, 0.32) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 8px 25px -4px rgba(99, 102, 241, 0.08), 0 0 18px rgba(34, 211, 238, 0.08) !important;
+}
+
+body.theme-holographic-aura .landing-service-card:hover {
+  border-color: rgba(34, 211, 238, 0.65) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 14px 35px -5px rgba(99, 102, 241, 0.16), 0 0 25px rgba(34, 211, 238, 0.22) !important;
+}
+
+body.theme-holographic-aura .landing-service-cat {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(192, 132, 252, 0.18)) !important;
+  color: #4338CA !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+}
+
+body.theme-holographic-aura .landing-service-rate {
+  color: #1E1B4B !important;
+}
+
+body.theme-holographic-aura .landing-service-title {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .landing-service-desc {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .landing-service-btn {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(192, 132, 252, 0.18)) !important;
+  color: #4338CA !important;
+  border: 1px solid rgba(192, 132, 252, 0.32) !important;
+}
+
+body.theme-holographic-aura .landing-service-btn:hover {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 23. LOGGED-IN USER TOP NAVBAR (MODERN COMPACT SAAS GLASS)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .user-top-navbar {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.05), 0 0 16px rgba(34, 211, 238, 0.04) !important;
+}
+
+body.theme-holographic-aura .navbar-search-input {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .navbar-search-input:focus {
+  background: #FFFFFF !important;
+  border-color: #22D3EE !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25), 0 0 15px rgba(192, 132, 252, 0.2) !important;
+}
+
+body.theme-holographic-aura .navbar-search-icon {
+  color: #6366F1 !important;
+}
+
+body.theme-holographic-aura .navbar-currency-btn {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+  color: #1E293B !important;
+}
+
+body.theme-holographic-aura .navbar-currency-btn:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+}
+
+body.theme-holographic-aura .navbar-currency-dropdown {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(192, 132, 252, 0.32) !important;
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12), 0 0 20px rgba(34, 211, 238, 0.1) !important;
+}
+
+body.theme-holographic-aura .navbar-wallet-chip {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.04) !important;
+}
+
+body.theme-holographic-aura .navbar-wallet-chip:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  box-shadow: 0 4px 14px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura .navbar-wallet-icon {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(192, 132, 252, 0.25)) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(192, 132, 252, 0.2) !important;
+}
+
+body.theme-holographic-aura .navbar-wallet-text {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .navbar-action-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28) !important;
+}
+
+body.theme-holographic-aura .navbar-action-btn:hover {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.42), 0 0 16px rgba(34, 211, 238, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+body.theme-holographic-aura .navbar-icon-btn {
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura .navbar-icon-btn:hover {
+  background: rgba(192, 132, 252, 0.15) !important;
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura .navbar-notif-badge {
+  background: linear-gradient(135deg, #6366F1, #A855F7) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.6) !important;
+}
+
+body.theme-holographic-aura .navbar-user-chip {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+}
+
+body.theme-holographic-aura .navbar-user-chip:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 24. LOGGED-IN SERVICES CATALOG & POPULAR SERVICE CARDS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .service-header-action-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28) !important;
+}
+
+body.theme-holographic-aura .service-filters-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  box-shadow: 0 8px 25px -4px rgba(99, 102, 241, 0.06) !important;
+}
+
+body.theme-holographic-aura .service-category-pill {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(192, 132, 252, 0.25) !important;
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura .service-category-pill:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura .service-category-pill.active {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
+}
+
+body.theme-holographic-aura .service-search-input {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .service-search-input:focus {
+  background: #FFFFFF !important;
+  border-color: #22D3EE !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25), 0 0 14px rgba(192, 132, 252, 0.2) !important;
+}
+
+body.theme-holographic-aura .service-item-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.07), 0 0 16px rgba(34, 211, 238, 0.05) !important;
+}
+
+body.theme-holographic-aura .service-item-card:hover {
+  border-color: rgba(34, 211, 238, 0.65) !important;
+  box-shadow: 0 14px 35px -5px rgba(99, 102, 241, 0.16), 0 0 25px rgba(34, 211, 238, 0.2) !important;
+  transform: translateY(-2px) !important;
+}
+
+body.theme-holographic-aura .service-item-icon {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(192, 132, 252, 0.25)) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(192, 132, 252, 0.25) !important;
+}
+
+body.theme-holographic-aura .service-item-cat {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(192, 132, 252, 0.16)) !important;
+  color: #4338CA !important;
+  border: 1px solid rgba(192, 132, 252, 0.25) !important;
+}
+
+body.theme-holographic-aura .service-item-badge {
+  background: linear-gradient(135deg, #06B6D4, #8B5CF6) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35) !important;
+}
+
+body.theme-holographic-aura .service-item-title {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .service-item-desc {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .service-item-rate {
+  color: #4338CA !important;
+}
+
+body.theme-holographic-aura .service-item-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.26) !important;
+}
+
+body.theme-holographic-aura .service-item-btn:hover {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4), 0 0 16px rgba(34, 211, 238, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+body.theme-holographic-aura .service-empty-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+}
+
+body.theme-holographic-aura .service-empty-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28) !important;
+}
+

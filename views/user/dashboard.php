@@ -620,24 +620,24 @@ $services = $db->query("
       <!-- Popular Services Cards (Grid 2-column) matching screenshot -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="popular-services-grid">
         <?php foreach ($services as $srv): ?>
-          <div class="service-card p-3.5 rounded-2xl border border-[#FCE4E8] bg-white hover:border-rose-300 transition-all flex flex-col justify-between relative group" data-category="<?= e($srv['category_slug']) ?>">
+          <div class="service-card service-item-card p-3.5 rounded-2xl border border-slate-200/80 bg-white transition-all flex flex-col justify-between relative group" data-category="<?= e($srv['category_slug']) ?>">
             <?php if (!empty($srv['badge'])): ?>
-              <span class="absolute top-2.5 right-2.5 text-[9px] font-bold text-white bg-rose-500 px-2 py-0.5 rounded-full">
+              <span class="service-item-badge absolute top-2.5 right-2.5 text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
                 <?= e($srv['badge']) ?>
               </span>
             <?php endif; ?>
 
             <div class="flex items-start gap-2.5 mb-3">
-              <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+              <div class="service-item-icon w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
                 <i data-lucide="<?= $srv['category_slug'] === 'youtube' ? 'youtube' : ($srv['category_slug'] === 'tiktok' ? 'music-2' : ($srv['category_slug'] === 'facebook' ? 'facebook' : ($srv['category_slug'] === 'twitter' ? 'twitter' : 'instagram'))) ?>" class="w-4 h-4"></i>
               </div>
               <div class="pr-12">
-                <h4 class="font-bold text-xs text-slate-800 line-clamp-1"><?= e($srv['name']) ?></h4>
-                <div class="text-[11px] text-slate-400 mt-0.5">Start from <span class="font-bold text-slate-700"><?= format_price($srv['rate']) ?></span></div>
+                <h4 class="service-item-title font-bold text-xs text-slate-800 line-clamp-1"><?= e($srv['name']) ?></h4>
+                <div class="text-[11px] text-slate-400 mt-0.5">Start from <span class="service-item-rate font-bold"><?= format_price($srv['rate']) ?></span></div>
               </div>
             </div>
 
-            <button type="button" onclick="selectServiceForOrder(<?= $srv['id'] ?>, <?= $srv['category_id'] ?>, '<?= e(addslashes($srv['name'])) ?>', <?= $srv['rate'] ?>, <?= $srv['min_quantity'] ?>, <?= $srv['max_quantity'] ?>)" class="w-full py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white font-bold text-xs transition-colors">
+            <button type="button" onclick="selectServiceForOrder(<?= $srv['id'] ?>, <?= $srv['category_id'] ?>, '<?= e(addslashes($srv['name'])) ?>', <?= $srv['rate'] ?>, <?= $srv['min_quantity'] ?>, <?= $srv['max_quantity'] ?>)" class="service-item-btn w-full py-1.5 px-3 rounded-xl font-bold text-xs transition-colors">
               Order Now
             </button>
           </div>

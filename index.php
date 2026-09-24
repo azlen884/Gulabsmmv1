@@ -89,6 +89,7 @@ $routes = [
     '/api/currency/switch' => __DIR__ . '/api/currency/switch.php',
     '/api/tickets/create' => __DIR__ . '/api/tickets/create.php',
     '/api/tickets/reply' => __DIR__ . '/api/tickets/reply.php',
+    '/api/notifications/mark-read' => __DIR__ . '/api/notifications/mark-read.php',
     '/api/v2' => __DIR__ . '/api/v2.php',
     '/cron' => __DIR__ . '/cron.php',
     '/cron.php' => __DIR__ . '/cron.php',

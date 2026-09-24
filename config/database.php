@@ -197,7 +197,7 @@ function get_user_currency() {
         $_SESSION['user_currency'] = $u['currency'];
         return $u['currency'];
     }
-    return 'USD';
+    return get_setting('currency_default', 'INR');
 }
 
 /**
@@ -210,6 +210,10 @@ function get_currencies() {
         $currencies = $stmt->fetchAll();
     }
     return $currencies;
+}
+
+function get_active_currencies() {
+    return get_currencies();
 }
 
 /**

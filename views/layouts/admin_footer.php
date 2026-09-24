@@ -11,6 +11,36 @@
   if (window.lucide) {
     lucide.createIcons();
   }
+
+  function toggleAdminCurrencyDropdown() {
+    const d = document.getElementById('admin-currency-dropdown');
+    if (d) d.classList.toggle('hidden');
+  }
+
+  function changeAdminCurrency(code) {
+    fetch('/api/currency/switch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currency: code })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        window.location.reload();
+      }
+    })
+    .catch(err => {
+      console.error('Failed to change currency:', err);
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('admin-currency-dropdown-wrapper');
+    const drop = document.getElementById('admin-currency-dropdown');
+    if (wrapper && drop && !wrapper.contains(e.target)) {
+      drop.classList.add('hidden');
+    }
+  });
 </script>
 </body>
 </html>

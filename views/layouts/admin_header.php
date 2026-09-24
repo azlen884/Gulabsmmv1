@@ -403,6 +403,41 @@ $adminPage = $adminPage ?? 'dashboard';
       </div>
 
       <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold shrink-0">
+        <?php
+          $adminCurrency = get_user_currency();
+          $adminCurrencies = get_active_currencies();
+        ?>
+        <!-- Admin Currency Selector -->
+        <div class="relative" id="admin-currency-dropdown-wrapper">
+          <button 
+            type="button" 
+            onclick="toggleAdminCurrencyDropdown()"
+            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-slate-200 bg-white text-[11px] sm:text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+            title="Switch Panel Currency"
+          >
+            <span class="text-xs"><?= $adminCurrency === 'INR' ? '🇮🇳' : ($adminCurrency === 'USD' ? '🇺🇸' : ($adminCurrency === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
+            <span class="font-bold"><?= e($adminCurrency) ?></span>
+            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+          </button>
+          
+          <div id="admin-currency-dropdown" class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl py-1.5 z-50">
+            <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Panel Currency</div>
+            <?php foreach ($adminCurrencies as $c): ?>
+              <button 
+                type="button" 
+                onclick="changeAdminCurrency('<?= e($c['code']) ?>')" 
+                class="w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer <?= $adminCurrency === $c['code'] ? 'text-slate-900 font-bold bg-slate-50' : 'text-slate-600' ?>"
+              >
+                <span class="flex items-center gap-1.5">
+                  <span><?= $c['code'] === 'INR' ? '🇮🇳' : ($c['code'] === 'USD' ? '🇺🇸' : ($c['code'] === 'EUR' ? '🇪🇺' : '🇬🇧')) ?></span>
+                  <span><?= e($c['name']) ?></span>
+                </span>
+                <span class="font-mono text-[11px] text-slate-400"><?= e($c['symbol']) ?></span>
+              </button>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
         <a href="/dashboard" class="text-slate-600 hover:text-rose-600 flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-slate-50 transition-colors whitespace-nowrap" target="_blank">
           <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400"></i>
           <span class="hidden sm:inline">View User Portal</span>

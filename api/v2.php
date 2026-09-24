@@ -53,8 +53,8 @@ if ($action === 'add') {
         exit;
     }
 
-    $sStmt = $db->prepare("SELECT * FROM services WHERE id = ? AND status = 'active'");
-    $sStmt->execute([$serviceId]);
+    $sStmt = $db->prepare("SELECT * FROM services WHERE (id = ? OR provider_service_id = ?) AND status = 'active' LIMIT 1");
+    $sStmt->execute([$serviceId, (string)$serviceId]);
     $service = $sStmt->fetch();
 
     if (!$service) {
@@ -86,7 +86,7 @@ if ($action === 'add') {
     ");
     $insOrder->execute([
         $apiUser['id'],
-        $serviceId,
+        $service['id'],
         $service['provider_id'] ?: null,
         $link,
         $quantity,
@@ -96,9 +96,9 @@ if ($action === 'add') {
     $orderId = $db->lastInsertId();
 
     $db->prepare("
-        INSERT INTO transactions (user_id, order_id, amount, type, payment_method, status, transaction_id)
-        VALUES (?, ?, ?, 'order', 'API Automated', 'completed', ?)
-    ")->execute([$apiUser['id'], $orderId, $charge, 'API-ORD-' . $orderId]);
+        INSERT INTO transactions (user_id, type, amount, charge, currency, payment_method, transaction_id, status)
+        VALUES (?, 'order', ?, 0.0000, 'USD', 'API Automated', ?, 'completed')
+    ")->execute([$apiUser['id'], $charge, 'API-ORD-' . $orderId]);
 
     $db->commit();
 
@@ -111,26 +111,81 @@ if ($action === 'add') {
 }
 
 if ($action === 'status') {
+    // Multi-orders status query support (Standard SMM v2 protocol)
+    if (!empty($_REQUEST['orders'])) {
+        $rawOrders = explode(',', (string)$_REQUEST['orders']);
+        $orderIds = [];
+        foreach ($rawOrders as $ro) {
+            $ro = trim($ro);
+            if ($ro !== '') {
+                $orderIds[] = $ro;
+            }
+        }
+
+        if (empty($orderIds)) {
+            echo json_encode(['error' => 'Incorrect order ID']);
+            exit;
+        }
+
+        $result = [];
+        $isAdmin = (($apiUser['role'] ?? '') === 'admin');
+
+        foreach ($orderIds as $oidStr) {
+            $oid = (int)$oidStr;
+            if ($isAdmin) {
+                $stmt = $db->prepare("SELECT * FROM orders WHERE id = ?");
+                $stmt->execute([$oid]);
+            } else {
+                $stmt = $db->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+                $stmt->execute([$oid, $apiUser['id']]);
+            }
+            $ord = $stmt->fetch();
+
+            if (!$ord) {
+                $result[$oidStr] = ['error' => 'Incorrect order ID'];
+            } else {
+                $statusFormatted = ucwords(str_replace('_', ' ', $ord['status']));
+                $result[$oidStr] = [
+                    'charge' => number_format($ord['charge'], 4, '.', ''),
+                    'start_count' => (string)($ord['start_count'] ?? 0),
+                    'status' => $statusFormatted,
+                    'remains' => (string)($ord['remains'] ?? 0),
+                    'currency' => 'USD'
+                ];
+            }
+        }
+        echo json_encode($result);
+        exit;
+    }
+
+    // Single order status query support
     $orderId = (int)($_REQUEST['order'] ?? 0);
     if ($orderId <= 0) {
         echo json_encode(['error' => 'Order ID is required']);
         exit;
     }
 
-    $stmt = $db->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
-    $stmt->execute([$orderId, $apiUser['id']]);
+    $isAdmin = (($apiUser['role'] ?? '') === 'admin');
+    if ($isAdmin) {
+        $stmt = $db->prepare("SELECT * FROM orders WHERE id = ?");
+        $stmt->execute([$orderId]);
+    } else {
+        $stmt = $db->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $apiUser['id']]);
+    }
     $order = $stmt->fetch();
 
     if (!$order) {
-        echo json_encode(['error' => 'Order not found']);
+        echo json_encode(['error' => 'Incorrect order ID']);
         exit;
     }
 
+    $statusFormatted = ucwords(str_replace('_', ' ', $order['status']));
     echo json_encode([
         'charge' => number_format($order['charge'], 4, '.', ''),
-        'start_count' => (string)$order['start_count'],
-        'status' => ucfirst($order['status']),
-        'remains' => (string)$order['remains'],
+        'start_count' => (string)($order['start_count'] ?? 0),
+        'status' => $statusFormatted,
+        'remains' => (string)($order['remains'] ?? 0),
         'currency' => 'USD'
     ]);
     exit;

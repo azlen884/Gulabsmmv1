@@ -57,7 +57,7 @@ ensureDatabase();
 console.log('[RoseSMM] Launching PHP server on 0.0.0.0:3000 with router.php...');
 const phpServer = spawn('php', ['-S', '0.0.0.0:3000', 'router.php'], {
   stdio: 'inherit',
-  env: process.env
+  env: { ...process.env, PHP_CLI_SERVER_WORKERS: '4' }
 });
 
 phpServer.on('error', (err) => {

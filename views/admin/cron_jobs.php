@@ -198,23 +198,49 @@ $cronToken = 'rose_cron_secret_key_2026';
   </div>
 
   <!-- Server Crontab Manual Setup Card -->
-  <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-3">
-    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-      <i data-lucide="terminal" class="w-4 h-4 text-emerald-600"></i>
-      Production Crontab Setup Command
-    </h3>
+  <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+        <i data-lucide="terminal" class="w-4 h-4 text-emerald-600"></i>
+        Production Crontab Commands (cPanel / Linux)
+      </h3>
+      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        Run Every 1 Minute (* * * * *)
+      </span>
+    </div>
     <p class="text-xs text-slate-500">
-      If deploying to external hosting or cPanel, configure your server's native crontab to execute this command every minute:
+      Configure your cPanel or Linux server crontab to execute these background workers automatically. The master command dispatches all scheduled tasks including real-time order status sync:
     </p>
-    <div class="p-3 bg-slate-900 rounded-2xl font-mono text-xs text-emerald-400 overflow-x-auto flex items-center justify-between">
-      <code>* * * * * php <?= __DIR__ ?>/../../cron.php >> /dev/null 2>&1</code>
-      <button 
-        type="button" 
-        onclick="navigator.clipboard.writeText('* * * * * php <?= __DIR__ ?>/../../cron.php >> /dev/null 2>&1'); alert('Copied crontab command to clipboard!');"
-        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] text-white font-bold ml-2 shrink-0 cursor-pointer"
-      >
-        Copy
-      </button>
+
+    <!-- Master Command -->
+    <div class="space-y-1">
+      <span class="text-[11px] font-bold text-slate-700">1. Master Runner (Executes all due automation tasks):</span>
+      <div class="p-3 bg-slate-900 rounded-2xl font-mono text-xs text-emerald-400 overflow-x-auto flex items-center justify-between">
+        <?php $cronAbsPath = realpath(__DIR__ . '/../../cron.php') ?: (__DIR__ . '/../../cron.php'); ?>
+        <code>* * * * * php <?= e($cronAbsPath) ?> >> /dev/null 2>&1</code>
+        <button 
+          type="button" 
+          onclick="navigator.clipboard.writeText('* * * * * php <?= addslashes($cronAbsPath) ?> >> /dev/null 2>&1'); this.innerText = 'Copied!'; setTimeout(() => this.innerText = 'Copy', 2000);"
+          class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] text-white font-bold ml-2 shrink-0 cursor-pointer"
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <!-- Dedicated Order Status Sync Command -->
+    <div class="space-y-1">
+      <span class="text-[11px] font-bold text-slate-700">2. Dedicated Order Status Auto-Update (Runs exclusively for provider sync):</span>
+      <div class="p-3 bg-slate-900 rounded-2xl font-mono text-xs text-cyan-400 overflow-x-auto flex items-center justify-between">
+        <code>* * * * * php <?= e($cronAbsPath) ?> order_status >> /dev/null 2>&1</code>
+        <button 
+          type="button" 
+          onclick="navigator.clipboard.writeText('* * * * * php <?= addslashes($cronAbsPath) ?> order_status >> /dev/null 2>&1'); this.innerText = 'Copied!'; setTimeout(() => this.innerText = 'Copy', 2000);"
+          class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] text-white font-bold ml-2 shrink-0 cursor-pointer"
+        >
+          Copy
+        </button>
+      </div>
     </div>
   </div>
 

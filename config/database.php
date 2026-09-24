@@ -9,8 +9,8 @@ if (ob_get_level() === 0) {
     ob_start();
 }
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
+// Start session if not already started (Web requests only; avoid session headers/cookies in CLI cron execution)
+if (php_sapi_name() !== 'cli' && session_status() === PHP_SESSION_NONE) {
     ini_set('session.cookie_httponly', '1');
     ini_set('session.use_only_cookies', '1');
 

@@ -10,6 +10,7 @@ require_once __DIR__ . '/RefillHelper.php';
 require_once __DIR__ . '/RefundHelper.php';
 require_once __DIR__ . '/DripFeedHelper.php';
 require_once __DIR__ . '/FlashSaleHelper.php';
+require_once __DIR__ . '/OrderStatusHelper.php';
 
 class CronJobHelper {
 
@@ -37,6 +38,16 @@ class CronJobHelper {
 
         try {
             switch ($taskKey) {
+                case 'order_status':
+                case 'order_sync':
+                case 'sync_orders':
+                    $res = OrderStatusHelper::syncProviderOrders();
+                    $output = $res['message'];
+                    if (!empty($res['logs'])) {
+                        $output .= " Details: " . implode(" | ", array_slice($res['logs'], 0, 5));
+                    }
+                    break;
+
                 case 'auto_refill':
                     $updated = RefillHelper::syncPendingRefills();
                     $output = "Processed pending refill requests. {$updated} refills synced with upstream providers.";

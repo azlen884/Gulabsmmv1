@@ -664,7 +664,8 @@ INSERT INTO `cron_jobs` (`name`, `task_key`, `description`, `interval_minutes`, 
 ('Auto Refund Processor', 'auto_refund', 'Automatically credits user wallets for canceled and partial provider orders', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle'),
 ('Drip-Feed Batch Runner', 'drip_feed', 'Dispatches scheduled batches for multi-run drip-feed orders to providers', 2, 1, DATE_ADD(NOW(), INTERVAL 2 MINUTE), 'idle'),
 ('Flash Sale Engine', 'flash_sale', 'Manages live flash sale statuses, limits, and pricing activations in real-time', 1, 1, DATE_ADD(NOW(), INTERVAL 1 MINUTE), 'idle'),
-('Ticket Automation Sweep', 'ticket_automation', 'Evaluates ticket conditions, triggers auto-replies, and enforces SLA status updates', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle')
+('Ticket Automation Sweep', 'ticket_automation', 'Evaluates ticket conditions, triggers auto-replies, and enforces SLA status updates', 5, 1, DATE_ADD(NOW(), INTERVAL 5 MINUTE), 'idle'),
+('Order Status Sync Engine', 'order_status', 'Automatically synchronizes real-time order delivery status, start count, and remains with upstream SMM API providers', 1, 1, DATE_ADD(NOW(), INTERVAL 1 MINUTE), 'idle')
 ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
 
 -- Seed Default Ticket Automation Rules

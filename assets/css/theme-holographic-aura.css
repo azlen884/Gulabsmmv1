@@ -1,0 +1,1186 @@
+/**
+ * =========================================================================
+ * RoseSMM - Holographic Aura Theme (theme-holographic-aura)
+ *
+ * VISUAL ATMOSPHERE:
+ * Inspired by futuristic 3D holographic compositions with glowing ethereal
+ * spheres on soft luminous gradients.
+ *
+ * PALETTE:
+ * - Soft Cyan & Aqua: #22D3EE, #06B6D4, #2DD4BF, #67E8F9, #0891B2
+ * - Light Lavender & Soft Violet: #C084FC, #A855F7, #818CF8, #6366F1, #4F46E5
+ * - Iridescent Pastel Pink & Mint: #F472B6, #F9A8D4, #A7F3D0, #E9D5FF
+ * - Light Luminous Canvas: #F6F8FE with subtle holographic ambient mesh
+ * - Crisp High-Contrast Typography: #0F172A, #1E293B, #334155, #64748B
+ * - Translucent Glass Surfaces: rgba(255, 255, 255, 0.88) with backdrop-blur
+ * - Iridescent Glowing Borders: rgba(168, 85, 247, 0.22) - rgba(34, 211, 238, 0.35)
+ *
+ * STRICTLY AVOIDED:
+ * Gold, yellow-gold, orange, primary red, dark red, heavy neon.
+ *
+ * SCOPING:
+ * Strictly scoped under body.theme-holographic-aura.
+ * =========================================================================
+ */
+
+:root {
+  --halo-cyan: #06B6D4;
+  --halo-cyan-light: #22D3EE;
+  --halo-aqua: #2DD4BF;
+  --halo-lavender: #C084FC;
+  --halo-violet: #818CF8;
+  --halo-indigo: #4F46E5;
+  --halo-pink: #F472B6;
+  --halo-border: rgba(168, 85, 247, 0.22);
+  --halo-border-hover: rgba(34, 211, 238, 0.45);
+  --halo-glow: rgba(99, 102, 241, 0.16);
+}
+
+/* -------------------------------------------------------------------------
+ * 1. ROOT BODY & HOLOGRAPHIC CANVAS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura {
+  background-color: #F6F8FE !important;
+  background-image: 
+    radial-gradient(ellipse 65% 50% at 12% 8%, rgba(34, 211, 238, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 88% 12%, rgba(192, 132, 252, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 50% 85%, rgba(244, 114, 182, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 80% 80%, rgba(45, 212, 191, 0.11) 0%, transparent 55%) !important;
+  background-attachment: fixed !important;
+  color: #1E293B !important;
+}
+
+body.theme-holographic-aura .bg-\[\#FFF9FA\],
+body.theme-holographic-aura .bg-canvas,
+body.theme-holographic-aura .bg-slate-50 {
+  background-color: transparent !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. NAVBAR - SOFT TRANSLUCENT HOLOGRAPHIC GLASS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura header.border-b,
+body.theme-holographic-aura header.bg-white,
+body.theme-holographic-aura header.bg-white\/80 {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.18) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.06), 0 1px 3px rgba(34, 211, 238, 0.05) !important;
+}
+
+/* Top service search */
+body.theme-holographic-aura #top-service-search {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  color: #0F172A !important;
+  border-radius: 0.875rem !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+body.theme-holographic-aura #top-service-search::placeholder {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura #top-service-search:focus {
+  border-color: #818CF8 !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.22), 0 0 12px rgba(192, 132, 252, 0.18) !important;
+}
+
+/* Header icon buttons & text */
+body.theme-holographic-aura header .text-slate-600 {
+  color: #334155 !important;
+}
+
+body.theme-holographic-aura header .text-slate-600:hover,
+body.theme-holographic-aura header .hover\:text-rose-600:hover {
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura header .hover\:bg-rose-50:hover,
+body.theme-holographic-aura header button:hover {
+  background-color: rgba(192, 132, 252, 0.14) !important;
+}
+
+/* Currency dropdown button & popover */
+body.theme-holographic-aura #currency-dropdown-wrapper > button {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  color: #1E293B !important;
+  border-radius: 0.75rem !important;
+}
+
+body.theme-holographic-aura #currency-dropdown-wrapper > button:hover {
+  background-color: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  color: #4F46E5 !important;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura #currency-dropdown {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 14px 34px -4px rgba(99, 102, 241, 0.12), 0 0 16px rgba(34, 211, 238, 0.1) !important;
+}
+
+body.theme-holographic-aura #currency-dropdown button {
+  color: #334155 !important;
+}
+
+body.theme-holographic-aura #currency-dropdown button:hover {
+  background-color: rgba(192, 132, 252, 0.12) !important;
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura #currency-dropdown button.text-rose-600,
+body.theme-holographic-aura #currency-dropdown button.bg-rose-50\/60 {
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.16) 0%, rgba(192, 132, 252, 0.18) 100%) !important;
+  color: #4F46E5 !important;
+  font-weight: 700 !important;
+}
+
+/* Wallet balance chip in top navbar */
+body.theme-holographic-aura a[href="/wallet"].rounded-full.border {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.24) !important;
+}
+
+body.theme-holographic-aura a[href="/wallet"].rounded-full.border:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.2) !important;
+}
+
+body.theme-holographic-aura a[href="/wallet"].rounded-full.border .bg-rose-100 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(192, 132, 252, 0.25) 100%) !important;
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura a[href="/wallet"].rounded-full.border .text-slate-800 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura a[href="/wallet"].rounded-full.border .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* Header Add Funds button: Holographic Cyan-to-Lavender Gradient */
+body.theme-holographic-aura header a[href="/add-funds"].bg-gradient-to-r {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 3px 12px rgba(99, 102, 241, 0.25), 0 0 8px rgba(34, 211, 238, 0.2) !important;
+}
+
+body.theme-holographic-aura header a[href="/add-funds"].bg-gradient-to-r:hover {
+  background: linear-gradient(135deg, #0891B2 0%, #4F46E5 50%, #9333EA 100%) !important;
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35), 0 0 14px rgba(34, 211, 238, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------------------------------------
+ * 3. USER SIDEBAR & NAVIGATION (ICON CONTRAST & HOLOGRAPHIC AURA)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura aside#main-sidebar,
+body.theme-holographic-aura aside#mobile-sidebar {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border-right: 1px solid rgba(168, 85, 247, 0.18) !important;
+  box-shadow: 2px 0 16px -2px rgba(99, 102, 241, 0.05) !important;
+}
+
+/* Brand logo container & icon */
+body.theme-holographic-aura aside#main-sidebar .bg-rose-50,
+body.theme-holographic-aura aside#mobile-sidebar .bg-rose-50,
+body.theme-holographic-aura aside#main-sidebar .bg-rose-500,
+body.theme-holographic-aura aside#mobile-sidebar .bg-rose-500 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura aside#main-sidebar .text-rose-600,
+body.theme-holographic-aura aside#mobile-sidebar .text-rose-600 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura aside#main-sidebar svg.fill-current,
+body.theme-holographic-aura aside#mobile-sidebar svg.fill-current {
+  fill: #FFFFFF !important;
+}
+
+/* Sidebar profile card */
+body.theme-holographic-aura a[href="/profile"].rounded-2xl {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 4px 14px -2px rgba(99, 102, 241, 0.06) !important;
+}
+
+body.theme-holographic-aura a[href="/profile"].rounded-2xl:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.1), 0 0 10px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura a[href="/profile"].rounded-2xl .text-slate-800 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura a[href="/profile"].rounded-2xl .text-slate-500 {
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura a[href="/profile"].rounded-2xl .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura a[href="/profile"].rounded-2xl .bg-rose-100\/60 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(192, 132, 252, 0.22) 100%) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+}
+
+/* Navigation Links */
+body.theme-holographic-aura nav a.text-slate-600 {
+  color: #334155 !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura nav a.text-slate-600:hover,
+body.theme-holographic-aura nav a.hover\:text-rose-600:hover {
+  color: #4F46E5 !important;
+  background: rgba(192, 132, 252, 0.12) !important;
+}
+
+/* Inactive nav icon containers: High contrast slate box */
+body.theme-holographic-aura nav a .w-7.h-7 {
+  border-radius: 0.625rem !important;
+}
+
+body.theme-holographic-aura nav a.text-slate-600 .w-7.h-7 {
+  background: rgba(241, 245, 249, 0.95) !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura nav a.text-slate-600:hover .w-7.h-7 {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  color: #4F46E5 !important;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2) !important;
+}
+
+/* Active navigation item: Holographic Aura Gradient */
+body.theme-holographic-aura nav a.bg-\[\#FFE8EC\].text-rose-600,
+body.theme-holographic-aura nav a.bg-rose-50.text-rose-600 {
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.16) 0%, rgba(192, 132, 252, 0.18) 100%) !important;
+  color: #4F46E5 !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #6366F1 !important;
+  border-radius: 0 0.875rem 0.875rem 0 !important;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.08), 0 0 8px rgba(34, 211, 238, 0.12) !important;
+}
+
+body.theme-holographic-aura nav a.bg-\[\#FFE8EC\].text-rose-600 .w-7.h-7,
+body.theme-holographic-aura nav a.bg-rose-50.text-rose-600 .w-7.h-7 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.28) !important;
+}
+
+body.theme-holographic-aura nav a.bg-\[\#FFE8EC\].text-rose-600 i,
+body.theme-holographic-aura nav a.bg-rose-50.text-rose-600 i {
+  color: #FFFFFF !important;
+}
+
+body.theme-holographic-aura nav a[href="/logout"] {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura nav a[href="/logout"]:hover {
+  color: #E11D48 !important;
+  background: rgba(225, 29, 72, 0.08) !important;
+}
+
+/* Sidebar upgrade card */
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(192, 132, 252, 0.15) 50%, rgba(244, 114, 182, 0.12) 100%) !important;
+  border: 1px solid rgba(168, 85, 247, 0.28) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 8px 24px -2px rgba(99, 102, 241, 0.08), 0 0 12px rgba(34, 211, 238, 0.12) !important;
+}
+
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] .w-9.h-9.bg-rose-500 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.3) !important;
+}
+
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] h4 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] p {
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] a {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 3px 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura .p-4.rounded-2xl.bg-gradient-to-b.from-\[\#FFF5F7\].to-\[\#FFE6EC\] a:hover {
+  background: linear-gradient(135deg, #0891B2 0%, #4F46E5 50%, #9333EA 100%) !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Sidebar divider & footer */
+body.theme-holographic-aura aside#main-sidebar .border-t,
+body.theme-holographic-aura aside#mobile-sidebar .border-t {
+  border-color: rgba(168, 85, 247, 0.16) !important;
+}
+
+body.theme-holographic-aura aside#main-sidebar .text-slate-600 {
+  color: #334155 !important;
+}
+
+body.theme-holographic-aura aside#main-sidebar .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 4. CARDS & SURFACES (CLEARLY ROUNDED & IRIDESCENT GLOWING BORDER)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .bg-white {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-color: rgba(168, 85, 247, 0.2) !important;
+  color: #1E293B !important;
+}
+
+/* Consistent rounded corners */
+body.theme-holographic-aura .rounded-2xl {
+  border-radius: 1.25rem !important;
+}
+
+body.theme-holographic-aura .rounded-3xl {
+  border-radius: 1.5rem !important;
+}
+
+/* Dashboard stat cards */
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div,
+body.theme-holographic-aura .bg-white.p-5.rounded-2xl.border {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 8px 24px -3px rgba(99, 102, 241, 0.06), 0 2px 6px rgba(34, 211, 238, 0.05) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div:hover,
+body.theme-holographic-aura .bg-white.p-5.rounded-2xl.border:hover {
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: 0 12px 30px -4px rgba(99, 102, 241, 0.12), 0 0 16px rgba(34, 211, 238, 0.18) !important;
+  transform: translateY(-1px);
+}
+
+/* Large container cards (Sales chart, Quick Actions, Service catalog, Orders, Wallet, Profile, etc.) */
+body.theme-holographic-aura .bg-white.p-6.rounded-3xl.border,
+body.theme-holographic-aura .bg-white.rounded-3xl.border,
+body.theme-holographic-aura .bg-white.rounded-2xl.border {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 10px 32px -4px rgba(99, 102, 241, 0.07), 0 2px 8px rgba(34, 211, 238, 0.06) !important;
+}
+
+/* Stat card icon badges: Crisp, clearly visible holographic bubbles */
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .w-11.h-11 {
+  border-radius: 0.875rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .bg-rose-500,
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .bg-rose-600 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .text-slate-800 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .text-slate-400 {
+  color: #64748B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. DASHBOARD BALANCE CARD (MAJESTIC HOLOGRAPHIC AURA)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br {
+  background: linear-gradient(135deg, #0E7490 0%, #4338CA 50%, #7E22CE 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 14px 38px -4px rgba(67, 56, 202, 0.35), 0 0 24px rgba(34, 211, 238, 0.22) !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br .text-rose-100 {
+  color: #E0E7FF !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br a[href="/add-funds"].bg-white {
+  background: #FFFFFF !important;
+  color: #4338CA !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 0 10px rgba(255, 255, 255, 0.4) !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br a[href="/add-funds"].bg-white:hover {
+  background: #F8FAFC !important;
+  color: #3730A3 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18), 0 0 14px rgba(255, 255, 255, 0.6) !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br #user-balance-display {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br .border-t.border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br .border-white\/40 {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura .rounded-3xl.bg-gradient-to-br a.group:hover .border-white\/40 {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 6. HERO SLIDER IN HOLOGRAPHIC THEME
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura #hero-slider-wrapper {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 10px 30px -4px rgba(99, 102, 241, 0.08), 0 0 16px rgba(34, 211, 238, 0.1) !important;
+}
+
+body.theme-holographic-aura .hero-slide[data-slide-index="0"],
+body.theme-holographic-aura .hero-slide:nth-child(odd) {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14) 0%, rgba(129, 140, 248, 0.16) 50%, rgba(192, 132, 252, 0.14) 100%) !important;
+}
+
+body.theme-holographic-aura .hero-slide[data-slide-index="1"],
+body.theme-holographic-aura .hero-slide:nth-child(even) {
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.14) 0%, rgba(99, 102, 241, 0.15) 50%, rgba(244, 114, 182, 0.12) 100%) !important;
+}
+
+body.theme-holographic-aura .hero-dot.bg-rose-500 {
+  background-color: #6366F1 !important;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5) !important;
+}
+
+body.theme-holographic-aura .hero-dot.bg-rose-300\/80 {
+  background-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+body.theme-holographic-aura .hero-dot.bg-rose-300\/80:hover {
+  background-color: #818CF8 !important;
+}
+
+body.theme-holographic-aura .hero-slide h3 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .hero-slide p {
+  color: #334155 !important;
+}
+
+body.theme-holographic-aura .hero-slide a {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 7. BUTTONS & ACTIONS (PRIMARY: HOLOGRAPHIC GRADIENT, SECONDARY: TRANSLUCENT)
+ * ------------------------------------------------------------------------- */
+/* Primary Buttons */
+body.theme-holographic-aura .bg-rose-500,
+body.theme-holographic-aura .bg-rose-600,
+body.theme-holographic-aura .bg-gradient-to-r.from-rose-500.to-rose-600,
+body.theme-holographic-aura button[type="submit"].bg-gradient-to-r,
+body.theme-holographic-aura #order-submit-btn {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25), 0 0 8px rgba(34, 211, 238, 0.18) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+body.theme-holographic-aura .bg-rose-500:hover,
+body.theme-holographic-aura .bg-rose-600:hover,
+body.theme-holographic-aura .hover\:bg-rose-600:hover,
+body.theme-holographic-aura .hover\:bg-rose-700:hover,
+body.theme-holographic-aura .hover\:from-rose-600:hover,
+body.theme-holographic-aura #order-submit-btn:hover {
+  background: linear-gradient(135deg, #0891B2 0%, #4F46E5 50%, #9333EA 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35), 0 0 14px rgba(34, 211, 238, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+body.theme-holographic-aura button:disabled,
+body.theme-holographic-aura button[disabled] {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+/* Secondary & soft buttons */
+body.theme-holographic-aura .bg-rose-50 {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura .bg-rose-100 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(192, 132, 252, 0.18) 100%) !important;
+  color: #4338CA !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura .bg-rose-200 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.22) 0%, rgba(192, 132, 252, 0.25) 100%) !important;
+  color: #3730A3 !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura .hover\:bg-rose-50:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  color: #4338CA !important;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.2) !important;
+}
+
+body.theme-holographic-aura .hover\:bg-rose-100:hover {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.22) 0%, rgba(192, 132, 252, 0.26) 100%) !important;
+}
+
+/* Quick action items in dashboard */
+body.theme-holographic-aura .lg\:col-span-3 .grid-cols-3 a {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.25rem !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-3 .grid-cols-3 a:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.1), 0 0 12px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-3 .grid-cols-3 a .w-11.h-11.bg-rose-500 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-3 .grid-cols-3 a span {
+  color: #1E293B !important;
+}
+
+/* Popular services buttons & cards */
+body.theme-holographic-aura .service-card {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 6px 20px -2px rgba(99, 102, 241, 0.05) !important;
+}
+
+body.theme-holographic-aura .service-card:hover {
+  border-color: rgba(34, 211, 238, 0.45) !important;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1), 0 0 14px rgba(34, 211, 238, 0.18) !important;
+}
+
+body.theme-holographic-aura .service-card .w-8.h-8.bg-rose-50 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(192, 132, 252, 0.22) 100%) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #4F46E5 !important;
+  border-radius: 0.625rem !important;
+}
+
+body.theme-holographic-aura .service-card h4 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .service-card .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .service-card .text-slate-700 {
+  color: #4338CA !important;
+}
+
+body.theme-holographic-aura .service-card button {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #4F46E5 !important;
+  border-radius: 0.75rem !important;
+}
+
+body.theme-holographic-aura .service-card button:hover {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Category pills */
+body.theme-holographic-aura .category-pill.active {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 3px 10px rgba(99, 102, 241, 0.25) !important;
+}
+
+body.theme-holographic-aura .category-pill:not(.active) {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  color: #334155 !important;
+  border-radius: 9999px !important;
+}
+
+body.theme-holographic-aura .category-pill:not(.active):hover {
+  background: #FFFFFF !important;
+  color: #4F46E5 !important;
+  border-color: rgba(34, 211, 238, 0.45) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. FORMS & INPUTS (HOLOGRAPHIC GLASS WITH CYAN/LAVENDER FOCUS GLOW)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura input,
+body.theme-holographic-aura select,
+body.theme-holographic-aura textarea {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #0F172A !important;
+  border-radius: 0.875rem !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
+body.theme-holographic-aura input::placeholder,
+body.theme-holographic-aura textarea::placeholder {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura input:focus,
+body.theme-holographic-aura select:focus,
+body.theme-holographic-aura textarea:focus,
+body.theme-holographic-aura .focus\:border-rose-500:focus,
+body.theme-holographic-aura .focus\:border-rose-400:focus {
+  border-color: #818CF8 !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.24), 0 0 14px rgba(192, 132, 252, 0.2) !important;
+  outline: none !important;
+}
+
+body.theme-holographic-aura label {
+  color: #1E293B !important;
+  font-weight: 600 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. RECENTLY ORDERED & LIST ITEMS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .space-y-2\.5 a {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(168, 85, 247, 0.2) !important;
+  border-radius: 1rem !important;
+}
+
+body.theme-holographic-aura .space-y-2\.5 a:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(34, 211, 238, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.08) !important;
+}
+
+body.theme-holographic-aura .space-y-2\.5 a h5 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .space-y-2\.5 a p {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .space-y-2\.5 a span.text-rose-600 {
+  color: #4F46E5 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 10. SALES OVERVIEW CHART (CYAN/LAVENDER HOLOGRAPHIC STYLING)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .lg\:col-span-5 svg line {
+  stroke: rgba(168, 85, 247, 0.18) !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-5 svg text {
+  fill: #64748B !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-5 svg path[stroke="#FF3B69"],
+body.theme-holographic-aura .lg\:col-span-5 svg path[stroke="#E11D48"],
+body.theme-holographic-aura .lg\:col-span-5 svg path[stroke="#2563EB"],
+body.theme-holographic-aura .lg\:col-span-5 svg path[stroke="#DC2626"] {
+  stroke: #6366F1 !important;
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.35)) !important;
+}
+
+body.theme-holographic-aura .lg\:col-span-5 svg circle[fill="#FF3B69"],
+body.theme-holographic-aura .lg\:col-span-5 svg circle[fill="#E11D48"],
+body.theme-holographic-aura .lg\:col-span-5 svg circle[fill="#2563EB"] {
+  fill: #22D3EE !important;
+  stroke: #4338CA !important;
+  stroke-width: 2px !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 11. PROMO & SUPPORT CARDS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .bg-gradient-to-r.from-rose-500.to-pink-600,
+body.theme-holographic-aura .bg-gradient-to-br.from-rose-500.to-pink-600 {
+  background: linear-gradient(135deg, #0891B2 0%, #4F46E5 50%, #9333EA 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.25), 0 0 20px rgba(34, 211, 238, 0.2) !important;
+}
+
+body.theme-holographic-aura .bg-gradient-to-r.from-rose-500.to-pink-600 a.bg-white,
+body.theme-holographic-aura .bg-gradient-to-br.from-rose-500.to-pink-600 a.bg-white {
+  background: #FFFFFF !important;
+  color: #4338CA !important;
+  font-weight: 800 !important;
+  border-radius: 0.875rem !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 12. TEXT & TYPOGRAPHY
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura h1,
+body.theme-holographic-aura h2,
+body.theme-holographic-aura h3,
+body.theme-holographic-aura .text-slate-900 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .text-slate-800 {
+  color: #1E293B !important;
+}
+
+body.theme-holographic-aura .text-slate-700 {
+  color: #334155 !important;
+}
+
+body.theme-holographic-aura .text-slate-600 {
+  color: #475569 !important;
+}
+
+body.theme-holographic-aura .text-slate-500 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .text-rose-500,
+body.theme-holographic-aura .text-rose-600,
+body.theme-holographic-aura .text-rose-700 {
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura .hover\:text-rose-600:hover,
+body.theme-holographic-aura .hover\:text-rose-700:hover {
+  color: #3730A3 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 13. BORDERS & DIVIDERS
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .border-\[\#FCE4E8\],
+body.theme-holographic-aura .border-borderPink,
+body.theme-holographic-aura .border-\[\#FCD3DC\],
+body.theme-holographic-aura .border-rose-100,
+body.theme-holographic-aura .border-rose-200,
+body.theme-holographic-aura .border-slate-200,
+body.theme-holographic-aura .border-slate-100 {
+  border-color: rgba(168, 85, 247, 0.18) !important;
+}
+
+body.theme-holographic-aura .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+body.theme-holographic-aura .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(168, 85, 247, 0.18) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. BADGES, CHIPS & SCROLLBAR
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .bg-rose-500\/10 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(192, 132, 252, 0.18) 100%) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+}
+
+body.theme-holographic-aura .custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+body.theme-holographic-aura .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+body.theme-holographic-aura .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.35);
+  border-radius: 9999px;
+}
+
+body.theme-holographic-aura .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #818CF8;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. TABLES & DATA LISTS (ORDERS, SERVICES, TRANSACTIONS)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura table {
+  color: #1E293B !important;
+}
+
+body.theme-holographic-aura thead {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+}
+
+body.theme-holographic-aura th {
+  color: #475569 !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2) !important;
+}
+
+body.theme-holographic-aura tbody tr {
+  border-bottom: 1px solid rgba(168, 85, 247, 0.14) !important;
+}
+
+body.theme-holographic-aura tbody tr:hover {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+body.theme-holographic-aura td {
+  color: #1E293B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. ADMIN CONSOLE IN HOLOGRAPHIC AURA THEME
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .bg-slate-900 {
+  background: rgba(15, 23, 42, 0.94) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900,
+body.theme-holographic-aura aside#admin-mobile-drawer {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-right: 1px solid rgba(168, 85, 247, 0.25) !important;
+  box-shadow: 2px 0 20px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Active admin navigation link */
+body.theme-holographic-aura aside.w-64.bg-slate-900 .bg-rose-600,
+body.theme-holographic-aura aside#admin-mobile-drawer .bg-rose-600 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Admin icon containers: High contrast */
+body.theme-holographic-aura aside.w-64.bg-slate-900 .w-7.h-7,
+body.theme-holographic-aura aside#admin-mobile-drawer .w-7.h-7 {
+  border-radius: 0.625rem !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 .bg-rose-600 .w-7.h-7,
+body.theme-holographic-aura aside#admin-mobile-drawer .bg-rose-600 .w-7.h-7 {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 a:not(.bg-rose-600) .w-7.h-7,
+body.theme-holographic-aura aside#admin-mobile-drawer a:not(.bg-rose-600) .w-7.h-7 {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  color: #CBD5E1 !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 a:hover .w-7.h-7,
+body.theme-holographic-aura aside#admin-mobile-drawer a:hover .w-7.h-7 {
+  border-color: rgba(34, 211, 238, 0.6) !important;
+  color: #38BDF8 !important;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.25) !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 a:not(.bg-rose-600),
+body.theme-holographic-aura aside#admin-mobile-drawer a:not(.bg-rose-600) {
+  color: #CBD5E1 !important;
+  border-radius: 0.875rem !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 a:not(.bg-rose-600):hover,
+body.theme-holographic-aura aside#admin-mobile-drawer a:not(.bg-rose-600):hover {
+  background: rgba(30, 41, 59, 0.9) !important;
+  color: #FFFFFF !important;
+}
+
+/* Admin header */
+body.theme-holographic-aura header .border-slate-200 {
+  border-color: rgba(168, 85, 247, 0.2) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. PUBLIC PAGES & LANDING PAGE (HERO, SECTIONS, CTA)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura main {
+  background: transparent !important;
+}
+
+body.theme-holographic-aura .bg-rose-50\/40,
+body.theme-holographic-aura .bg-rose-50\/50,
+body.theme-holographic-aura .bg-rose-50\/30 {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+body.theme-holographic-aura footer {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-top: 1px solid rgba(168, 85, 247, 0.18) !important;
+}
+
+body.theme-holographic-aura footer .text-slate-400,
+body.theme-holographic-aura footer .text-slate-500 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura footer .text-slate-800,
+body.theme-holographic-aura footer .text-slate-900 {
+  color: #0F172A !important;
+}
+
+/* Landing page hero badges */
+body.theme-holographic-aura .bg-rose-100.text-rose-600 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(192, 132, 252, 0.22) 100%) !important;
+  color: #4F46E5 !important;
+  border: 1px solid rgba(168, 85, 247, 0.28) !important;
+  border-radius: 9999px !important;
+}
+
+/* Feature cards & testimonials on public pages */
+body.theme-holographic-aura .grid > div.bg-white,
+body.theme-holographic-aura section div.bg-white {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.22) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Bottom trust bar */
+body.theme-holographic-aura .border-t.border-\[\#FCE4E8\].bg-white {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(168, 85, 247, 0.18) !important;
+}
+
+body.theme-holographic-aura .border-t.border-\[\#FCE4E8\].bg-white .text-slate-700 {
+  color: #0F172A !important;
+}
+
+body.theme-holographic-aura .border-t.border-\[\#FCE4E8\].bg-white .text-slate-400 {
+  color: #64748B !important;
+}
+
+body.theme-holographic-aura .border-t.border-\[\#FCE4E8\].bg-white .bg-rose-50 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(192, 132, 252, 0.22) 100%) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #4F46E5 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. MODALS & POPUPS (INHERITED HOLOGRAPHIC AURA)
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .fixed.inset-0.bg-slate-950\/60,
+body.theme-holographic-aura .fixed.inset-0.bg-black\/50,
+body.theme-holographic-aura .modal-backdrop {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+body.theme-holographic-aura .fixed.inset-0 .bg-white,
+body.theme-holographic-aura #modal .bg-white,
+body.theme-holographic-aura [id*="modal"] .bg-white,
+body.theme-holographic-aura #telegram-popup-card,
+body.theme-holographic-aura #notice-popup-card {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+  color: #0F172A !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15), 0 0 24px rgba(34, 211, 238, 0.18) !important;
+}
+
+body.theme-holographic-aura #telegram-popup-card .bg-rose-50,
+body.theme-holographic-aura #notice-popup-card .bg-rose-50,
+body.theme-holographic-aura #telegram-popup-card .bg-red-50,
+body.theme-holographic-aura #notice-popup-card .bg-red-50,
+body.theme-holographic-aura #telegram-popup-card .bg-emerald-50,
+body.theme-holographic-aura #notice-popup-card .bg-emerald-50,
+body.theme-holographic-aura #telegram-popup-card .bg-blue-950\/80,
+body.theme-holographic-aura #notice-popup-card .bg-blue-950\/80 {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(192, 132, 252, 0.22) 100%) !important;
+  border: 1px solid rgba(168, 85, 247, 0.28) !important;
+  color: #4F46E5 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 19. STATUS BADGES & ACCENTS (SEMANTIC PRESERVATION ON HOLOGRAPHIC CANVAS)
+ * ------------------------------------------------------------------------- */
+/* Success / Completed: Soft Mint Green */
+body.theme-holographic-aura .bg-emerald-50.text-emerald-600,
+body.theme-holographic-aura .bg-emerald-50.text-emerald-700,
+body.theme-holographic-aura .bg-green-50.text-green-600 {
+  background-color: rgba(16, 185, 129, 0.14) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  border-radius: 9999px !important;
+}
+
+/* Warning / In Progress: Soft Amber/Honey */
+body.theme-holographic-aura .bg-amber-50.text-amber-600,
+body.theme-holographic-aura .bg-amber-50.text-amber-700,
+body.theme-holographic-aura .bg-yellow-50.text-yellow-600 {
+  background-color: rgba(245, 158, 11, 0.14) !important;
+  color: #D97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  border-radius: 9999px !important;
+}
+
+/* Info / Processing / Sky */
+body.theme-holographic-aura .bg-blue-50.text-blue-600,
+body.theme-holographic-aura .bg-blue-50.text-blue-700,
+body.theme-holographic-aura .bg-sky-50.text-sky-600 {
+  background-color: rgba(14, 165, 233, 0.14) !important;
+  color: #0284C7 !important;
+  border: 1px solid rgba(14, 165, 233, 0.3) !important;
+  border-radius: 9999px !important;
+}
+
+/* Error / Cancelled / Refunded: Soft Rose */
+body.theme-holographic-aura .bg-red-50.text-red-600,
+body.theme-holographic-aura .bg-red-50.text-red-700,
+body.theme-holographic-aura .bg-rose-50.text-rose-600:not(nav a):not(header button) {
+  background-color: rgba(244, 63, 94, 0.14) !important;
+  color: #E11D48 !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+  border-radius: 9999px !important;
+}
+
+/* Purple / Categories: Soft Lavender */
+body.theme-holographic-aura .bg-purple-50.text-purple-600,
+body.theme-holographic-aura .bg-purple-50.text-purple-700 {
+  background-color: rgba(168, 85, 247, 0.14) !important;
+  color: #7E22CE !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+  border-radius: 9999px !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 20. LOGIN & REGISTER AUTH PAGES
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura .max-w-md.bg-white,
+body.theme-holographic-aura .w-full.max-w-md.bg-white {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(168, 85, 247, 0.28) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.12), 0 0 24px rgba(34, 211, 238, 0.15) !important;
+}
+
+body.theme-holographic-aura .max-w-md.bg-white a.text-rose-600,
+body.theme-holographic-aura .w-full.max-w-md.bg-white a.text-rose-600 {
+  color: #4F46E5 !important;
+}
+
+body.theme-holographic-aura .max-w-md.bg-white a.text-rose-600:hover,
+body.theme-holographic-aura .w-full.max-w-md.bg-white a.text-rose-600:hover {
+  color: #3730A3 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 21. CLOSE BUTTONS & ICON CONTRAST FIXES
+ * ------------------------------------------------------------------------- */
+body.theme-holographic-aura button[aria-label*="close" i],
+body.theme-holographic-aura button[aria-label*="Close" i],
+body.theme-holographic-aura .hover\:text-slate-600:hover,
+body.theme-holographic-aura .text-slate-400:hover {
+  color: #0F172A !important;
+}
+
+/* Keep all Lucide icon strokes crisp and well-defined */
+body.theme-holographic-aura svg[data-lucide] {
+  stroke-width: 2px !important;
+}

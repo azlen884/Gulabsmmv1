@@ -308,7 +308,7 @@ function e($text) {
  */
 function get_active_theme() {
     $theme = get_setting('active_theme', 'default');
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'guardian_glow'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura'];
     return in_array($theme, $valid, true) ? $theme : 'default';
 }
 
@@ -357,15 +357,15 @@ function get_available_themes() {
             'badge' => 'Midnight Luxury',
             'features' => ['Deep Midnight & Navy Canvas', 'Electric Cobalt Blue Buttons & Highlights', 'Refined Soft Periwinkle Accents']
         ],
-        'guardian_glow' => [
-            'id' => 'guardian_glow',
-            'name' => 'Guardian Glow',
-            'description' => 'Sophisticated futuristic dark luxury canvas paired with an ethereal luminous amber-gold guardian glow, high-contrast cards, and polished aesthetic.',
-            'primary_color' => '#F59E0B',
-            'secondary_color' => '#0A0B10',
-            'accent_color' => '#FBBF24',
-            'badge' => 'Guardian Glow',
-            'features' => ['Deep Obsidian & Dark Void Canvas', 'Luminous Amber-Gold Guardian Glow', 'Refined Glowing Borders & Consistent Card Radius']
+        'holographic_aura' => [
+            'id' => 'holographic_aura',
+            'name' => 'Holographic Aura',
+            'description' => 'Futuristic holographic aesthetic with soft cyan, aqua, and lavender gradients, translucent glowing cards, and polished SaaS elegance.',
+            'primary_color' => '#06B6D4',
+            'secondary_color' => '#F6F8FE',
+            'accent_color' => '#A855F7',
+            'badge' => 'Holographic Aura',
+            'features' => ['Soft Holographic Iridescent Gradients', 'Translucent Glass Cards & Ambient Aura', 'Crisp High-Contrast Typography & Icons']
         ],
     ];
 }
@@ -378,7 +378,7 @@ function set_active_theme($themeKey) {
     if (!is_admin()) {
         return false;
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'guardian_glow'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura'];
     if (!in_array($themeKey, $valid, true)) {
         return false;
     }
@@ -397,8 +397,8 @@ function render_theme_head_tags() {
         $cssFile = '/assets/css/theme-premium-green.css';
     } elseif ($active === 'midnight_blue') {
         $cssFile = '/assets/css/theme-midnight-blue.css';
-    } elseif ($active === 'guardian_glow') {
-        $cssFile = '/assets/css/theme-guardian-glow.css';
+    } elseif ($active === 'holographic_aura') {
+        $cssFile = '/assets/css/theme-holographic-aura.css';
     }
 
     if (!empty($cssFile)) {
@@ -419,8 +419,8 @@ function get_theme_body_class() {
         return 'theme-premium-green';
     } elseif ($active === 'midnight_blue') {
         return 'theme-midnight-blue';
-    } elseif ($active === 'guardian_glow') {
-        return 'theme-guardian-glow';
+    } elseif ($active === 'holographic_aura') {
+        return 'theme-holographic-aura';
     }
     return 'theme-default';
 }

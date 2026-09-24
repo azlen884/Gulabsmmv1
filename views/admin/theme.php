@@ -88,7 +88,7 @@ $activeTheme = get_active_theme();
             <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
             <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
-            <option value="guardian_glow" <?= $activeTheme === 'guardian_glow' ? 'selected' : '' ?>>Guardian Glow</option>
+            <option value="holographic_aura" <?= $activeTheme === 'holographic_aura' ? 'selected' : '' ?>>Holographic Aura</option>
           </select>
         </div>
 
@@ -273,32 +273,32 @@ $activeTheme = get_active_theme();
           </div>
         </div>
 
-        <!-- 5. Guardian Glow -->
-        <?php $isGuardian = ($activeTheme === 'guardian_glow'); ?>
-        <div class="bg-white rounded-3xl border-2 <?= $isGuardian ? 'border-amber-500 ring-4 ring-amber-500/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-          <?php if ($isGuardian): ?>
-            <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+        <!-- 5. Holographic Aura -->
+        <?php $isHolo = ($activeTheme === 'holographic_aura'); ?>
+        <div class="bg-white rounded-3xl border-2 <?= $isHolo ? 'border-cyan-400 ring-4 ring-cyan-400/20' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          <?php if ($isHolo): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
               Active
             </div>
           <?php endif; ?>
           <div>
-            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-4 shadow-sm">
-              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400/20 to-purple-500/20 border border-purple-300/40 flex items-center justify-center text-indigo-600 mb-4 shadow-sm">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-base font-bold text-slate-800">Guardian Glow</h3>
-            <span class="inline-block text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md mt-1 mb-2">Guardian Glow</span>
+            <h3 class="text-base font-bold text-slate-800">Holographic Aura</h3>
+            <span class="inline-block text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md mt-1 mb-2">Holographic Aura</span>
             <p class="text-xs text-slate-500 leading-relaxed">
-              Futuristic dark luxury canvas paired with an ethereal luminous amber-gold guardian glow, high-contrast cards, and polished aesthetic.
+              Futuristic holographic aesthetic with soft cyan, aqua, and lavender gradients, translucent glowing cards, and polished SaaS elegance.
             </p>
 
             <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
               <span class="text-[11px] font-bold text-slate-400">Palette:</span>
               <div class="flex items-center gap-1.5">
-                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #0A0B10;" title="#0A0B10 Deep Obsidian"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #10121A;" title="#10121A Dark Void"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F59E0B;" title="#F59E0B Guardian Amber"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FBBF24;" title="#FBBF24 Solar Gold"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F8FAFC;" title="#F8FAFC Platinum"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #06B6D4;" title="#06B6D4 Soft Cyan"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #2DD4BF;" title="#2DD4BF Aqua"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #818CF8;" title="#818CF8 Soft Violet"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #C084FC;" title="#C084FC Light Lavender"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F472B6;" title="#F472B6 Pastel Pink"></span>
               </div>
             </div>
           </div>
@@ -306,10 +306,10 @@ $activeTheme = get_active_theme();
           <div class="mt-6 pt-4 border-t border-slate-100">
             <button 
               type="button" 
-              onclick="selectTheme('guardian_glow')"
-              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isGuardian ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-600 border border-slate-200' ?>"
+              onclick="selectTheme('holographic_aura')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isHolo ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-cyan-50 text-slate-700 hover:text-indigo-600 border border-slate-200' ?>"
             >
-              <?= $isGuardian ? 'Current Active Theme' : 'Switch to Guardian Glow' ?>
+              <?= $isHolo ? 'Current Active Theme' : 'Switch to Holographic Aura' ?>
             </button>
           </div>
         </div>

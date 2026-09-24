@@ -164,12 +164,6 @@ $unreadCount = (int)$notifStmt->fetchColumn();
           </div>
           <span>Services</span>
         </a>
-        <a href="/child-panels" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'child-panels' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'child-panels' ? 'bg-fuchsia-100 text-fuchsia-600 border border-fuchsia-200' : 'bg-fuchsia-50 border border-fuchsia-100/80 text-fuchsia-500' ?>">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-          </div>
-          <span>Child Panels</span>
-        </a>
         <a href="/wallet" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
           <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'wallet' ? 'bg-emerald-100 text-emerald-600 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-500' ?>">
             <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
@@ -309,12 +303,6 @@ $unreadCount = (int)$notifStmt->fetchColumn();
             <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
           </div>
           <span>Services</span>
-        </a>
-        <a href="/child-panels" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'child-panels' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
-          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'child-panels' ? 'bg-fuchsia-100 text-fuchsia-600 border border-fuchsia-200' : 'bg-fuchsia-50 border border-fuchsia-100/80 text-fuchsia-500' ?>">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-          </div>
-          <span>Child Panels</span>
         </a>
         <a href="/wallet" class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors <?= $activePage === 'wallet' ? 'bg-[#FFE8EC] text-rose-600 font-bold' : 'text-slate-600 hover:text-rose-600 hover:bg-rose-50/50' ?>">
           <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $activePage === 'wallet' ? 'bg-emerald-100 text-emerald-600 border border-emerald-200' : 'bg-emerald-50 border border-emerald-100/80 text-emerald-500' ?>">

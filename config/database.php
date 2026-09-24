@@ -123,6 +123,35 @@ function set_setting($key, $value) {
 }
 
 /**
+ * Validate and sanitize Telegram URL
+ * Ensures URL is HTTPS and points strictly to trusted Telegram domains
+ */
+function validate_telegram_url(?string $url): string {
+    if (empty($url)) {
+        return '';
+    }
+    $trimmed = trim($url);
+    if (!preg_match('#^https://#i', $trimmed)) {
+        return '';
+    }
+    $parsed = parse_url($trimmed);
+    if (!$parsed || empty($parsed['host']) || ($parsed['scheme'] ?? '') !== 'https') {
+        return '';
+    }
+    $host = strtolower($parsed['host']);
+    $allowedHosts = ['t.me', 'www.t.me', 'telegram.me', 'www.telegram.me', 'web.telegram.org'];
+    if (!in_array($host, $allowedHosts, true)) {
+        return '';
+    }
+    // Prevent unsafe characters
+    if (preg_match('/[<>"\'`\s\\\]/', $trimmed)) {
+        return '';
+    }
+    $sanitized = filter_var($trimmed, FILTER_SANITIZE_URL);
+    return is_string($sanitized) ? $sanitized : '';
+}
+
+/**
  * Check if user is logged in
  */
 function is_logged_in() {

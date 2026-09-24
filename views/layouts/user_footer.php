@@ -180,6 +180,20 @@ $popupThemeStyles = [
         'subtle_btn' => 'text-slate-400 hover:text-blue-300',
         'backdrop' => 'bg-black/75 backdrop-blur-xs',
     ],
+    'guardian_glow' => [
+        'name' => 'Guardian Glow',
+        'card' => 'bg-[#10121A] border border-amber-500/30 shadow-2xl shadow-black/80 text-slate-100',
+        'badge' => 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+        'tg_icon' => 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+        'notice_icon' => 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+        'heading' => 'text-white',
+        'body' => 'text-slate-300',
+        'tg_btn' => 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/25',
+        'notice_btn' => 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/25',
+        'close_btn' => 'text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/50',
+        'subtle_btn' => 'text-slate-400 hover:text-amber-400',
+        'backdrop' => 'bg-black/80 backdrop-blur-xs',
+    ],
 ];
 $thm = $popupThemeStyles[$currentTheme] ?? $popupThemeStyles['default'];
 

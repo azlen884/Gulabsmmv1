@@ -177,6 +177,7 @@ $availableThemes = get_available_themes();
           <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
           <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
           <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
+          <option value="guardian_glow" <?= $activeTheme === 'guardian_glow' ? 'selected' : '' ?>>Guardian Glow</option>
         </select>
         <p class="text-[11px] text-slate-400 mt-1">Global website theme applied across the platform. Configured exclusively by administrators.</p>
       </div>

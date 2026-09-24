@@ -88,6 +88,7 @@ $activeTheme = get_active_theme();
             <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
             <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
+            <option value="guardian_glow" <?= $activeTheme === 'guardian_glow' ? 'selected' : '' ?>>Guardian Glow</option>
           </select>
         </div>
 
@@ -109,7 +110,7 @@ $activeTheme = get_active_theme();
       <h2 class="text-sm font-bold text-slate-700 mb-3 px-1 flex items-center gap-2">
         <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i> Theme Overview & Presets
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         
         <!-- 1. Existing Theme -->
         <?php $isDef = ($activeTheme === 'default'); ?>
@@ -268,6 +269,47 @@ $activeTheme = get_active_theme();
               class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isMidnight ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200' ?>"
             >
               <?= $isMidnight ? 'Current Active Theme' : 'Switch to Midnight Blue' ?>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Guardian Glow -->
+        <?php $isGuardian = ($activeTheme === 'guardian_glow'); ?>
+        <div class="bg-white rounded-3xl border-2 <?= $isGuardian ? 'border-amber-500 ring-4 ring-amber-500/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          <?php if ($isGuardian): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+              Active
+            </div>
+          <?php endif; ?>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-4 shadow-sm">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Guardian Glow</h3>
+            <span class="inline-block text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md mt-1 mb-2">Guardian Glow</span>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Futuristic dark luxury canvas paired with an ethereal luminous amber-gold guardian glow, high-contrast cards, and polished aesthetic.
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #0A0B10;" title="#0A0B10 Deep Obsidian"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #10121A;" title="#10121A Dark Void"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F59E0B;" title="#F59E0B Guardian Amber"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FBBF24;" title="#FBBF24 Solar Gold"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F8FAFC;" title="#F8FAFC Platinum"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button 
+              type="button" 
+              onclick="selectTheme('guardian_glow')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isGuardian ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-600 border border-slate-200' ?>"
+            >
+              <?= $isGuardian ? 'Current Active Theme' : 'Switch to Guardian Glow' ?>
             </button>
           </div>
         </div>

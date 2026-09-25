@@ -8,6 +8,7 @@ if (is_logged_in()) {
     exit;
 }
 
+$categories = [];
 $services = [];
 $recentOrders = [];
 $testimonials = [];
@@ -15,7 +16,23 @@ $testimonials = [];
 try {
     $db = getDB();
     if ($db) {
-        $stmt = $db->query("SELECT s.*, c.name AS category_name, c.slug AS category_slug FROM services s JOIN categories c ON s.category_id = c.id WHERE s.status = 'active' ORDER BY s.sort_order ASC LIMIT 6");
+        // Fetch active categories
+        $catStmt = $db->query("SELECT * FROM categories WHERE status = 'active' ORDER BY sort_order ASC, id ASC");
+        if ($catStmt) {
+            $categories = $catStmt->fetchAll();
+        }
+
+        // Fetch real active services with robust LEFT JOIN
+        $stmt = $db->query("
+            SELECT s.*, 
+                   COALESCE(c.name, 'General') AS category_name, 
+                   COALESCE(c.slug, 'general') AS category_slug, 
+                   c.icon AS category_icon 
+            FROM services s 
+            LEFT JOIN categories c ON s.category_id = c.id 
+            WHERE s.status = 'active' AND (c.status IS NULL OR c.status = 'active') 
+            ORDER BY COALESCE(c.sort_order, 0) ASC, s.sort_order ASC, s.id ASC
+        ");
         if ($stmt) {
             $services = $stmt->fetchAll();
         }
@@ -43,6 +60,7 @@ try {
     }
 } catch (Exception $e) {
     // If table is missing or error occurs, fail gracefully
+    $categories = [];
     $services = [];
     $recentOrders = [];
     $testimonials = [];
@@ -126,38 +144,41 @@ try {
       background: #E11D48;
     }
     .landing-services-heading {
-      color: #0F172A;
+      color: var(--decor-section-heading, #0F172A);
     }
     .landing-services-sub {
-      color: #64748B;
+      color: var(--decor-section-sub, #64748B);
     }
     .landing-service-card {
-      background: #FFFFFF;
-      border: 1px solid #FCE4E8;
+      background: var(--decor-card-bg, #FFFFFF);
+      border: 1px solid var(--decor-card-border, #FCE4E8);
+      box-shadow: var(--decor-card-glow, 0 4px 16px -2px rgba(0,0,0,0.05));
     }
     .landing-service-card:hover {
-      border-color: #F87171;
+      border-color: var(--decor-card-border-hover, #F87171);
     }
     .landing-service-cat {
-      background: #FFF0F3;
-      color: #E11D48;
+      background: var(--decor-badge-bg, #FFF0F3);
+      color: var(--decor-badge-text, #E11D48);
+      border: 1px solid var(--decor-badge-border, #FCD3DC);
     }
     .landing-service-rate {
-      color: #334155;
+      color: var(--decor-metric-val, #334155);
     }
     .landing-service-title {
-      color: #1E293B;
+      color: var(--decor-section-heading, #1E293B);
     }
     .landing-service-desc {
-      color: #64748B;
+      color: var(--decor-section-sub, #64748B);
     }
     .landing-service-btn {
-      background: #FFF0F3;
-      color: #E11D48;
+      background: var(--decor-badge-bg, #FFF0F3);
+      color: var(--decor-primary, #E11D48);
+      border: 1px solid var(--decor-badge-border, #FCD3DC);
     }
     .landing-service-btn:hover {
-      background: #FF3B69;
-      color: #FFFFFF;
+      background: var(--decor-primary-btn-bg, #FF3B69);
+      color: var(--decor-primary-btn-text, #FFFFFF);
     }
 
     @keyframes slideInDownSmooth {
@@ -178,6 +199,8 @@ try {
   <?php render_theme_head_tags(); ?>
 </head>
 <body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between overflow-x-hidden <?= get_theme_body_class() ?>">
+  <!-- Global Active Ambient Decorations (Aurora Glow & Corner Glow) -->
+  <?= WaveDecorationHelper::renderGlobalDecorations(true) ?>
 
   <!-- Public Navigation (Strict Rule 15: No Currency Selector on Public Landing) -->
   <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-12 py-3 sm:py-4 transition-colors">
@@ -344,32 +367,71 @@ try {
       <!-- Right-to-Left Multi-Line Wave Ribbon behind Services -->
       <?= WaveDecorationHelper::renderServicesWave() ?>
 
-      <div class="relative z-10 text-center max-w-xl mx-auto mb-12">
+      <div class="relative z-10 text-center max-w-xl mx-auto mb-10">
+        <div class="landing-hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-xl text-xs font-bold mb-3 shadow-sm">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          <span>Real-Time Catalog</span>
+        </div>
         <h2 class="landing-services-heading text-3xl font-extrabold tracking-tight mb-2">Popular SMM Services</h2>
         <p class="landing-services-sub text-sm">Unbeatable rates, genuine engagement, and non-drop guarantees across all platforms.</p>
       </div>
 
-      <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php foreach ($services as $srv): ?>
-          <div class="landing-service-card p-5 sm:p-6 rounded-3xl shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden">
-            <div class="min-w-0 mb-4">
-              <div class="flex items-center justify-between gap-2 mb-3 min-w-0">
-                <span class="landing-service-cat text-xs font-bold px-3 py-1 rounded-full truncate max-w-[60%]">
-                  <?= e($srv['category_name']) ?>
-                </span>
-                <span class="landing-service-rate text-xs font-extrabold shrink-0 whitespace-nowrap">
-                  $<?= number_format($srv['rate'], 2) ?> / 1K
-                </span>
+      <!-- Interactive Category Filter Tabs -->
+      <?php if (!empty($categories) && count($categories) > 1): ?>
+        <div class="relative z-10 flex items-center justify-center gap-2 overflow-x-auto pb-4 mb-8 custom-scrollbar">
+          <button type="button" onclick="filterLandingCategory('all', this)" class="landing-category-tab active px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer shadow-2xs">
+            All Services (<?= count($services) ?>)
+          </button>
+          <?php foreach ($categories as $cat): ?>
+            <?php 
+              $catCount = 0;
+              foreach ($services as $sCount) {
+                  if ($sCount['category_slug'] === $cat['slug']) $catCount++;
+              }
+            ?>
+            <button type="button" onclick="filterLandingCategory('<?= e($cat['slug']) ?>', this)" class="landing-category-tab px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer">
+              <?= e($cat['name']) ?> <?= $catCount > 0 ? "({$catCount})" : '' ?>
+            </button>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <?php if (!empty($services)): ?>
+        <div id="landing-services-grid" class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <?php foreach ($services as $srv): ?>
+            <div class="landing-service-card service-item-card p-5 sm:p-6 rounded-3xl shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden" data-category="<?= e($srv['category_slug']) ?>">
+              <div class="min-w-0 mb-4">
+                <div class="flex items-center justify-between gap-2 mb-3 min-w-0">
+                  <span class="landing-service-cat text-xs font-bold px-3 py-1 rounded-full truncate max-w-[60%]">
+                    <?= e($srv['category_name']) ?>
+                  </span>
+                  <span class="landing-service-rate text-xs font-extrabold shrink-0 whitespace-nowrap">
+                    <?= format_price($srv['rate']) ?> / 1K
+                  </span>
+                </div>
+                <h3 class="landing-service-title font-bold text-base mb-2 break-words"><?= e($srv['name']) ?></h3>
+                <p class="landing-service-desc text-xs line-clamp-3 break-words leading-relaxed mb-3"><?= e($srv['description'] ?: 'High quality growth service with instant automated dispatch and guaranteed retention.') ?></p>
+                <div class="flex items-center justify-between text-[11px] opacity-70 font-semibold pt-2 border-t border-[var(--decor-card-border)]">
+                  <span>Min: <?= number_format($srv['min_quantity']) ?></span>
+                  <span>Max: <?= number_format($srv['max_quantity']) ?></span>
+                </div>
               </div>
-              <h3 class="landing-service-title font-bold text-base mb-2 break-words"><?= e($srv['name']) ?></h3>
-              <p class="landing-service-desc text-xs line-clamp-3 break-words leading-relaxed"><?= e($srv['description']) ?></p>
+              <a href="/register" class="landing-service-btn block w-full py-2.5 rounded-xl font-bold text-xs text-center transition-all shrink-0">
+                Get Started
+              </a>
             </div>
-            <a href="/register" class="landing-service-btn block w-full py-2.5 rounded-xl font-bold text-xs text-center transition-all shrink-0">
-              Get Started
-            </a>
+          <?php endforeach; ?>
+        </div>
+      <?php else: ?>
+        <!-- Proper Empty State Logic when no active services exist in database -->
+        <div class="relative z-10 max-w-md mx-auto text-center py-12 px-6 rounded-3xl bg-[var(--decor-card-bg)] border border-[var(--decor-card-border)] shadow-sm">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center landing-hero-badge">
+            <i data-lucide="package-search" class="w-6 h-6"></i>
           </div>
-        <?php endforeach; ?>
-      </div>
+          <h3 class="font-bold text-base text-[var(--decor-section-heading)] mb-1">No Services Available</h3>
+          <p class="text-xs text-[var(--decor-section-sub)]">Our service catalog is currently updating. Please register or check back soon.</p>
+        </div>
+      <?php endif; ?>
     </section>
 
     <!-- SECTION TRANSITION 2: Flowing Multi-Line Wave (Services to Features) -->
@@ -607,6 +669,20 @@ try {
         }
       }, 3500);
     })();
+
+    // Vanilla JS category filtering for landing page services
+    function filterLandingCategory(slug, btn) {
+      document.querySelectorAll('.landing-category-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const cards = document.querySelectorAll('.service-item-card');
+      cards.forEach(card => {
+        if (slug === 'all' || card.getAttribute('data-category') === slug) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
   </script>
 </body>
 </html>

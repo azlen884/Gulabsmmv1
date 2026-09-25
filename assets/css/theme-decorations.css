@@ -64,17 +64,17 @@
   --decor-metric-val: #FF3B69;
 
   /* 3 New Premium Effects: Default Tokens */
-  --aurora-c1: rgba(255, 59, 105, 0.10);
-  --aurora-c2: rgba(225, 29, 72, 0.07);
-  --aurora-c3: rgba(254, 205, 211, 0.14);
-  --aurora-c4: rgba(251, 113, 133, 0.08);
+  --aurora-c1: rgba(255, 59, 105, 0.22);
+  --aurora-c2: rgba(225, 29, 72, 0.18);
+  --aurora-c3: rgba(254, 205, 211, 0.28);
+  --aurora-c4: rgba(251, 113, 133, 0.20);
 
   --streak-c1: #FF3B69;
   --streak-c2: #FDA4AF;
-  --streak-glow: rgba(255, 59, 105, 0.35);
+  --streak-glow: rgba(255, 59, 105, 0.50);
 
-  --corner-glow-1: rgba(255, 59, 105, 0.07);
-  --corner-glow-2: rgba(254, 205, 211, 0.05);
+  --corner-glow-1: rgba(255, 59, 105, 0.18);
+  --corner-glow-2: rgba(254, 205, 211, 0.14);
 }
 
 /* -------------------------------------------------------------------------
@@ -91,28 +91,28 @@ body.theme-premium-red {
   --wave-c5: #F43F5E; /* Rose */
   --wave-c6: #FDA4AF; /* Soft pink */
   --wave-c7: #FFF1F2; /* Very light pink */
-  --wave-glow-1: rgba(220, 38, 38, 0.08);
-  --wave-glow-2: rgba(244, 63, 94, 0.05);
+  --wave-glow-1: rgba(220, 38, 38, 0.14);
+  --wave-glow-2: rgba(244, 63, 94, 0.10);
 
   --decor-primary: #DC2626;
   --decor-primary-hover: #B91C1C;
   --decor-accent-text: #DC2626;
   --decor-stroke-1: rgba(220, 38, 38, 0.22);
   --decor-stroke-2: rgba(185, 28, 28, 0.16);
-  --decor-circle: rgba(220, 38, 38, 0.05);
-  --decor-geom: rgba(220, 38, 38, 0.14);
-  --decor-card-glow: 0 8px 24px -4px rgba(220, 38, 38, 0.07);
-  --decor-card-bg: rgba(255, 255, 255, 0.95);
-  --decor-card-border: rgba(220, 38, 38, 0.14);
-  --decor-card-border-hover: rgba(220, 38, 38, 0.35);
-  --decor-divider-stroke: rgba(254, 202, 202, 0.65);
+  --decor-circle: rgba(220, 38, 38, 0.08);
+  --decor-geom: rgba(220, 38, 38, 0.16);
+  --decor-card-glow: 0 8px 24px -4px rgba(220, 38, 38, 0.10);
+  --decor-card-bg: rgba(255, 255, 255, 0.96);
+  --decor-card-border: rgba(220, 38, 38, 0.16);
+  --decor-card-border-hover: rgba(220, 38, 38, 0.40);
+  --decor-divider-stroke: rgba(254, 202, 202, 0.70);
   --decor-badge-bg: #FEF2F2;
   --decor-badge-text: #B91C1C;
   --decor-badge-border: #FECACA;
   --decor-primary-btn-bg: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
   --decor-primary-btn-text: #FFFFFF;
   --decor-primary-btn-hover: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
-  --decor-primary-btn-shadow: 0 4px 16px -2px rgba(220, 38, 38, 0.28);
+  --decor-primary-btn-shadow: 0 4px 16px -2px rgba(220, 38, 38, 0.35);
   --decor-secondary-btn-bg: #FFFFFF;
   --decor-secondary-btn-text: #1E293B;
   --decor-secondary-btn-border: #FEE2E2;
@@ -122,19 +122,19 @@ body.theme-premium-red {
   --decor-metric-val: #DC2626;
 
   /* 1. Aurora Glow: Soft red, Rose, Light pink */
-  --aurora-c1: rgba(220, 38, 38, 0.09);
-  --aurora-c2: rgba(244, 63, 94, 0.07);
-  --aurora-c3: rgba(254, 205, 211, 0.12);
-  --aurora-c4: rgba(254, 226, 226, 0.15);
+  --aurora-c1: rgba(220, 38, 38, 0.22);
+  --aurora-c2: rgba(244, 63, 94, 0.18);
+  --aurora-c3: rgba(254, 205, 211, 0.28);
+  --aurora-c4: rgba(254, 226, 226, 0.32);
 
   /* 2. Light Streaks: Red / rose light streaks */
   --streak-c1: #DC2626;
   --streak-c2: #F43F5E;
-  --streak-glow: rgba(220, 38, 38, 0.35);
+  --streak-glow: rgba(220, 38, 38, 0.48);
 
   /* 3. Corner Glow: Soft red / rose */
-  --corner-glow-1: rgba(220, 38, 38, 0.07);
-  --corner-glow-2: rgba(254, 205, 211, 0.05);
+  --corner-glow-1: rgba(220, 38, 38, 0.18);
+  --corner-glow-2: rgba(254, 205, 211, 0.15);
 }
 
 /* -------------------------------------------------------------------------
@@ -151,28 +151,28 @@ body.theme-premium-green {
   --wave-c5: #10B981; /* Bright mint jade */
   --wave-c6: #6EE7B7; /* Soft mint */
   --wave-c7: #ECFDF5; /* Very light green */
-  --wave-glow-1: rgba(5, 150, 105, 0.08);
-  --wave-glow-2: rgba(16, 185, 129, 0.05);
+  --wave-glow-1: rgba(5, 150, 105, 0.14);
+  --wave-glow-2: rgba(16, 185, 129, 0.10);
 
   --decor-primary: #059669;
   --decor-primary-hover: #047857;
   --decor-accent-text: #059669;
-  --decor-stroke-1: rgba(5, 150, 105, 0.20);
-  --decor-stroke-2: rgba(16, 185, 129, 0.15);
-  --decor-circle: rgba(5, 150, 105, 0.05);
-  --decor-geom: rgba(5, 150, 105, 0.14);
-  --decor-card-glow: 0 8px 24px -4px rgba(5, 150, 105, 0.07);
-  --decor-card-bg: rgba(255, 255, 255, 0.95);
-  --decor-card-border: rgba(5, 150, 105, 0.16);
-  --decor-card-border-hover: rgba(16, 185, 129, 0.40);
-  --decor-divider-stroke: rgba(167, 243, 208, 0.65);
+  --decor-stroke-1: rgba(5, 150, 105, 0.22);
+  --decor-stroke-2: rgba(16, 185, 129, 0.16);
+  --decor-circle: rgba(5, 150, 105, 0.08);
+  --decor-geom: rgba(5, 150, 105, 0.16);
+  --decor-card-glow: 0 8px 24px -4px rgba(5, 150, 105, 0.10);
+  --decor-card-bg: rgba(255, 255, 255, 0.96);
+  --decor-card-border: rgba(5, 150, 105, 0.18);
+  --decor-card-border-hover: rgba(16, 185, 129, 0.45);
+  --decor-divider-stroke: rgba(167, 243, 208, 0.70);
   --decor-badge-bg: #ECFDF5;
   --decor-badge-text: #047857;
   --decor-badge-border: #A7F3D0;
   --decor-primary-btn-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
   --decor-primary-btn-text: #FFFFFF;
   --decor-primary-btn-hover: linear-gradient(135deg, #047857 0%, #064E3B 100%);
-  --decor-primary-btn-shadow: 0 4px 16px -2px rgba(5, 150, 105, 0.28);
+  --decor-primary-btn-shadow: 0 4px 16px -2px rgba(5, 150, 105, 0.35);
   --decor-secondary-btn-bg: #FFFFFF;
   --decor-secondary-btn-text: #1E293B;
   --decor-secondary-btn-border: #D1FAE5;
@@ -182,19 +182,19 @@ body.theme-premium-green {
   --decor-metric-val: #059669;
 
   /* 1. Aurora Glow: Emerald, Soft green, Mint */
-  --aurora-c1: rgba(5, 150, 105, 0.09);
-  --aurora-c2: rgba(16, 185, 129, 0.07);
-  --aurora-c3: rgba(167, 243, 208, 0.14);
-  --aurora-c4: rgba(209, 250, 229, 0.16);
+  --aurora-c1: rgba(5, 150, 105, 0.22);
+  --aurora-c2: rgba(16, 185, 129, 0.18);
+  --aurora-c3: rgba(167, 243, 208, 0.28);
+  --aurora-c4: rgba(209, 250, 229, 0.32);
 
   /* 2. Light Streaks: Emerald / green light streaks */
   --streak-c1: #059669;
   --streak-c2: #34D399;
-  --streak-glow: rgba(5, 150, 105, 0.35);
+  --streak-glow: rgba(5, 150, 105, 0.48);
 
   /* 3. Corner Glow: Emerald / mint */
-  --corner-glow-1: rgba(5, 150, 105, 0.07);
-  --corner-glow-2: rgba(167, 243, 208, 0.05);
+  --corner-glow-1: rgba(5, 150, 105, 0.18);
+  --corner-glow-2: rgba(167, 243, 208, 0.15);
 }
 
 /* -------------------------------------------------------------------------
@@ -211,17 +211,17 @@ body.theme-midnight-blue {
   --wave-c5: #38BDF8; /* Cyan-blue */
   --wave-c6: #818CF8; /* Soft periwinkle */
   --wave-c7: #C7D2FE; /* Pale soft blue */
-  --wave-glow-1: rgba(37, 99, 235, 0.18);
-  --wave-glow-2: rgba(56, 189, 248, 0.10);
+  --wave-glow-1: rgba(37, 99, 235, 0.26);
+  --wave-glow-2: rgba(56, 189, 248, 0.18);
 
   --decor-primary: #2563EB;
   --decor-primary-hover: #1D4ED8;
   --decor-accent-text: #60A5FA;
   --decor-stroke-1: rgba(59, 130, 246, 0.32);
   --decor-stroke-2: rgba(37, 99, 235, 0.20);
-  --decor-circle: rgba(59, 130, 246, 0.07);
-  --decor-geom: rgba(59, 130, 246, 0.16);
-  --decor-card-glow: 0 8px 24px -4px rgba(37, 99, 235, 0.18);
+  --decor-circle: rgba(59, 130, 246, 0.10);
+  --decor-geom: rgba(59, 130, 246, 0.20);
+  --decor-card-glow: 0 8px 24px -4px rgba(37, 99, 235, 0.22);
   --decor-card-bg: rgba(15, 23, 42, 0.88);
   --decor-card-border: rgba(30, 41, 59, 0.95);
   --decor-card-border-hover: rgba(59, 130, 246, 0.45);
@@ -232,7 +232,7 @@ body.theme-midnight-blue {
   --decor-primary-btn-bg: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   --decor-primary-btn-text: #FFFFFF;
   --decor-primary-btn-hover: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
-  --decor-primary-btn-shadow: 0 4px 18px -2px rgba(37, 99, 235, 0.40);
+  --decor-primary-btn-shadow: 0 4px 18px -2px rgba(37, 99, 235, 0.45);
   --decor-secondary-btn-bg: #0F172A;
   --decor-secondary-btn-text: #F1F5F9;
   --decor-secondary-btn-border: #1E293B;
@@ -242,19 +242,19 @@ body.theme-midnight-blue {
   --decor-metric-val: #3B82F6;
 
   /* 1. Aurora Glow: Electric blue, Cyan-blue, Deep blue */
-  --aurora-c1: rgba(37, 99, 235, 0.18);
-  --aurora-c2: rgba(0, 216, 246, 0.12);
-  --aurora-c3: rgba(30, 64, 175, 0.16);
-  --aurora-c4: rgba(56, 189, 248, 0.10);
+  --aurora-c1: rgba(37, 99, 235, 0.28);
+  --aurora-c2: rgba(0, 216, 246, 0.20);
+  --aurora-c3: rgba(30, 64, 175, 0.25);
+  --aurora-c4: rgba(56, 189, 248, 0.18);
 
   /* 2. Light Streaks: Electric blue / cyan light streaks */
   --streak-c1: #2563EB;
   --streak-c2: #00D8F6;
-  --streak-glow: rgba(0, 216, 246, 0.45);
+  --streak-glow: rgba(0, 216, 246, 0.55);
 
   /* 3. Corner Glow: Electric blue / deep blue */
-  --corner-glow-1: rgba(37, 99, 235, 0.14);
-  --corner-glow-2: rgba(0, 216, 246, 0.08);
+  --corner-glow-1: rgba(37, 99, 235, 0.25);
+  --corner-glow-2: rgba(0, 216, 246, 0.18);
 }
 
 /* -------------------------------------------------------------------------
@@ -271,50 +271,110 @@ body.theme-holographic-aura {
   --wave-c5: #818CF8; /* Subtle blue */
   --wave-c6: #C084FC; /* Lavender */
   --wave-c7: #E9D5FF; /* Soft iridescent haze */
-  --wave-glow-1: rgba(6, 182, 212, 0.14);
-  --wave-glow-2: rgba(192, 132, 252, 0.12);
+  --wave-glow-1: rgba(6, 182, 212, 0.20);
+  --wave-glow-2: rgba(192, 132, 252, 0.18);
 
   --decor-primary: #06B6D4;
   --decor-primary-hover: #0891B2;
   --decor-accent-text: #06B6D4;
   --decor-stroke-1: rgba(6, 182, 212, 0.30);
   --decor-stroke-2: rgba(168, 85, 247, 0.24);
-  --decor-circle: rgba(168, 85, 247, 0.08);
-  --decor-geom: rgba(34, 211, 238, 0.20);
-  --decor-card-glow: 0 8px 24px -4px rgba(168, 85, 247, 0.14);
-  --decor-card-bg: rgba(255, 255, 255, 0.88);
-  --decor-card-border: rgba(168, 85, 247, 0.20);
-  --decor-card-border-hover: rgba(34, 211, 238, 0.45);
-  --decor-divider-stroke: rgba(168, 85, 247, 0.25);
+  --decor-circle: rgba(168, 85, 247, 0.10);
+  --decor-geom: rgba(34, 211, 238, 0.22);
+  --decor-card-glow: 0 8px 24px -4px rgba(168, 85, 247, 0.18);
+  --decor-card-bg: rgba(255, 255, 255, 0.90);
+  --decor-card-border: rgba(168, 85, 247, 0.22);
+  --decor-card-border-hover: rgba(34, 211, 238, 0.48);
+  --decor-divider-stroke: rgba(168, 85, 247, 0.30);
   --decor-badge-bg: rgba(168, 85, 247, 0.10);
   --decor-badge-text: #6366F1;
   --decor-badge-border: rgba(168, 85, 247, 0.26);
   --decor-primary-btn-bg: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%);
   --decor-primary-btn-text: #FFFFFF;
   --decor-primary-btn-hover: linear-gradient(135deg, #0891B2 0%, #4F46E5 50%, #9333EA 100%);
-  --decor-primary-btn-shadow: 0 4px 18px -2px rgba(99, 102, 241, 0.35);
-  --decor-secondary-btn-bg: rgba(255, 255, 255, 0.90);
+  --decor-primary-btn-shadow: 0 4px 18px -2px rgba(99, 102, 241, 0.40);
+  --decor-secondary-btn-bg: rgba(255, 255, 255, 0.92);
   --decor-secondary-btn-text: #1E293B;
-  --decor-secondary-btn-border: rgba(168, 85, 247, 0.24);
+  --decor-secondary-btn-border: rgba(168, 85, 247, 0.26);
   --decor-secondary-btn-hover-bg: #FFFFFF;
   --decor-section-heading: #0F172A;
   --decor-section-sub: #475569;
   --decor-metric-val: #6366F1;
 
   /* 1. Aurora Glow: Cyan, Aqua, Lavender, Violet */
-  --aurora-c1: rgba(6, 182, 212, 0.12);
-  --aurora-c2: rgba(45, 212, 191, 0.10);
-  --aurora-c3: rgba(192, 132, 252, 0.12);
-  --aurora-c4: rgba(129, 140, 248, 0.10);
+  --aurora-c1: rgba(6, 182, 212, 0.24);
+  --aurora-c2: rgba(45, 212, 191, 0.20);
+  --aurora-c3: rgba(192, 132, 252, 0.24);
+  --aurora-c4: rgba(129, 140, 248, 0.22);
 
   /* 2. Light Streaks: Cyan / aqua / lavender / violet light streaks */
   --streak-c1: #06B6D4;
   --streak-c2: #C084FC;
-  --streak-glow: rgba(192, 132, 252, 0.40);
+  --streak-glow: rgba(192, 132, 252, 0.52);
 
   /* 3. Corner Glow: Cyan / lavender */
-  --corner-glow-1: rgba(6, 182, 212, 0.08);
-  --corner-glow-2: rgba(192, 132, 252, 0.08);
+  --corner-glow-1: rgba(6, 182, 212, 0.20);
+  --corner-glow-2: rgba(192, 132, 252, 0.20);
+}
+
+/* -------------------------------------------------------------------------
+ * 5. THEME: PREMIUM BLACK + GOLD (theme-premium-black-gold)
+ * Background: Deep rich black, Obsidian surfaces (#0A0A0C, #121216, #18181E)
+ * Wave Colors: Warm gold, Champagne gold, Metallic gold, Bronze-gold tones
+ * Opulent luxury aesthetic, high contrast, readable platinum/gold text.
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold {
+  --wave-c1: #5C4308; /* Deep bronze gold */
+  --wave-c2: #8C6A18; /* Rich warm gold */
+  --wave-c3: #B8860B; /* Dark goldenrod */
+  --wave-c4: #D4AF37; /* Metallic gold */
+  --wave-c5: #E5C158; /* Vibrant champagne gold */
+  --wave-c6: #F5D77F; /* Light champagne gold */
+  --wave-c7: #FFF5D1; /* Pale gold shimmer */
+  --wave-glow-1: rgba(212, 175, 55, 0.24);
+  --wave-glow-2: rgba(245, 215, 127, 0.16);
+
+  --decor-primary: #D4AF37;
+  --decor-primary-hover: #E5C158;
+  --decor-accent-text: #F5D77F;
+  --decor-stroke-1: rgba(212, 175, 55, 0.32);
+  --decor-stroke-2: rgba(184, 134, 11, 0.22);
+  --decor-circle: rgba(212, 175, 55, 0.10);
+  --decor-geom: rgba(212, 175, 55, 0.22);
+  --decor-card-glow: 0 8px 24px -4px rgba(212, 175, 55, 0.18);
+  --decor-card-bg: rgba(18, 18, 22, 0.92);
+  --decor-card-border: rgba(212, 175, 55, 0.24);
+  --decor-card-border-hover: rgba(245, 215, 127, 0.55);
+  --decor-divider-stroke: rgba(212, 175, 55, 0.30);
+  --decor-badge-bg: rgba(212, 175, 55, 0.14);
+  --decor-badge-text: #F5D77F;
+  --decor-badge-border: rgba(212, 175, 55, 0.34);
+  --decor-primary-btn-bg: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  --decor-primary-btn-text: #0A0A0C;
+  --decor-primary-btn-hover: linear-gradient(135deg, #F5D77F 0%, #D4AF37 100%);
+  --decor-primary-btn-shadow: 0 4px 18px -2px rgba(212, 175, 55, 0.40);
+  --decor-secondary-btn-bg: #121216;
+  --decor-secondary-btn-text: #F8FAFC;
+  --decor-secondary-btn-border: rgba(212, 175, 55, 0.30);
+  --decor-secondary-btn-hover-bg: #1C1C22;
+  --decor-section-heading: #F8FAFC;
+  --decor-section-sub: #CBD5E1;
+  --decor-metric-val: #F5D77F;
+
+  /* 1. Aurora Glow: Warm gold, Champagne, Amber glow */
+  --aurora-c1: rgba(212, 175, 55, 0.26);
+  --aurora-c2: rgba(245, 215, 127, 0.20);
+  --aurora-c3: rgba(184, 134, 11, 0.24);
+  --aurora-c4: rgba(140, 106, 24, 0.18);
+
+  /* 2. Light Streaks: Fine gold / champagne light trails */
+  --streak-c1: #D4AF37;
+  --streak-c2: #F5D77F;
+  --streak-glow: rgba(245, 215, 127, 0.55);
+
+  /* 3. Corner Glow: Soft gold corner ambient glow */
+  --corner-glow-1: rgba(212, 175, 55, 0.24);
+  --corner-glow-2: rgba(245, 215, 127, 0.18);
 }
 
 /* -------------------------------------------------------------------------
@@ -488,58 +548,65 @@ body.theme-holographic-aura {
   user-select: none;
 }
 
+.theme-aurora-glow-container.is-page-level {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .aurora-orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(85px);
+  filter: blur(65px);
   will-change: transform;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.92;
 }
 
 .aurora-orb-1 {
-  width: 550px;
-  height: 420px;
-  top: -80px;
-  right: 8%;
-  background: radial-gradient(circle, var(--aurora-c1) 0%, var(--aurora-c3) 45%, transparent 70%);
-  animation: aurora-drift-1 26s ease-in-out infinite alternate;
+  width: 580px;
+  height: 450px;
+  top: -60px;
+  right: 5%;
+  background: radial-gradient(circle, var(--aurora-c1) 0%, var(--aurora-c3) 50%, transparent 72%);
+  animation: aurora-drift-1 24s ease-in-out infinite alternate;
 }
 
 .aurora-orb-2 {
-  width: 480px;
-  height: 380px;
+  width: 520px;
+  height: 400px;
   top: 35%;
-  left: -80px;
-  background: radial-gradient(circle, var(--aurora-c2) 0%, var(--aurora-c4, var(--aurora-c1)) 45%, transparent 70%);
-  animation: aurora-drift-2 32s ease-in-out infinite alternate;
+  left: -60px;
+  background: radial-gradient(circle, var(--aurora-c2) 0%, var(--aurora-c4, var(--aurora-c1)) 48%, transparent 72%);
+  animation: aurora-drift-2 30s ease-in-out infinite alternate;
 }
 
 .aurora-orb-3 {
-  width: 520px;
-  height: 400px;
-  bottom: 8%;
-  right: 15%;
-  background: radial-gradient(circle, var(--aurora-c3) 0%, var(--aurora-c1) 50%, transparent 70%);
-  animation: aurora-drift-3 28s ease-in-out infinite alternate;
+  width: 540px;
+  height: 420px;
+  bottom: 5%;
+  right: 12%;
+  background: radial-gradient(circle, var(--aurora-c3) 0%, var(--aurora-c1) 50%, transparent 72%);
+  animation: aurora-drift-3 26s ease-in-out infinite alternate;
 }
 
 @keyframes aurora-drift-1 {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-30px, 20px) scale(1.05); }
-  100% { transform: translate(20px, -15px) scale(0.96); }
+  50% { transform: translate(-35px, 25px) scale(1.06); }
+  100% { transform: translate(25px, -18px) scale(0.96); }
 }
 
 @keyframes aurora-drift-2 {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(35px, -25px) scale(1.06); }
-  100% { transform: translate(-20px, 15px) scale(0.95); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+  100% { transform: translate(-25px, 18px) scale(0.95); }
 }
 
 @keyframes aurora-drift-3 {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-25px, -30px) scale(1.04); }
-  100% { transform: translate(20px, 20px) scale(0.98); }
+  50% { transform: translate(-30px, -35px) scale(1.05); }
+  100% { transform: translate(25px, 25px) scale(0.97); }
 }
 
 /* =========================================================================
@@ -569,22 +636,22 @@ body.theme-holographic-aura {
   fill: none;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 5px var(--streak-glow));
-  animation: streak-shimmer 8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 6px var(--streak-glow));
+  animation: streak-shimmer 7s ease-in-out infinite alternate;
 }
 
 .light-streak-trail-2 {
-  animation: streak-shimmer 10s ease-in-out infinite alternate-reverse;
+  animation: streak-shimmer 9s ease-in-out infinite alternate-reverse;
 }
 
 .light-streak-trail-3 {
-  animation: streak-shimmer 12s ease-in-out infinite alternate;
+  animation: streak-shimmer 11s ease-in-out infinite alternate;
 }
 
 @keyframes streak-shimmer {
-  0% { opacity: 0.35; stroke-width: 0.85px; }
-  50% { opacity: 0.80; stroke-width: 1.35px; }
-  100% { opacity: 0.45; stroke-width: 0.95px; }
+  0% { opacity: 0.60; stroke-width: 1.4px; }
+  50% { opacity: 0.95; stroke-width: 2.2px; }
+  100% { opacity: 0.70; stroke-width: 1.6px; }
 }
 
 /* =========================================================================
@@ -600,13 +667,20 @@ body.theme-holographic-aura {
   user-select: none;
 }
 
+.theme-corner-glow-container.is-page-level {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .corner-glow-tl {
   position: absolute;
   top: 0;
   left: 0;
-  width: 440px;
-  height: 440px;
-  background: radial-gradient(ellipse at top left, var(--corner-glow-1) 0%, transparent 68%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(ellipse at top left, var(--corner-glow-1) 0%, transparent 72%);
   pointer-events: none;
 }
 
@@ -614,9 +688,9 @@ body.theme-holographic-aura {
   position: absolute;
   top: 0;
   right: 0;
-  width: 440px;
-  height: 440px;
-  background: radial-gradient(ellipse at top right, var(--corner-glow-2) 0%, transparent 68%);
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(ellipse at top right, var(--corner-glow-2) 0%, transparent 72%);
   pointer-events: none;
 }
 
@@ -624,10 +698,88 @@ body.theme-holographic-aura {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(ellipse at bottom right, var(--corner-glow-1) 0%, transparent 68%);
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(ellipse at bottom right, var(--corner-glow-1) 0%, transparent 72%);
   pointer-events: none;
+}
+
+/* -------------------------------------------------------------------------
+ * SERVICES SECTION STYLING (Theme-Adaptive across all 5 themes)
+ * ------------------------------------------------------------------------- */
+.landing-services-heading {
+  color: var(--decor-section-heading) !important;
+}
+
+.landing-services-sub {
+  color: var(--decor-section-sub) !important;
+}
+
+.landing-service-card {
+  background-color: var(--decor-card-bg) !important;
+  border: 1px solid var(--decor-card-border) !important;
+  box-shadow: var(--decor-card-glow) !important;
+  border-radius: 1.5rem !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.landing-service-card:hover {
+  border-color: var(--decor-card-border-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 28px -6px var(--decor-stroke-1) !important;
+}
+
+.landing-service-cat {
+  background-color: var(--decor-badge-bg) !important;
+  color: var(--decor-badge-text) !important;
+  border: 1px solid var(--decor-badge-border) !important;
+}
+
+.landing-service-rate {
+  color: var(--decor-metric-val) !important;
+}
+
+.landing-service-title {
+  color: var(--decor-section-heading) !important;
+}
+
+.landing-service-desc {
+  color: var(--decor-section-sub) !important;
+}
+
+.landing-service-btn {
+  background-color: var(--decor-badge-bg) !important;
+  color: var(--decor-primary) !important;
+  border: 1px solid var(--decor-badge-border) !important;
+  border-radius: 0.75rem !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+}
+
+.landing-service-btn:hover {
+  background: var(--decor-primary-btn-bg) !important;
+  color: var(--decor-primary-btn-text) !important;
+  border-color: transparent !important;
+  box-shadow: var(--decor-primary-btn-shadow) !important;
+}
+
+.landing-category-tab {
+  background: var(--decor-card-bg);
+  color: var(--decor-section-sub);
+  border: 1px solid var(--decor-card-border);
+  transition: all 0.2s ease;
+}
+
+.landing-category-tab:hover {
+  color: var(--decor-section-heading);
+  border-color: var(--decor-card-border-hover);
+}
+
+.landing-category-tab.active {
+  background: var(--decor-primary-btn-bg) !important;
+  color: var(--decor-primary-btn-text) !important;
+  border-color: transparent !important;
+  box-shadow: var(--decor-primary-btn-shadow) !important;
 }
 
 /* -------------------------------------------------------------------------

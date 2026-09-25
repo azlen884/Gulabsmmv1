@@ -342,7 +342,10 @@ function e($text) {
  */
 function get_active_theme() {
     $theme = get_setting('active_theme', 'default');
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura'];
+    if ($theme === 'black_gold') {
+        $theme = 'premium_black_gold';
+    }
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold'];
     return in_array($theme, $valid, true) ? $theme : 'default';
 }
 
@@ -401,6 +404,16 @@ function get_available_themes() {
             'badge' => 'Holographic Aura',
             'features' => ['Soft Holographic Iridescent Gradients', 'Translucent Glass Cards & Ambient Aura', 'Crisp High-Contrast Typography & Icons']
         ],
+        'premium_black_gold' => [
+            'id' => 'premium_black_gold',
+            'name' => 'Premium Black + Gold',
+            'description' => 'Opulent obsidian black canvas paired with metallic champagne gold accents, warm glowing ribbons, and elite luxury aesthetic.',
+            'primary_color' => '#D4AF37',
+            'secondary_color' => '#0A0A0C',
+            'accent_color' => '#F5D77F',
+            'badge' => 'Black + Gold Luxury',
+            'features' => ['Deep Rich Obsidian Black Canvas', 'Metallic Gold & Champagne Accents', 'Flowing Warm Gold Wave Ribbons']
+        ],
     ];
 }
 
@@ -412,7 +425,10 @@ function set_active_theme($themeKey) {
     if (!is_admin()) {
         return false;
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura'];
+    if ($themeKey === 'black_gold') {
+        $themeKey = 'premium_black_gold';
+    }
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold'];
     if (!in_array($themeKey, $valid, true)) {
         return false;
     }
@@ -438,6 +454,8 @@ function render_theme_head_tags() {
         $cssFile = '/assets/css/theme-midnight-blue.css';
     } elseif ($active === 'holographic_aura') {
         $cssFile = '/assets/css/theme-holographic-aura.css';
+    } elseif ($active === 'premium_black_gold' || $active === 'black_gold') {
+        $cssFile = '/assets/css/theme-premium-black-gold.css';
     }
 
     if (!empty($cssFile)) {
@@ -460,6 +478,8 @@ function get_theme_body_class() {
         return 'theme-midnight-blue';
     } elseif ($active === 'holographic_aura') {
         return 'theme-holographic-aura';
+    } elseif ($active === 'premium_black_gold' || $active === 'black_gold') {
+        return 'theme-premium-black-gold';
     }
     return 'theme-default';
 }

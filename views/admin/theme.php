@@ -133,6 +133,7 @@ $cornerGlowOn = is_corner_glow_enabled();
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
             <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
             <option value="holographic_aura" <?= $activeTheme === 'holographic_aura' ? 'selected' : '' ?>>Holographic Aura</option>
+            <option value="premium_black_gold" <?= $activeTheme === 'premium_black_gold' ? 'selected' : '' ?>>Premium Black + Gold</option>
           </select>
         </div>
 
@@ -460,6 +461,47 @@ $cornerGlowOn = is_corner_glow_enabled();
               class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isHolo ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-cyan-50 text-slate-700 hover:text-indigo-600 border border-slate-200' ?>"
             >
               <?= $isHolo ? 'Current Active Theme' : 'Switch to Holographic Aura' ?>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Premium Black + Gold -->
+        <?php $isGold = ($activeTheme === 'premium_black_gold' || $activeTheme === 'black_gold'); ?>
+        <div class="bg-white rounded-3xl border-2 <?= $isGold ? 'border-amber-500 ring-4 ring-amber-500/20' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          <?php if ($isGold): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+              Active
+            </div>
+          <?php endif; ?>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-amber-500/40 flex items-center justify-center text-amber-400 mb-4 shadow-sm">
+              <i data-lucide="crown" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Premium Black + Gold</h3>
+            <span class="inline-block text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md mt-1 mb-2">Black + Gold Luxury</span>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Opulent deep obsidian black canvas paired with metallic champagne gold accents, warm flowing ribbons, and elite luxury aesthetic.
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #0A0A0C;" title="#0A0A0C Obsidian Black"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #18181E;" title="#18181E Charcoal Surface"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #D4AF37;" title="#D4AF37 Metallic Gold"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F5D77F;" title="#F5D77F Champagne Gold"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #F8FAFC;" title="#F8FAFC Platinum"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button 
+              type="button" 
+              onclick="selectTheme('premium_black_gold')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isGold ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-600 border border-slate-200' ?>"
+            >
+              <?= $isGold ? 'Current Active Theme' : 'Switch to Black + Gold' ?>
             </button>
           </div>
         </div>

@@ -1,0 +1,304 @@
+/**
+ * =========================================================================
+ * RoseSMM - Premium Black + Gold Theme (theme-premium-black-gold)
+ *
+ * PALETTE:
+ * - DEEP RICH BLACK / OBSIDIAN: #0A0A0C, #0F0F13, #121216, #18181E
+ * - METALLIC GOLD / CHAMPAGNE: #D4AF37, #E5C158, #F5D77F, #B8860B, #FFF5D1
+ * - PLATINUM / OFF-WHITE: #F8FAFC, #F1F5F9, #E2E8F0, #CBD5E1, #94A3B8
+ * - ACCENT BORDERS / GLOWS: rgba(212, 175, 55, 0.22), rgba(245, 215, 127, 0.40)
+ *
+ * Strict scoping under body.theme-premium-black-gold
+ * =========================================================================
+ */
+
+:root {
+  --color-gold-primary: #D4AF37;
+  --color-gold-light: #F5D77F;
+  --color-gold-dark: #B8860B;
+  --color-gold-rich: #C5A059;
+  --color-gold-soft: rgba(212, 175, 55, 0.14);
+  --color-gold-border: rgba(212, 175, 55, 0.26);
+  --color-gold-border-bright: rgba(245, 215, 127, 0.55);
+  --color-gold-glow: rgba(212, 175, 55, 0.35);
+
+  --color-obsidian-bg: #0A0A0C;
+  --color-obsidian-surface: #121216;
+  --color-obsidian-card: #18181E;
+  --color-obsidian-border: #22222A;
+}
+
+/* -------------------------------------------------------------------------
+ * 1. ROOT BODY & CANVAS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold {
+  background-color: #0A0A0C !important;
+  color: #F1F5F9 !important;
+}
+
+body.theme-premium-black-gold .bg-\[\#FFF9FA\],
+body.theme-premium-black-gold .bg-canvas,
+body.theme-premium-black-gold .bg-slate-50 {
+  background-color: #0A0A0C !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. NAVBAR - DEEP OBSIDIAN & METALLIC GOLD
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold header.border-b,
+body.theme-premium-black-gold header.bg-white {
+  background: #121216 !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.8) !important;
+}
+
+body.theme-premium-black-gold header.bg-white\/80 {
+  background: rgba(18, 18, 22, 0.94) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.85) !important;
+}
+
+body.theme-premium-black-gold header .text-slate-600 {
+  color: #CBD5E1 !important;
+}
+
+body.theme-premium-black-gold header .text-slate-600:hover,
+body.theme-premium-black-gold header a:hover {
+  color: #F5D77F !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 3. SIDEBAR & NAVIGATION
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold aside#main-sidebar {
+  background: #0F0F13 !important;
+  border-right: 1px solid rgba(212, 175, 55, 0.20) !important;
+}
+
+body.theme-premium-black-gold aside#main-sidebar nav a {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold aside#main-sidebar nav a:hover {
+  color: #F5D77F !important;
+  background-color: rgba(212, 175, 55, 0.10) !important;
+}
+
+body.theme-premium-black-gold aside#main-sidebar nav a.bg-rose-50,
+body.theme-premium-black-gold aside#main-sidebar nav a.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.22) 0%, rgba(184, 134, 11, 0.14) 100%) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 4. CARDS & SURFACES
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .bg-white,
+body.theme-premium-black-gold .service-filters-card,
+body.theme-premium-black-gold .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div,
+body.theme-premium-black-gold .bg-white.p-5.rounded-2xl.border,
+body.theme-premium-black-gold .p-6.rounded-3xl.bg-white {
+  background: #121216 !important;
+  border-color: rgba(212, 175, 55, 0.22) !important;
+  color: #F1F5F9 !important;
+}
+
+body.theme-premium-black-gold .border-slate-200,
+body.theme-premium-black-gold .border-slate-200\/80,
+body.theme-premium-black-gold .border-\[\#FCE4E8\],
+body.theme-premium-black-gold .border-rose-100 {
+  border-color: rgba(212, 175, 55, 0.20) !important;
+}
+
+/* Stat Cards */
+body.theme-premium-black-gold .stat-card,
+body.theme-premium-black-gold .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div {
+  background: #121216 !important;
+  border: 1px solid rgba(212, 175, 55, 0.22) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Text Overrides */
+body.theme-premium-black-gold .text-slate-900,
+body.theme-premium-black-gold .text-slate-800,
+body.theme-premium-black-gold .text-slate-700 {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .text-slate-500,
+body.theme-premium-black-gold .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold .text-rose-600,
+body.theme-premium-black-gold .text-rose-500 {
+  color: #F5D77F !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. BUTTONS & ACTIONS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .bg-rose-600,
+body.theme-premium-black-gold .bg-rose-500,
+body.theme-premium-black-gold .service-header-action-btn,
+body.theme-premium-black-gold button[type="submit"]:not(.bg-slate-200):not(.bg-white) {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+  border: none !important;
+  box-shadow: 0 4px 18px -2px rgba(212, 175, 55, 0.40) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.theme-premium-black-gold .bg-rose-600:hover,
+body.theme-premium-black-gold .bg-rose-500:hover,
+body.theme-premium-black-gold .service-header-action-btn:hover {
+  background: linear-gradient(135deg, #F5D77F 0%, #D4AF37 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 22px -2px rgba(212, 175, 55, 0.55) !important;
+}
+
+/* Secondary Button */
+body.theme-premium-black-gold .bg-rose-50,
+body.theme-premium-black-gold .bg-slate-100 {
+  background-color: rgba(212, 175, 55, 0.12) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 6. FORMS, INPUTS & SELECTS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold input[type="text"],
+body.theme-premium-black-gold input[type="email"],
+body.theme-premium-black-gold input[type="password"],
+body.theme-premium-black-gold input[type="number"],
+body.theme-premium-black-gold input[type="url"],
+body.theme-premium-black-gold input[type="search"],
+body.theme-premium-black-gold select,
+body.theme-premium-black-gold textarea {
+  background-color: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold input::placeholder,
+body.theme-premium-black-gold textarea::placeholder {
+  color: #64748B !important;
+}
+
+body.theme-premium-black-gold input:focus,
+body.theme-premium-black-gold select:focus,
+body.theme-premium-black-gold textarea:focus {
+  border-color: #F5D77F !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.20) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 7. BADGES & PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .bg-rose-50\/40,
+body.theme-premium-black-gold .bg-rose-100\/70,
+body.theme-premium-black-gold .service-category-pill {
+  background-color: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.22) !important;
+  color: #CBD5E1 !important;
+}
+
+body.theme-premium-black-gold .service-category-pill.active {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px -2px rgba(212, 175, 55, 0.45) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. TABLES & DATA LISTS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold table {
+  background: #121216 !important;
+}
+
+body.theme-premium-black-gold thead tr {
+  background: #18181E !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold tbody tr {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12) !important;
+}
+
+body.theme-premium-black-gold tbody tr:hover {
+  background-color: rgba(212, 175, 55, 0.06) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. LANDING PAGE COMPONENTS IN BLACK + GOLD
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .landing-dashboard-card {
+  background: #121216 !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.9) !important;
+}
+
+body.theme-premium-black-gold .landing-dashboard-logo {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+}
+
+body.theme-premium-black-gold .landing-dashboard-title {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .landing-dashboard-status {
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .landing-dashboard-speed {
+  background: rgba(212, 175, 55, 0.15) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+}
+
+body.theme-premium-black-gold .landing-activity-item {
+  background: rgba(24, 24, 30, 0.95) !important;
+  border: 1px solid rgba(212, 175, 55, 0.20) !important;
+}
+
+body.theme-premium-black-gold .landing-activity-icon {
+  background: rgba(212, 175, 55, 0.14) !important;
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .landing-activity-name {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .landing-activity-qty {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold .landing-promo-card {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.30) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .landing-promo-btn {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+}
+
+body.theme-premium-black-gold .landing-promo-btn:hover {
+  background: linear-gradient(135deg, #F5D77F 0%, #D4AF37 100%) !important;
+}
+
+/* Balance Card in Dashboard */
+body.theme-premium-black-gold .rounded-3xl.bg-gradient-to-br {
+  background: linear-gradient(135deg, #18181E 0%, #121216 50%, #0A0A0C 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.40) !important;
+  box-shadow: 0 12px 32px -4px rgba(212, 175, 55, 0.25) !important;
+}

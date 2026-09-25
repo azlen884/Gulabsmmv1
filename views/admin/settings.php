@@ -187,6 +187,7 @@ $availableThemes = get_available_themes();
           <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
           <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
           <option value="holographic_aura" <?= $activeTheme === 'holographic_aura' ? 'selected' : '' ?>>Holographic Aura</option>
+          <option value="premium_black_gold" <?= $activeTheme === 'premium_black_gold' ? 'selected' : '' ?>>Premium Black + Gold</option>
         </select>
         <p class="text-[11px] text-slate-400 mt-1">Global website theme applied across the platform. Configured exclusively by administrators.</p>
       </div>

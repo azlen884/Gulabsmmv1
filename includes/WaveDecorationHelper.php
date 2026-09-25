@@ -381,8 +381,9 @@ HTML;
         if (!is_aurora_glow_enabled()) {
             return '';
         }
+        $cls = trim("theme-aurora-glow-container {$containerClass}");
         return <<<HTML
-        <div class="theme-aurora-glow-container {$containerClass}" aria-hidden="true">
+        <div class="{$cls}" aria-hidden="true">
           <div class="aurora-orb aurora-orb-1"></div>
           <div class="aurora-orb aurora-orb-2"></div>
           <div class="aurora-orb aurora-orb-3"></div>
@@ -407,22 +408,22 @@ HTML;
             <defs>
               <linearGradient id="{$prefix}-trail-1" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="var(--streak-c1)" stop-opacity="0" />
-                <stop offset="20%" stop-color="var(--streak-c1)" stop-opacity="0.85" />
+                <stop offset="20%" stop-color="var(--streak-c1)" stop-opacity="0.90" />
                 <stop offset="50%" stop-color="var(--streak-c2)" stop-opacity="0.95" />
-                <stop offset="80%" stop-color="var(--streak-c1)" stop-opacity="0.75" />
+                <stop offset="80%" stop-color="var(--streak-c1)" stop-opacity="0.80" />
                 <stop offset="100%" stop-color="var(--streak-c2)" stop-opacity="0" />
               </linearGradient>
               <linearGradient id="{$prefix}-trail-2" x1="100%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="var(--streak-c2)" stop-opacity="0" />
-                <stop offset="25%" stop-color="var(--streak-c1)" stop-opacity="0.90" />
-                <stop offset="70%" stop-color="var(--streak-c2)" stop-opacity="0.80" />
+                <stop offset="25%" stop-color="var(--streak-c1)" stop-opacity="0.92" />
+                <stop offset="70%" stop-color="var(--streak-c2)" stop-opacity="0.85" />
                 <stop offset="100%" stop-color="var(--streak-c1)" stop-opacity="0" />
               </linearGradient>
             </defs>
             <!-- Illuminated Trails weaving smoothly alongside the multi-line ribbon -->
-            <path class="light-streak-trail" d="M -40,160 C 260,40 540,320 880,180 C 1160,70 1340,240 1520,150" stroke="url(#{$prefix}-trail-1)" stroke-width="1.2" stroke-dasharray="220 90" />
-            <path class="light-streak-trail light-streak-trail-2" d="M -20,290 C 320,150 640,400 990,250 C 1240,140 1390,320 1510,240" stroke="url(#{$prefix}-trail-2)" stroke-width="1.0" stroke-dasharray="160 120" />
-            <path class="light-streak-trail light-streak-trail-3" d="M -30,90 C 380,210 720,80 1060,280 C 1270,390 1400,170 1530,200" stroke="url(#{$prefix}-trail-1)" stroke-width="0.85" stroke-dasharray="140 140" />
+            <path class="light-streak-trail" d="M -40,160 C 260,40 540,320 880,180 C 1160,70 1340,240 1520,150" stroke="url(#{$prefix}-trail-1)" stroke-width="1.8" stroke-dasharray="280 180" />
+            <path class="light-streak-trail light-streak-trail-2" d="M -20,290 C 320,150 640,400 990,250 C 1240,140 1390,320 1510,240" stroke="url(#{$prefix}-trail-2)" stroke-width="1.6" stroke-dasharray="240 200" />
+            <path class="light-streak-trail light-streak-trail-3" d="M -30,90 C 380,210 720,80 1060,280 C 1270,390 1400,170 1530,200" stroke="url(#{$prefix}-trail-1)" stroke-width="1.4" stroke-dasharray="200 220" />
           </svg>
         </div>
 HTML;
@@ -435,12 +436,13 @@ HTML;
      * Controlled by Admin toggle 'decor_corner_glow'.
      * =========================================================================
      */
-    public static function renderCornerGlow(): string {
+    public static function renderCornerGlow(string $containerClass = ''): string {
         if (!is_corner_glow_enabled()) {
             return '';
         }
+        $cls = trim("theme-corner-glow-container {$containerClass}");
         return <<<HTML
-        <div class="theme-corner-glow-container" aria-hidden="true">
+        <div class="{$cls}" aria-hidden="true">
           <div class="corner-glow-tl"></div>
           <div class="corner-glow-tr"></div>
           <div class="corner-glow-br"></div>
@@ -455,10 +457,11 @@ HTML;
      * Each effect renders ONLY if its respective admin toggle is active.
      * =========================================================================
      */
-    public static function renderGlobalDecorations(): string {
+    public static function renderGlobalDecorations(bool $isPageLevel = true): string {
+        $pageClass = $isPageLevel ? 'is-page-level' : '';
         $out = '';
-        $out .= self::renderCornerGlow();
-        $out .= self::renderAuroraGlow();
+        $out .= self::renderCornerGlow($pageClass);
+        $out .= self::renderAuroraGlow($pageClass);
         $out .= self::renderLightStreaks('global-streak');
         return $out;
     }

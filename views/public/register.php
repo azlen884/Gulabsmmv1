@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../includes/ReferralHelper.php';
+require_once __DIR__ . '/../../includes/WaveDecorationHelper.php';
 
 if (is_logged_in()) {
     header("Location: /dashboard");
@@ -177,7 +178,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="https://unpkg.com/lucide@latest"></script>
   <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 <?= get_theme_body_class() ?>">
+<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between p-4 relative <?= get_theme_body_class() ?>">
+  <!-- Global Active Ambient Decorations (Aurora Glow & Corner Glow) -->
+  <?= WaveDecorationHelper::renderGlobalDecorations(true) ?>
 
   <div class="max-w-md w-full mx-auto pt-6 pb-2 text-center">
     <a href="/" class="inline-flex items-center gap-3">

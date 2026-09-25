@@ -984,8 +984,83 @@ body.theme-holographic-aura aside#admin-mobile-drawer a:not(.bg-rose-600):hover 
 }
 
 /* Admin header */
-body.theme-holographic-aura header .border-slate-200 {
-  border-color: rgba(168, 85, 247, 0.2) !important;
+body.theme-holographic-aura header.bg-white.border-b.border-slate-200 {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.20) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.06) !important;
+}
+
+body.theme-holographic-aura header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background: rgba(168, 85, 247, 0.10) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #7C3AED !important;
+}
+
+body.theme-holographic-aura header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background: rgba(168, 85, 247, 0.20) !important;
+  color: #6D28D9 !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 .bg-rose-500,
+body.theme-holographic-aura aside#admin-mobile-drawer .bg-rose-500 {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 100%) !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-holographic-aura aside.w-64.bg-slate-900 .text-rose-400,
+body.theme-holographic-aura aside#admin-mobile-drawer .text-rose-400 {
+  color: #22D3EE !important;
+}
+
+/* Admin Cards, Panels & Metrics */
+body.theme-holographic-aura .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-holographic-aura .bg-white.rounded-3xl.border.border-slate-200,
+body.theme-holographic-aura .bg-white.p-4.rounded-3xl.border.border-slate-200 {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(168, 85, 247, 0.22) !important;
+  box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.08) !important;
+}
+
+body.theme-holographic-aura .w-12.h-12.rounded-2xl.bg-rose-50.text-rose-500,
+body.theme-holographic-aura .w-10.h-10.rounded-2xl.bg-rose-50.text-rose-500 {
+  background: rgba(6, 182, 212, 0.12) !important;
+  border: 1px solid rgba(6, 182, 212, 0.28) !important;
+  color: #0891B2 !important;
+}
+
+/* Admin Pagination */
+body.theme-holographic-aura .pagination .active,
+body.theme-holographic-aura a.bg-rose-600.text-white {
+  background: linear-gradient(135deg, #06B6D4 0%, #6366F1 50%, #A855F7 100%) !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* User Trust Bar & Icons */
+body.theme-holographic-aura .border-t.border-\[\#FCE4E8\].bg-white {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border-top: 1px solid rgba(168, 85, 247, 0.20) !important;
+}
+
+body.theme-holographic-aura .w-7.h-7.rounded-full.bg-rose-50.text-rose-500 {
+  background: rgba(168, 85, 247, 0.12) !important;
+  border: 1px solid rgba(168, 85, 247, 0.25) !important;
+  color: #7C3AED !important;
+}
+
+body.theme-holographic-aura .font-serif.italic.text-rose-500 {
+  color: #7C3AED !important;
+}
+
+body.theme-holographic-aura svg.text-rose-400.fill-current {
+  color: #06B6D4 !important;
+  fill: #06B6D4 !important;
 }
 
 /* -------------------------------------------------------------------------

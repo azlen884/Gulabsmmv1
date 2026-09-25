@@ -899,14 +899,162 @@ body.theme-midnight-blue .bg-slate-900 {
   background-color: #080C15 !important;
 }
 
-body.theme-midnight-blue aside.w-64.bg-slate-900 {
+/* Desktop & Mobile Admin Sidebars */
+body.theme-midnight-blue aside.w-64.bg-slate-900,
+body.theme-midnight-blue aside#admin-mobile-drawer {
   background-color: #080C15 !important;
   border-right: 1px solid #1E293B !important;
 }
 
-body.theme-midnight-blue aside.w-64.bg-slate-900 .bg-rose-600 {
-  background: #2563EB !important;
+body.theme-midnight-blue aside.w-64.bg-slate-900 .bg-rose-600,
+body.theme-midnight-blue aside#admin-mobile-drawer .bg-rose-600 {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
   color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.40) !important;
+}
+
+body.theme-midnight-blue aside.w-64.bg-slate-900 .bg-rose-500,
+body.theme-midnight-blue aside#admin-mobile-drawer .bg-rose-500 {
+  background-color: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-midnight-blue aside.w-64.bg-slate-900 .text-rose-400,
+body.theme-midnight-blue aside#admin-mobile-drawer .text-rose-400 {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue aside.w-64.bg-slate-900 a:hover,
+body.theme-midnight-blue aside#admin-mobile-drawer a:hover {
+  color: #F8FAFC !important;
+  background-color: rgba(37, 99, 235, 0.10) !important;
+}
+
+/* Admin Top Header */
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 {
+  background: #0B1120 !important;
+  border-bottom: 1px solid #1E293B !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.6) !important;
+}
+
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 .text-slate-800,
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 .text-slate-700 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 .text-slate-500,
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+  color: #93C5FD !important;
+}
+
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background: rgba(37, 99, 235, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 a.hover\:text-rose-600:hover,
+body.theme-midnight-blue header.bg-white.border-b.border-slate-200 button.hover\:text-rose-600:hover {
+  color: #60A5FA !important;
+}
+
+/* Admin Cards, Panels & Metrics */
+body.theme-midnight-blue .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-midnight-blue .bg-white.rounded-3xl.border.border-slate-200,
+body.theme-midnight-blue .bg-white.p-4.rounded-3xl.border.border-slate-200 {
+  background: #0F172A !important;
+  border-color: #1E293B !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.7) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-800,
+body.theme-midnight-blue .bg-white.rounded-3xl.border.border-slate-200 .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-400,
+body.theme-midnight-blue .bg-white.rounded-3xl.border.border-slate-200 .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue .w-12.h-12.rounded-2xl.bg-rose-50.text-rose-500,
+body.theme-midnight-blue .w-10.h-10.rounded-2xl.bg-rose-50.text-rose-500 {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .border-slate-100 {
+  border-color: #1E293B !important;
+}
+
+/* Admin Buttons */
+body.theme-midnight-blue a.bg-slate-900.text-white,
+body.theme-midnight-blue button.bg-slate-900.text-white,
+body.theme-midnight-blue a.bg-slate-800.text-white {
+  background: #1E293B !important;
+  border: 1px solid #334155 !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-midnight-blue a.bg-slate-900.text-white:hover,
+body.theme-midnight-blue button.bg-slate-900.text-white:hover {
+  background: #2A3B57 !important;
+  color: #FFFFFF !important;
+}
+
+/* Admin Tables & Modals */
+body.theme-midnight-blue thead tr {
+  background-color: #131E35 !important;
+  border-bottom: 1px solid #1E293B !important;
+  color: #94A3B8 !important;
+}
+
+body.theme-midnight-blue table th {
+  color: #CBD5E1 !important;
+}
+
+body.theme-midnight-blue tbody tr {
+  background-color: #0F172A !important;
+  border-bottom: 1px solid #1E293B !important;
+  color: #F1F5F9 !important;
+}
+
+body.theme-midnight-blue tbody tr:hover {
+  background-color: #152238 !important;
+}
+
+body.theme-midnight-blue footer.bg-white.border-t.border-slate-200 {
+  background: #080C15 !important;
+  border-top: 1px solid #1E293B !important;
+  color: #64748B !important;
+}
+
+/* User Trust Bar & Icons */
+body.theme-midnight-blue .border-t.border-\[\#FCE4E8\].bg-white {
+  background: #080C15 !important;
+  border-top: 1px solid #1E293B !important;
+}
+
+body.theme-midnight-blue .w-7.h-7.rounded-full.bg-rose-50.text-rose-500 {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue .font-serif.italic.text-rose-500 {
+  color: #60A5FA !important;
+}
+
+body.theme-midnight-blue svg.text-rose-400.fill-current {
+  color: #3B82F6 !important;
+  fill: #3B82F6 !important;
 }
 
 /* -------------------------------------------------------------------------

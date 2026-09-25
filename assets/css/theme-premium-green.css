@@ -169,11 +169,19 @@ body.theme-premium-green .group:hover .group-hover\:text-rose-500 {
  * 6. ACTIVE STATES & NAVIGATION
  * ------------------------------------------------------------------------- */
 body.theme-premium-green a.bg-rose-50.text-rose-600,
-body.theme-premium-green nav a.bg-rose-50 {
+body.theme-premium-green nav a.bg-rose-50,
+body.theme-premium-green nav a.bg-\[\#FFE8EC\],
+body.theme-premium-green nav a.bg-\[\#FFE8EC\].text-rose-600 {
   background-color: #ECFDF5 !important;
   color: #047857 !important;
   font-weight: 700 !important;
-  border-left: 3px solid #059669;
+  border-left: 3px solid #059669 !important;
+}
+
+body.theme-premium-green nav a.bg-\[\#FFE8EC\] .w-7.h-7 {
+  background-color: #D1FAE5 !important;
+  color: #047857 !important;
+  border-color: #A7F3D0 !important;
 }
 
 body.theme-premium-green nav a.bg-rose-600 {
@@ -547,4 +555,187 @@ body.theme-premium-green .service-empty-btn {
   background: #059669 !important;
   color: #FFFFFF !important;
 }
+
+/* -------------------------------------------------------------------------
+ * 13. USER PANEL TRUST BAR & ICONS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-green .border-t.border-\[\#FCE4E8\].bg-white {
+  background: #FFFFFF !important;
+  border-top: 1px solid #D1FAE5 !important;
+}
+
+body.theme-premium-green .w-7.h-7.rounded-full.bg-rose-50.text-rose-500,
+body.theme-premium-green .w-10.h-10.rounded-2xl.bg-rose-50.text-rose-500,
+body.theme-premium-green .w-12.h-12.rounded-2xl.bg-rose-50.text-rose-500 {
+  background-color: #ECFDF5 !important;
+  color: #059669 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+
+body.theme-premium-green .font-serif.italic.text-rose-500 {
+  color: #047857 !important;
+}
+
+body.theme-premium-green svg.text-rose-400.fill-current,
+body.theme-premium-green svg.text-rose-500.fill-current {
+  color: #10B981 !important;
+  fill: #10B981 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. MODALS & POPUPS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-green [id$="-modal"] > div,
+body.theme-premium-green .modal-content,
+body.theme-premium-green .bg-white.rounded-3xl.p-6.sm\:p-8.border {
+  background-color: #FFFFFF !important;
+  border-color: #D1FAE5 !important;
+  box-shadow: 0 20px 45px -10px rgba(5, 150, 105, 0.12) !important;
+}
+
+body.theme-premium-green .fixed.inset-0.bg-slate-900\/50,
+body.theme-premium-green .fixed.inset-0.bg-slate-950\/60 {
+  background-color: rgba(6, 78, 59, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. TABLES & DATA LISTS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-green table thead tr,
+body.theme-premium-green .table thead tr {
+  background-color: #ECFDF5 !important;
+  border-bottom: 1px solid #D1FAE5 !important;
+}
+
+body.theme-premium-green table th {
+  color: #064E3B !important;
+}
+
+body.theme-premium-green table tbody tr {
+  border-bottom: 1px solid #D1FAE5 !important;
+}
+
+body.theme-premium-green table tbody tr:hover {
+  background-color: #F0FDF4 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. PAGINATION & NAVIGATION PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-green .pagination .active,
+body.theme-premium-green a.bg-rose-600.text-white,
+body.theme-premium-green .page-item.active .page-link {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #059669 !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25) !important;
+}
+
+body.theme-premium-green .pagination a:not(.active):hover {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. EMPTY STATES & LOADERS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-green .w-16.h-16.rounded-3xl.bg-rose-50,
+body.theme-premium-green .w-12.h-12.rounded-full.bg-slate-100 {
+  background-color: #ECFDF5 !important;
+  color: #059669 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. ADMIN CONSOLE IN PREMIUM GREEN + WHITE THEME
+ * ------------------------------------------------------------------------- */
+/* Desktop & Mobile Admin Sidebars */
+body.theme-premium-green aside.w-64.bg-slate-900,
+body.theme-premium-green aside#admin-mobile-drawer {
+  background-color: #081C15 !important;
+  border-right: 1px solid rgba(5, 150, 105, 0.25) !important;
+}
+
+body.theme-premium-green aside.w-64.bg-slate-900 .bg-rose-600,
+body.theme-premium-green aside#admin-mobile-drawer .bg-rose-600 {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+}
+
+body.theme-premium-green aside.w-64.bg-slate-900 .bg-rose-500,
+body.theme-premium-green aside#admin-mobile-drawer .bg-rose-500 {
+  background-color: #059669 !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-premium-green aside.w-64.bg-slate-900 .text-rose-400,
+body.theme-premium-green aside#admin-mobile-drawer .text-rose-400 {
+  color: #34D399 !important;
+}
+
+body.theme-premium-green aside.w-64.bg-slate-900 a:hover,
+body.theme-premium-green aside#admin-mobile-drawer a:hover {
+  color: #FFFFFF !important;
+}
+
+/* Admin Top Header */
+body.theme-premium-green header.bg-white.border-b.border-slate-200 {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #D1FAE5 !important;
+  box-shadow: 0 2px 14px rgba(5, 150, 105, 0.04) !important;
+}
+
+body.theme-premium-green header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+
+body.theme-premium-green header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background-color: #D1FAE5 !important;
+}
+
+body.theme-premium-green header.bg-white.border-b.border-slate-200 a.hover\:text-rose-600:hover,
+body.theme-premium-green header.bg-white.border-b.border-slate-200 button.hover\:text-rose-600:hover {
+  color: #059669 !important;
+}
+
+/* Admin Cards & Statistics */
+body.theme-premium-green .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-premium-green .bg-white.rounded-3xl.border.border-slate-200 {
+  background: #FFFFFF !important;
+  border-color: #D1FAE5 !important;
+  box-shadow: 0 4px 18px -2px rgba(5, 150, 105, 0.05) !important;
+}
+
+body.theme-premium-green .text-rose-600 {
+  color: #059669 !important;
+}
+
+body.theme-premium-green .text-rose-500 {
+  color: #059669 !important;
+}
+
+body.theme-premium-green .bg-rose-500 {
+  background-color: #059669 !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-premium-green .hover\:bg-rose-600:hover {
+  background-color: #047857 !important;
+}
+
+body.theme-premium-green .text-rose-700 {
+  color: #064E3B !important;
+}
+
+/* Admin Footer */
+body.theme-premium-green footer.bg-white.border-t.border-slate-200 {
+  background: #FFFFFF !important;
+  border-top: 1px solid #D1FAE5 !important;
+  color: #64748B !important;
+}
+
 

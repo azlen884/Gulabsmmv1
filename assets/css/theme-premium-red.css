@@ -174,11 +174,19 @@ body.theme-premium-red .group:hover .group-hover\:text-rose-500 {
  * 6. ACTIVE STATES & NAVIGATION
  * ------------------------------------------------------------------------- */
 body.theme-premium-red a.bg-rose-50.text-rose-600,
-body.theme-premium-red nav a.bg-rose-50 {
+body.theme-premium-red nav a.bg-rose-50,
+body.theme-premium-red nav a.bg-\[\#FFE8EC\],
+body.theme-premium-red nav a.bg-\[\#FFE8EC\].text-rose-600 {
   background-color: #FEF2F2 !important;
-  color: #DC2626 !important;
+  color: #B91C1C !important;
   font-weight: 700 !important;
-  border-left: 3px solid #DC2626;
+  border-left: 3px solid #DC2626 !important;
+}
+
+body.theme-premium-red nav a.bg-\[\#FFE8EC\] .w-7.h-7 {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+  border-color: #FECACA !important;
 }
 
 body.theme-premium-red nav a.bg-rose-600 {
@@ -560,4 +568,187 @@ body.theme-premium-red .service-empty-btn {
   background: #DC2626 !important;
   color: #FFFFFF !important;
 }
+
+/* -------------------------------------------------------------------------
+ * 13. USER PANEL TRUST BAR & ICONS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .border-t.border-\[\#FCE4E8\].bg-white {
+  background: #FFFFFF !important;
+  border-top: 1px solid #FEE2E2 !important;
+}
+
+body.theme-premium-red .w-7.h-7.rounded-full.bg-rose-50.text-rose-500,
+body.theme-premium-red .w-10.h-10.rounded-2xl.bg-rose-50.text-rose-500,
+body.theme-premium-red .w-12.h-12.rounded-2xl.bg-rose-50.text-rose-500 {
+  background-color: #FEF2F2 !important;
+  color: #DC2626 !important;
+  border: 1px solid #FECACA !important;
+}
+
+body.theme-premium-red .font-serif.italic.text-rose-500 {
+  color: #DC2626 !important;
+}
+
+body.theme-premium-red svg.text-rose-400.fill-current,
+body.theme-premium-red svg.text-rose-500.fill-current {
+  color: #EF4444 !important;
+  fill: #EF4444 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. MODALS & POPUPS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red [id$="-modal"] > div,
+body.theme-premium-red .modal-content,
+body.theme-premium-red .bg-white.rounded-3xl.p-6.sm\:p-8.border {
+  background-color: #FFFFFF !important;
+  border-color: #FEE2E2 !important;
+  box-shadow: 0 20px 45px -10px rgba(220, 38, 38, 0.12) !important;
+}
+
+body.theme-premium-red .fixed.inset-0.bg-slate-900\/50,
+body.theme-premium-red .fixed.inset-0.bg-slate-950\/60 {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. TABLES & DATA LISTS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red table thead tr,
+body.theme-premium-red .table thead tr {
+  background-color: #FEF2F2 !important;
+  border-bottom: 1px solid #FEE2E2 !important;
+}
+
+body.theme-premium-red table th {
+  color: #991B1B !important;
+}
+
+body.theme-premium-red table tbody tr {
+  border-bottom: 1px solid #FEE2E2 !important;
+}
+
+body.theme-premium-red table tbody tr:hover {
+  background-color: #FFF5F5 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. PAGINATION & NAVIGATION PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .pagination .active,
+body.theme-premium-red a.bg-rose-600.text-white,
+body.theme-premium-red .page-item.active .page-link {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #DC2626 !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
+}
+
+body.theme-premium-red .pagination a:not(.active):hover {
+  background-color: #FEF2F2 !important;
+  color: #B91C1C !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. EMPTY STATES & LOADERS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-red .w-16.h-16.rounded-3xl.bg-rose-50,
+body.theme-premium-red .w-12.h-12.rounded-full.bg-slate-100 {
+  background-color: #FEF2F2 !important;
+  color: #DC2626 !important;
+  border: 1px solid #FECACA !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. ADMIN CONSOLE IN PREMIUM RED + WHITE THEME
+ * ------------------------------------------------------------------------- */
+/* Desktop & Mobile Admin Sidebars */
+body.theme-premium-red aside.w-64.bg-slate-900,
+body.theme-premium-red aside#admin-mobile-drawer {
+  background-color: #1A1012 !important;
+  border-right: 1px solid rgba(220, 38, 38, 0.20) !important;
+}
+
+body.theme-premium-red aside.w-64.bg-slate-900 .bg-rose-600,
+body.theme-premium-red aside#admin-mobile-drawer .bg-rose-600 {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35) !important;
+}
+
+body.theme-premium-red aside.w-64.bg-slate-900 .bg-rose-500,
+body.theme-premium-red aside#admin-mobile-drawer .bg-rose-500 {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-premium-red aside.w-64.bg-slate-900 .text-rose-400,
+body.theme-premium-red aside#admin-mobile-drawer .text-rose-400 {
+  color: #EF4444 !important;
+}
+
+body.theme-premium-red aside.w-64.bg-slate-900 a:hover,
+body.theme-premium-red aside#admin-mobile-drawer a:hover {
+  color: #FFFFFF !important;
+}
+
+/* Admin Top Header */
+body.theme-premium-red header.bg-white.border-b.border-slate-200 {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid #FEE2E2 !important;
+  box-shadow: 0 2px 14px rgba(220, 38, 38, 0.04) !important;
+}
+
+body.theme-premium-red header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background-color: #FEF2F2 !important;
+  color: #B91C1C !important;
+  border: 1px solid #FECACA !important;
+}
+
+body.theme-premium-red header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background-color: #FEE2E2 !important;
+}
+
+body.theme-premium-red header.bg-white.border-b.border-slate-200 a.hover\:text-rose-600:hover,
+body.theme-premium-red header.bg-white.border-b.border-slate-200 button.hover\:text-rose-600:hover {
+  color: #DC2626 !important;
+}
+
+/* Admin Cards & Statistics */
+body.theme-premium-red .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-premium-red .bg-white.rounded-3xl.border.border-slate-200 {
+  background: #FFFFFF !important;
+  border-color: #FEE2E2 !important;
+  box-shadow: 0 4px 18px -2px rgba(220, 38, 38, 0.05) !important;
+}
+
+body.theme-premium-red .text-rose-600 {
+  color: #DC2626 !important;
+}
+
+body.theme-premium-red .text-rose-500 {
+  color: #DC2626 !important;
+}
+
+body.theme-premium-red .bg-rose-500 {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+body.theme-premium-red .hover\:bg-rose-600:hover {
+  background-color: #B91C1C !important;
+}
+
+body.theme-premium-red .text-rose-700 {
+  color: #991B1B !important;
+}
+
+/* Admin Footer */
+body.theme-premium-red footer.bg-white.border-t.border-slate-200 {
+  background: #FFFFFF !important;
+  border-top: 1px solid #FEE2E2 !important;
+  color: #64748B !important;
+}
+
 

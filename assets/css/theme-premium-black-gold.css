@@ -87,10 +87,20 @@ body.theme-premium-black-gold aside#main-sidebar nav a:hover {
 }
 
 body.theme-premium-black-gold aside#main-sidebar nav a.bg-rose-50,
-body.theme-premium-black-gold aside#main-sidebar nav a.active {
+body.theme-premium-black-gold aside#main-sidebar nav a.active,
+body.theme-premium-black-gold nav a.bg-\[\#FFE8EC\],
+body.theme-premium-black-gold nav a.bg-\[\#FFE8EC\].text-rose-600 {
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.22) 0%, rgba(184, 134, 11, 0.14) 100%) !important;
   color: #F5D77F !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #D4AF37 !important;
   border: 1px solid rgba(212, 175, 55, 0.35) !important;
+}
+
+body.theme-premium-black-gold nav a.bg-\[\#FFE8EC\] .w-7.h-7 {
+  background-color: rgba(212, 175, 55, 0.25) !important;
+  color: #F5D77F !important;
+  border-color: rgba(212, 175, 55, 0.40) !important;
 }
 
 /* -------------------------------------------------------------------------
@@ -302,3 +312,448 @@ body.theme-premium-black-gold .rounded-3xl.bg-gradient-to-br {
   border: 1px solid rgba(212, 175, 55, 0.40) !important;
   box-shadow: 0 12px 32px -4px rgba(212, 175, 55, 0.25) !important;
 }
+
+/* -------------------------------------------------------------------------
+ * 10. LOGGED-IN USER TOP NAVBAR & SIDEBAR REFINEMENTS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .user-top-navbar {
+  background: rgba(18, 18, 22, 0.95) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.24) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.75) !important;
+}
+
+body.theme-premium-black-gold .navbar-menu-toggle {
+  color: #CBD5E1 !important;
+}
+
+body.theme-premium-black-gold .navbar-menu-toggle:hover {
+  color: #F5D77F !important;
+  background: rgba(212, 175, 55, 0.12) !important;
+}
+
+body.theme-premium-black-gold .navbar-search-input {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .navbar-search-input:focus {
+  border-color: #F5D77F !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.20) !important;
+}
+
+body.theme-premium-black-gold .navbar-search-icon {
+  color: #D4AF37 !important;
+}
+
+body.theme-premium-black-gold .navbar-currency-btn {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.26) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .navbar-currency-btn:hover {
+  background: rgba(212, 175, 55, 0.12) !important;
+}
+
+body.theme-premium-black-gold .navbar-currency-dropdown {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.30) !important;
+  color: #F8FAFC !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85) !important;
+}
+
+body.theme-premium-black-gold .navbar-wallet-chip {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+}
+
+body.theme-premium-black-gold .navbar-wallet-chip:hover {
+  border-color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .navbar-wallet-icon {
+  background: rgba(212, 175, 55, 0.14) !important;
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .navbar-wallet-text {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .navbar-action-btn {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35) !important;
+}
+
+body.theme-premium-black-gold .navbar-action-btn:hover {
+  background: linear-gradient(135deg, #F5D77F 0%, #D4AF37 100%) !important;
+}
+
+body.theme-premium-black-gold .navbar-icon-btn {
+  color: #CBD5E1 !important;
+}
+
+body.theme-premium-black-gold .navbar-icon-btn:hover {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .navbar-notif-badge {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+}
+
+body.theme-premium-black-gold .navbar-user-chip {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+}
+
+/* Sidebar Logo & Profile Card */
+body.theme-premium-black-gold aside#main-sidebar a[href="/dashboard"] div.rounded-2xl {
+  background: rgba(212, 175, 55, 0.15) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.30) !important;
+}
+
+body.theme-premium-black-gold aside#main-sidebar a[href="/profile"] {
+  background: rgba(24, 24, 30, 0.95) !important;
+  border: 1px solid rgba(212, 175, 55, 0.22) !important;
+}
+
+body.theme-premium-black-gold aside#main-sidebar a[href="/profile"]:hover {
+  border-color: #F5D77F !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 11. LOGGED-IN SERVICES CATALOG & POPULAR SERVICE CARDS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .service-filters-card {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold .service-search-input {
+  background: #121216 !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .service-search-input:focus {
+  border-color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .service-item-card {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.22) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.theme-premium-black-gold .service-item-card:hover {
+  border-color: #F5D77F !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px -4px rgba(212, 175, 55, 0.22) !important;
+}
+
+body.theme-premium-black-gold .service-item-icon {
+  background: rgba(212, 175, 55, 0.14) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+}
+
+body.theme-premium-black-gold .service-item-cat {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .service-item-badge {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+}
+
+body.theme-premium-black-gold .service-item-title {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .service-item-desc {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold .service-item-rate {
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold .service-item-btn {
+  background: rgba(212, 175, 55, 0.14) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+  font-weight: 700 !important;
+}
+
+body.theme-premium-black-gold .service-item-btn:hover {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  border-color: transparent !important;
+}
+
+body.theme-premium-black-gold .service-empty-card {
+  background: #18181E !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold .service-empty-btn {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 12. USER PANEL TRUST BAR & ICONS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .border-t.border-\[\#FCE4E8\].bg-white {
+  background: #0A0A0C !important;
+  border-top: 1px solid rgba(212, 175, 55, 0.20) !important;
+}
+
+body.theme-premium-black-gold .w-7.h-7.rounded-full.bg-rose-50.text-rose-500,
+body.theme-premium-black-gold .w-10.h-10.rounded-2xl.bg-rose-50.text-rose-500,
+body.theme-premium-black-gold .w-12.h-12.rounded-2xl.bg-rose-50.text-rose-500 {
+  background-color: rgba(212, 175, 55, 0.12) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold .font-serif.italic.text-rose-500 {
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold svg.text-rose-400.fill-current,
+body.theme-premium-black-gold svg.text-rose-500.fill-current {
+  color: #D4AF37 !important;
+  fill: #D4AF37 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 13. MODALS & POPUPS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold [id$="-modal"] > div,
+body.theme-premium-black-gold .modal-content,
+body.theme-premium-black-gold .bg-white.rounded-3xl.p-6.sm\:p-8.border {
+  background-color: #18181E !important;
+  border-color: rgba(212, 175, 55, 0.30) !important;
+  color: #F8FAFC !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.95), 0 0 30px rgba(212, 175, 55, 0.15) !important;
+}
+
+body.theme-premium-black-gold .fixed.inset-0.bg-slate-900\/50,
+body.theme-premium-black-gold .fixed.inset-0.bg-slate-950\/60 {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. STATUS BADGES & SEMANTIC ACCENTS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .bg-emerald-50.text-emerald-700 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+body.theme-premium-black-gold .bg-amber-50.text-amber-700 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #FBBF24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+body.theme-premium-black-gold .bg-blue-50.text-blue-700 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  color: #60A5FA !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+
+body.theme-premium-black-gold .bg-rose-50.text-rose-700,
+body.theme-premium-black-gold .bg-red-50.text-red-700 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  color: #F87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+body.theme-premium-black-gold .bg-purple-50.text-purple-700 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  color: #C084FC !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. TABLES & DATA LISTS (USER & ADMIN)
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold table thead tr,
+body.theme-premium-black-gold .table thead tr {
+  background-color: #121216 !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold table th {
+  color: #CBD5E1 !important;
+}
+
+body.theme-premium-black-gold table tbody tr {
+  background-color: #18181E !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold table tbody tr:hover {
+  background-color: rgba(212, 175, 55, 0.08) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. PAGINATION & NAVIGATION PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .pagination .active,
+body.theme-premium-black-gold a.bg-rose-600.text-white,
+body.theme-premium-black-gold .page-item.active .page-link {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  font-weight: 800 !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.40) !important;
+}
+
+body.theme-premium-black-gold .pagination a:not(.active):hover {
+  background-color: rgba(212, 175, 55, 0.14) !important;
+  color: #F5D77F !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. EMPTY STATES & LOADERS
+ * ------------------------------------------------------------------------- */
+body.theme-premium-black-gold .w-16.h-16.rounded-3xl.bg-rose-50,
+body.theme-premium-black-gold .w-12.h-12.rounded-full.bg-slate-100 {
+  background-color: rgba(212, 175, 55, 0.12) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. ADMIN CONSOLE IN PREMIUM BLACK + GOLD THEME
+ * ------------------------------------------------------------------------- */
+/* Desktop & Mobile Admin Sidebars */
+body.theme-premium-black-gold aside.w-64.bg-slate-900,
+body.theme-premium-black-gold aside#admin-mobile-drawer {
+  background-color: #0A0A0C !important;
+  border-right: 1px solid rgba(212, 175, 55, 0.22) !important;
+}
+
+body.theme-premium-black-gold aside.w-64.bg-slate-900 .bg-rose-600,
+body.theme-premium-black-gold aside#admin-mobile-drawer .bg-rose-600 {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(184, 134, 11, 0.15) 100%) !important;
+  color: #F5D77F !important;
+  border: 1px solid rgba(212, 175, 55, 0.40) !important;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25) !important;
+}
+
+body.theme-premium-black-gold aside.w-64.bg-slate-900 .bg-rose-500,
+body.theme-premium-black-gold aside#admin-mobile-drawer .bg-rose-500 {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%) !important;
+  color: #0A0A0C !important;
+  font-weight: 900 !important;
+}
+
+body.theme-premium-black-gold aside.w-64.bg-slate-900 .text-rose-400,
+body.theme-premium-black-gold aside#admin-mobile-drawer .text-rose-400 {
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold aside.w-64.bg-slate-900 a:hover,
+body.theme-premium-black-gold aside#admin-mobile-drawer a:hover {
+  color: #F5D77F !important;
+  background-color: rgba(212, 175, 55, 0.10) !important;
+}
+
+/* Admin Top Header */
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 {
+  background: #121216 !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.24) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.85) !important;
+}
+
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 .text-slate-800,
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 .text-slate-700 {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 .text-slate-500,
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background: rgba(212, 175, 55, 0.14) !important;
+  border: 1px solid rgba(212, 175, 55, 0.28) !important;
+  color: #F5D77F !important;
+}
+
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0A0A0C !important;
+}
+
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 a.hover\:text-rose-600:hover,
+body.theme-premium-black-gold header.bg-white.border-b.border-slate-200 button.hover\:text-rose-600:hover {
+  color: #F5D77F !important;
+}
+
+/* Admin Cards, Panels & Metrics */
+body.theme-premium-black-gold .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-premium-black-gold .bg-white.rounded-3xl.border.border-slate-200,
+body.theme-premium-black-gold .bg-white.p-4.rounded-3xl.border.border-slate-200 {
+  background: #18181E !important;
+  border-color: rgba(212, 175, 55, 0.24) !important;
+  box-shadow: 0 4px 22px -2px rgba(0, 0, 0, 0.75) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-800,
+body.theme-premium-black-gold .bg-white.rounded-3xl.border.border-slate-200 .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-400,
+body.theme-premium-black-gold .bg-white.rounded-3xl.border.border-slate-200 .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+body.theme-premium-black-gold .border-slate-100 {
+  border-color: rgba(212, 175, 55, 0.16) !important;
+}
+
+/* Admin Buttons */
+body.theme-premium-black-gold a.bg-slate-900.text-white,
+body.theme-premium-black-gold button.bg-slate-900.text-white,
+body.theme-premium-black-gold a.bg-slate-800.text-white {
+  background: #121216 !important;
+  border: 1px solid rgba(212, 175, 55, 0.30) !important;
+  color: #F8FAFC !important;
+}
+
+body.theme-premium-black-gold a.bg-slate-900.text-white:hover,
+body.theme-premium-black-gold button.bg-slate-900.text-white:hover {
+  background: rgba(212, 175, 55, 0.15) !important;
+  color: #F5D77F !important;
+}
+
+/* Admin Footer */
+body.theme-premium-black-gold footer.bg-white.border-t.border-slate-200 {
+  background: #0A0A0C !important;
+  border-top: 1px solid rgba(212, 175, 55, 0.20) !important;
+  color: #64748B !important;
+}
+

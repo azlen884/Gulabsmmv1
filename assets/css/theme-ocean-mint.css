@@ -1,0 +1,1064 @@
+/**
+ * =========================================================================
+ * RoseSMM - Ocean Mint Luxury Theme (theme-ocean-mint)
+ * 
+ * COLOR SYSTEM HIERARCHY:
+ * - DEEP NAVY / OBSIDIAN OCEAN: #071C2B, #0B2236, #213A57 (Backgrounds, Body, Surfaces)
+ * - DEEP TEAL: #0B6477 (Secondary background, Elevated surfaces, Translucent cards)
+ * - TEAL: #14919B (Borders, Accents, Intermediate gradient tones)
+ * - BRIGHT CYAN: #0AD1C8 (Primary Accent, Active States, Key Highlights, Primary Buttons)
+ * - MINT: #45DFB1 (Secondary Accent, Luminous Highlights, Secondary Badges)
+ * - SOFT GREEN: #80ED99 (Fine Highlights, Success Badges, Glowing Edges)
+ * - CRISP WHITE / COOL TONES: #F0FDF9, #F8FAFC, #E2E8F0 (High-contrast typography)
+ * - MUTED BLUE-GRAY / TEAL-GRAY: #7E9AB2, #8DA4BA, #94A3B8 (Subtitles, Descriptions, Inactive Icons)
+ *
+ * Strict Scoping: All rules are strictly scoped to body.theme-ocean-mint
+ * Zero pollution, complete theme harmony, dark & ultra-luxurious feel.
+ * =========================================================================
+ */
+
+:root {
+  --color-ocean-bg-dark: #071C2B;
+  --color-ocean-bg-navy: #213A57;
+  --color-ocean-surface-teal: #0B6477;
+  --color-ocean-teal: #14919B;
+  --color-ocean-cyan: #0AD1C8;
+  --color-ocean-mint: #45DFB1;
+  --color-ocean-green: #80ED99;
+  
+  --color-ocean-card-bg: rgba(11, 40, 62, 0.85);
+  --color-ocean-card-surface: #0C2438;
+  --color-ocean-card-border: rgba(10, 209, 200, 0.20);
+  --color-ocean-card-border-hover: rgba(69, 223, 177, 0.50);
+  --color-ocean-glow: rgba(10, 209, 200, 0.25);
+  
+  --color-ocean-text-primary: #F0FDF9;
+  --color-ocean-text-secondary: #CBD5E1;
+  --color-ocean-text-muted: #8DA4BA;
+  --color-ocean-border-subtle: rgba(20, 145, 155, 0.25);
+}
+
+/* -------------------------------------------------------------------------
+ * 1. ROOT BODY & CANVAS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint {
+  background-color: #071C2B !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .bg-\[\#FFF9FA\],
+body.theme-ocean-mint .bg-canvas,
+body.theme-ocean-mint .bg-slate-50,
+body.theme-ocean-mint .bg-gray-50 {
+  background-color: #071C2B !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 2. NAVBAR - DEEP NAVY & CYAN GLASS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint header.border-b,
+body.theme-ocean-mint header.bg-white {
+  background: #0B2236 !important;
+  border-bottom: 1px solid rgba(10, 209, 200, 0.20) !important;
+  box-shadow: 0 4px 20px -2px rgba(3, 14, 22, 0.8) !important;
+}
+
+body.theme-ocean-mint header.bg-white\/80 {
+  background: rgba(11, 34, 54, 0.94) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(10, 209, 200, 0.20) !important;
+  box-shadow: 0 4px 24px -2px rgba(3, 14, 22, 0.85) !important;
+}
+
+/* Header service search */
+body.theme-ocean-mint #top-service-search {
+  background-color: #071C2B !important;
+  border: 1px solid rgba(20, 145, 155, 0.35) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint #top-service-search::placeholder {
+  color: #64879F !important;
+}
+
+body.theme-ocean-mint #top-service-search:focus {
+  border-color: #0AD1C8 !important;
+  background-color: #0A273D !important;
+  box-shadow: 0 0 0 3px rgba(10, 209, 200, 0.22) !important;
+}
+
+/* Header icon buttons (notifications, dark toggle) */
+body.theme-ocean-mint header .text-slate-600 {
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint header .text-slate-600:hover,
+body.theme-ocean-mint header .hover\:text-rose-600:hover,
+body.theme-ocean-mint header a:hover {
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint header .hover\:bg-rose-50:hover,
+body.theme-ocean-mint header .hover\:bg-slate-100:hover {
+  background-color: rgba(10, 209, 200, 0.12) !important;
+}
+
+/* Currency dropdown button & popover */
+body.theme-ocean-mint #currency-dropdown-wrapper > button {
+  background-color: #0B2A3D !important;
+  border-color: rgba(10, 209, 200, 0.25) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint #currency-dropdown-wrapper > button:hover {
+  background-color: #103852 !important;
+  border-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint #currency-dropdown {
+  background-color: #092032 !important;
+  border-color: rgba(10, 209, 200, 0.30) !important;
+  box-shadow: 0 12px 30px -4px rgba(3, 14, 22, 0.9) !important;
+}
+
+body.theme-ocean-mint #currency-dropdown button {
+  color: #CBD5E1 !important;
+}
+
+body.theme-ocean-mint #currency-dropdown button:hover {
+  background-color: rgba(10, 209, 200, 0.15) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint #currency-dropdown button.text-rose-600,
+body.theme-ocean-mint #currency-dropdown button.bg-rose-50\/60 {
+  background-color: rgba(10, 209, 200, 0.20) !important;
+  color: #0AD1C8 !important;
+  font-weight: 700 !important;
+}
+
+/* Wallet balance chip in top navbar */
+body.theme-ocean-mint a[href="/wallet"].rounded-full.border {
+  background-color: #092032 !important;
+  border-color: rgba(10, 209, 200, 0.30) !important;
+}
+
+body.theme-ocean-mint a[href="/wallet"].rounded-full.border:hover {
+  background-color: #0E2E47 !important;
+  border-color: #0AD1C8 !important;
+  box-shadow: 0 0 15px rgba(10, 209, 200, 0.25) !important;
+}
+
+body.theme-ocean-mint a[href="/wallet"].rounded-full.border .bg-rose-100 {
+  background-color: rgba(10, 209, 200, 0.18) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint a[href="/wallet"].rounded-full.border .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint a[href="/wallet"].rounded-full.border .text-slate-400 {
+  color: #8DA4BA !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 3. USER SIDEBAR & NAVIGATION
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint aside#main-sidebar {
+  background: #071C2B !important;
+  border-right: 1px solid rgba(10, 209, 200, 0.18) !important;
+}
+
+body.theme-ocean-mint aside#main-sidebar .text-slate-900,
+body.theme-ocean-mint aside#main-sidebar .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint aside#main-sidebar .text-slate-500,
+body.theme-ocean-mint aside#main-sidebar .text-slate-400 {
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint aside#main-sidebar nav a {
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint aside#main-sidebar nav a:hover {
+  color: #0AD1C8 !important;
+  background-color: rgba(10, 209, 200, 0.10) !important;
+}
+
+/* Active navigation item */
+body.theme-ocean-mint aside#main-sidebar nav a.bg-rose-50,
+body.theme-ocean-mint aside#main-sidebar nav a.active,
+body.theme-ocean-mint nav a.bg-\[\#FFE8EC\],
+body.theme-ocean-mint nav a.bg-\[\#FFE8EC\].text-rose-600 {
+  background: linear-gradient(135deg, rgba(10, 209, 200, 0.22) 0%, rgba(11, 100, 119, 0.28) 100%) !important;
+  color: #0AD1C8 !important;
+  font-weight: 700 !important;
+  border-left: 3px solid #0AD1C8 !important;
+  border-top: 1px solid rgba(10, 209, 200, 0.25) !important;
+  border-right: 1px solid rgba(10, 209, 200, 0.25) !important;
+  border-bottom: 1px solid rgba(10, 209, 200, 0.25) !important;
+  box-shadow: 0 2px 12px rgba(10, 209, 200, 0.15) !important;
+}
+
+body.theme-ocean-mint nav a.bg-\[\#FFE8EC\] .w-7.h-7 {
+  background-color: rgba(10, 209, 200, 0.25) !important;
+  color: #0AD1C8 !important;
+  border-color: rgba(10, 209, 200, 0.40) !important;
+}
+
+body.theme-ocean-mint aside#main-sidebar nav a svg {
+  color: inherit !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 4. CARDS & SURFACES (DASHBOARD & ALL PORTAL PAGES)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .bg-white,
+body.theme-ocean-mint .service-filters-card,
+body.theme-ocean-mint .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div,
+body.theme-ocean-mint .bg-white.p-5.rounded-2xl.border,
+body.theme-ocean-mint .p-6.rounded-3xl.bg-white,
+body.theme-ocean-mint .bg-white\/90 {
+  background: #0C2338 !important;
+  border-color: rgba(10, 209, 200, 0.20) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .border-slate-200,
+body.theme-ocean-mint .border-slate-200\/80,
+body.theme-ocean-mint .border-\[\#FCE4E8\],
+body.theme-ocean-mint .border-rose-100 {
+  border-color: rgba(10, 209, 200, 0.18) !important;
+}
+
+/* Dashboard Stat Cards */
+body.theme-ocean-mint .stat-card,
+body.theme-ocean-mint .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+  box-shadow: 0 4px 20px -2px rgba(3, 14, 22, 0.7) !important;
+}
+
+body.theme-ocean-mint .stat-card:hover,
+body.theme-ocean-mint .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div:hover {
+  border-color: rgba(69, 223, 177, 0.45) !important;
+  box-shadow: 0 8px 24px -2px rgba(3, 14, 22, 0.8), 0 0 20px rgba(10, 209, 200, 0.18) !important;
+}
+
+body.theme-ocean-mint .stat-card .text-slate-800,
+body.theme-ocean-mint .stat-card .text-slate-900 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .stat-card .text-slate-400,
+body.theme-ocean-mint .stat-card .text-slate-500 {
+  color: #8DA4BA !important;
+}
+
+/* Icon containers in stat cards */
+body.theme-ocean-mint .stat-card .w-10.h-10,
+body.theme-ocean-mint .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 .w-10.h-10 {
+  background: rgba(10, 209, 200, 0.16) !important;
+  color: #0AD1C8 !important;
+  border: 1px solid rgba(10, 209, 200, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5. DASHBOARD BALANCE CARD (OCEAN TEAL & CYAN LUXURY)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .relative.overflow-hidden.rounded-3xl.bg-gradient-to-r,
+body.theme-ocean-mint .bg-gradient-to-br.from-rose-500 {
+  background: linear-gradient(135deg, #071C2B 0%, #0B6477 50%, #14919B 100%) !important;
+  border: 1px solid rgba(10, 209, 200, 0.35) !important;
+  box-shadow: 0 10px 30px -5px rgba(3, 14, 22, 0.85), 0 0 25px rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .relative.overflow-hidden.rounded-3xl.bg-gradient-to-r .text-white {
+  color: #FFFFFF !important;
+}
+
+body.theme-ocean-mint .relative.overflow-hidden.rounded-3xl.bg-gradient-to-r a.bg-white {
+  background: #0AD1C8 !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.40) !important;
+}
+
+body.theme-ocean-mint .relative.overflow-hidden.rounded-3xl.bg-gradient-to-r a.bg-white:hover {
+  background: #45DFB1 !important;
+  color: #071C2B !important;
+  box-shadow: 0 6px 18px rgba(69, 223, 177, 0.50) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 6. HERO SLIDER IN OCEAN MINT THEME
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .swiper-slide,
+body.theme-ocean-mint .hero-slider-card {
+  background: linear-gradient(135deg, #092032 0%, #0B3A52 100%) !important;
+  border: 1px solid rgba(10, 209, 200, 0.25) !important;
+  color: #F0FDF9 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 7. BUTTONS & ACTIONS (PRIMARY: CYAN GRADIENT, SECONDARY: NAVY/TEAL)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .bg-rose-600,
+body.theme-ocean-mint .bg-rose-500,
+body.theme-ocean-mint button.bg-rose-600,
+body.theme-ocean-mint a.bg-rose-600,
+body.theme-ocean-mint .btn-primary {
+  background: linear-gradient(135deg, #0AD1C8 0%, #14919B 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(10, 209, 200, 0.3) !important;
+  box-shadow: 0 4px 16px -2px rgba(10, 209, 200, 0.40) !important;
+}
+
+body.theme-ocean-mint .bg-rose-600:hover,
+body.theme-ocean-mint .bg-rose-500:hover,
+body.theme-ocean-mint button.bg-rose-600:hover,
+body.theme-ocean-mint a.bg-rose-600:hover,
+body.theme-ocean-mint .btn-primary:hover {
+  background: linear-gradient(135deg, #45DFB1 0%, #0AD1C8 100%) !important;
+  color: #071C2B !important;
+  box-shadow: 0 6px 20px -2px rgba(69, 223, 177, 0.50) !important;
+}
+
+/* Secondary & Ghost Buttons */
+body.theme-ocean-mint .bg-slate-100,
+body.theme-ocean-mint .bg-slate-200,
+body.theme-ocean-mint button.bg-slate-100,
+body.theme-ocean-mint a.bg-slate-100 {
+  background-color: #0B2A3D !important;
+  border: 1px solid rgba(10, 209, 200, 0.22) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .bg-slate-100:hover,
+body.theme-ocean-mint .bg-slate-200:hover,
+body.theme-ocean-mint button.bg-slate-100:hover,
+body.theme-ocean-mint a.bg-slate-100:hover {
+  background-color: #103852 !important;
+  color: #0AD1C8 !important;
+  border-color: #0AD1C8 !important;
+}
+
+/* Cancel / Close button */
+body.theme-ocean-mint .bg-rose-50.text-rose-600,
+body.theme-ocean-mint .text-rose-600 {
+  color: #0AD1C8 !important;
+}
+
+/* Outline buttons */
+body.theme-ocean-mint .border.border-slate-200,
+body.theme-ocean-mint .border-2.border-slate-200 {
+  border-color: rgba(10, 209, 200, 0.22) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 8. FORMS & INPUTS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint input[type="text"],
+body.theme-ocean-mint input[type="password"],
+body.theme-ocean-mint input[type="email"],
+body.theme-ocean-mint input[type="number"],
+body.theme-ocean-mint input[type="search"],
+body.theme-ocean-mint select,
+body.theme-ocean-mint textarea {
+  background-color: #092032 !important;
+  border: 1px solid rgba(20, 145, 155, 0.35) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint input::placeholder,
+body.theme-ocean-mint textarea::placeholder {
+  color: #64879F !important;
+}
+
+body.theme-ocean-mint input:focus,
+body.theme-ocean-mint select:focus,
+body.theme-ocean-mint textarea:focus {
+  border-color: #0AD1C8 !important;
+  background-color: #0C283F !important;
+  box-shadow: 0 0 0 3px rgba(10, 209, 200, 0.22) !important;
+  outline: none !important;
+}
+
+body.theme-ocean-mint label {
+  color: #CBD5E1 !important;
+}
+
+body.theme-ocean-mint .bg-slate-50 {
+  background-color: #092032 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 9. RECENTLY ORDERED & ACTIVITY LISTS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+body.theme-ocean-mint .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(20, 145, 155, 0.20) !important;
+}
+
+body.theme-ocean-mint .hover\:bg-slate-50:hover,
+body.theme-ocean-mint .hover\:bg-slate-50\/80:hover {
+  background-color: rgba(10, 209, 200, 0.08) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 10. SALES OVERVIEW & ANALYTICS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .bg-slate-50\/60 {
+  background-color: #0A2438 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 11. TEXT & TYPOGRAPHY
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .text-slate-900,
+body.theme-ocean-mint .text-slate-800,
+body.theme-ocean-mint .text-slate-700 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .text-slate-600,
+body.theme-ocean-mint .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+body.theme-ocean-mint .text-slate-400 {
+  color: #7E9AB2 !important;
+}
+
+body.theme-ocean-mint .text-rose-500,
+body.theme-ocean-mint .text-rose-600,
+body.theme-ocean-mint .text-rose-700 {
+  color: #0AD1C8 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 12. BORDERS & DIVIDERS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint hr,
+body.theme-ocean-mint .border-slate-100,
+body.theme-ocean-mint .border-slate-200,
+body.theme-ocean-mint .border-slate-200\/60,
+body.theme-ocean-mint .border-slate-200\/80 {
+  border-color: rgba(20, 145, 155, 0.22) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 13. BADGES, CHIPS & SCROLLBAR
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .bg-rose-50,
+body.theme-ocean-mint .bg-rose-100 {
+  background-color: rgba(10, 209, 200, 0.15) !important;
+  color: #0AD1C8 !important;
+  border-color: rgba(10, 209, 200, 0.30) !important;
+}
+
+/* Preserving semantic badges with high contrast */
+body.theme-ocean-mint .bg-emerald-50,
+body.theme-ocean-mint .bg-emerald-100 {
+  background-color: rgba(69, 223, 177, 0.16) !important;
+  color: #45DFB1 !important;
+  border-color: rgba(69, 223, 177, 0.30) !important;
+}
+
+body.theme-ocean-mint .bg-amber-50,
+body.theme-ocean-mint .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  color: #FBBF24 !important;
+  border-color: rgba(245, 158, 11, 0.30) !important;
+}
+
+body.theme-ocean-mint .bg-blue-50,
+body.theme-ocean-mint .bg-blue-100 {
+  background-color: rgba(10, 209, 200, 0.15) !important;
+  color: #0AD1C8 !important;
+  border-color: rgba(10, 209, 200, 0.28) !important;
+}
+
+/* Scrollbar */
+body.theme-ocean-mint ::-webkit-scrollbar-track {
+  background: #071C2B;
+}
+
+body.theme-ocean-mint ::-webkit-scrollbar-thumb {
+  background: #0B6477;
+  border-radius: 4px;
+}
+
+body.theme-ocean-mint ::-webkit-scrollbar-thumb:hover {
+  background: #0AD1C8;
+}
+
+/* -------------------------------------------------------------------------
+ * 14. TABLES & DATA LISTS (ORDERS, SERVICES, TRANSACTIONS)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint table {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint table thead {
+  background: #092032 !important;
+  border-bottom: 1px solid rgba(20, 145, 155, 0.35) !important;
+}
+
+body.theme-ocean-mint table thead th {
+  color: #8DA4BA !important;
+  font-weight: 700 !important;
+}
+
+body.theme-ocean-mint table tbody tr {
+  border-bottom: 1px solid rgba(20, 145, 155, 0.18) !important;
+  background-color: #0C2338 !important;
+}
+
+body.theme-ocean-mint table tbody tr:nth-child(even) {
+  background-color: #0A1E30 !important;
+}
+
+body.theme-ocean-mint table tbody tr:hover {
+  background-color: rgba(10, 209, 200, 0.10) !important;
+}
+
+body.theme-ocean-mint table td {
+  color: #CBD5E1 !important;
+}
+
+body.theme-ocean-mint table td .text-slate-900,
+body.theme-ocean-mint table td .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 15. ADMIN CONSOLE IN OCEAN MINT THEME
+ * ------------------------------------------------------------------------- */
+/* Desktop Admin Sidebar */
+body.theme-ocean-mint aside.w-64.bg-slate-900,
+body.theme-ocean-mint aside.w-64.bg-slate-900\/95,
+body.theme-ocean-mint aside.bg-slate-900 {
+  background-color: #071C2B !important;
+  border-right: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+/* Mobile Admin Drawer */
+body.theme-ocean-mint #mobile-sidebar-drawer,
+body.theme-ocean-mint div.fixed.inset-y-0.left-0.bg-slate-900 {
+  background-color: #071C2B !important;
+  border-right: 1px solid rgba(10, 209, 200, 0.25) !important;
+}
+
+/* Admin Brand Logo */
+body.theme-ocean-mint aside.w-64.bg-slate-900 a.flex.items-center.gap-3 div.w-10.h-10.bg-rose-600,
+body.theme-ocean-mint #mobile-sidebar-drawer a.flex.items-center.gap-3 div.w-10.h-10.bg-rose-600,
+body.theme-ocean-mint aside .bg-rose-600.rounded-xl {
+  background: linear-gradient(135deg, #0AD1C8 0%, #0B6477 100%) !important;
+  color: #071C2B !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.40) !important;
+}
+
+body.theme-ocean-mint aside.w-64.bg-slate-900 span.text-rose-500,
+body.theme-ocean-mint #mobile-sidebar-drawer span.text-rose-500 {
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint aside.w-64.bg-slate-900 span.text-slate-400,
+body.theme-ocean-mint #mobile-sidebar-drawer span.text-slate-400 {
+  color: #7E9AB2 !important;
+}
+
+/* Admin Navigation Links */
+body.theme-ocean-mint aside.w-64.bg-slate-900 nav a,
+body.theme-ocean-mint #mobile-sidebar-drawer nav a {
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint aside.w-64.bg-slate-900 nav a:hover,
+body.theme-ocean-mint #mobile-sidebar-drawer nav a:hover {
+  background-color: rgba(10, 209, 200, 0.12) !important;
+  color: #0AD1C8 !important;
+}
+
+/* Admin Active Link */
+body.theme-ocean-mint aside.w-64.bg-slate-900 nav a.bg-rose-600,
+body.theme-ocean-mint #mobile-sidebar-drawer nav a.bg-rose-600,
+body.theme-ocean-mint aside nav a.bg-rose-600.text-white {
+  background: linear-gradient(135deg, #0AD1C8 0%, #0B6477 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.35) !important;
+}
+
+/* Admin Top Header */
+body.theme-ocean-mint header.bg-white.border-b.border-slate-200 {
+  background-color: #0B2236 !important;
+  border-bottom: 1px solid rgba(10, 209, 200, 0.20) !important;
+  box-shadow: 0 4px 20px -2px rgba(3, 14, 22, 0.8) !important;
+}
+
+body.theme-ocean-mint header.bg-white.border-b.border-slate-200 .text-slate-900,
+body.theme-ocean-mint header.bg-white.border-b.border-slate-200 .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint header.bg-white.border-b.border-slate-200 a[href="/logout"] {
+  background: #092032 !important;
+  border: 1px solid rgba(10, 209, 200, 0.25) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint header.bg-white.border-b.border-slate-200 a[href="/logout"]:hover {
+  background: linear-gradient(135deg, #0AD1C8 0%, #0B6477 100%) !important;
+  color: #071C2B !important;
+}
+
+/* Admin Cards, Panels & Metrics */
+body.theme-ocean-mint .bg-white.p-5.rounded-2xl.border.border-slate-200,
+body.theme-ocean-mint .bg-white.rounded-3xl.border.border-slate-200,
+body.theme-ocean-mint .bg-white.p-4.rounded-3xl.border.border-slate-200,
+body.theme-ocean-mint .bg-white.p-6.rounded-3xl.border.border-slate-200 {
+  background: #0C2338 !important;
+  border-color: rgba(10, 209, 200, 0.20) !important;
+  box-shadow: 0 4px 22px -2px rgba(3, 14, 22, 0.75) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-800,
+body.theme-ocean-mint .bg-white.rounded-3xl.border.border-slate-200 .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .bg-white.p-5.rounded-2xl.border.border-slate-200 .text-slate-400,
+body.theme-ocean-mint .bg-white.rounded-3xl.border.border-slate-200 .text-slate-400 {
+  color: #8DA4BA !important;
+}
+
+/* Admin Buttons */
+body.theme-ocean-mint a.bg-slate-900.text-white,
+body.theme-ocean-mint button.bg-slate-900.text-white,
+body.theme-ocean-mint a.bg-slate-800.text-white {
+  background: #0B2A3D !important;
+  border: 1px solid rgba(10, 209, 200, 0.30) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint a.bg-slate-900.text-white:hover,
+body.theme-ocean-mint button.bg-slate-900.text-white:hover {
+  background: rgba(10, 209, 200, 0.18) !important;
+  color: #0AD1C8 !important;
+  border-color: #0AD1C8 !important;
+}
+
+/* Admin Footer */
+body.theme-ocean-mint footer.bg-white.border-t.border-slate-200 {
+  background: #071C2B !important;
+  border-top: 1px solid rgba(10, 209, 200, 0.18) !important;
+  color: #64879F !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 16. PUBLIC PAGES & LANDING PAGE (HERO, SECTIONS, CTA, FOOTER)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint section.relative.overflow-hidden {
+  background: transparent !important;
+}
+
+body.theme-ocean-mint .landing-theme-card {
+  background: rgba(11, 40, 62, 0.85) !important;
+  border: 1px solid rgba(10, 209, 200, 0.22) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 10px 30px -5px rgba(3, 14, 22, 0.8) !important;
+}
+
+body.theme-ocean-mint .landing-theme-card:hover {
+  border-color: rgba(69, 223, 177, 0.50) !important;
+  box-shadow: 0 12px 35px -5px rgba(3, 14, 22, 0.9), 0 0 25px rgba(10, 209, 200, 0.20) !important;
+}
+
+/* Public Footer */
+body.theme-ocean-mint footer.bg-slate-900,
+body.theme-ocean-mint footer.bg-slate-950 {
+  background-color: #071C2B !important;
+  border-top: 1px solid rgba(10, 209, 200, 0.18) !important;
+}
+
+body.theme-ocean-mint footer a.text-slate-400:hover,
+body.theme-ocean-mint footer a:hover {
+  color: #0AD1C8 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 17. MODALS & POPUPS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .fixed.inset-0.bg-slate-900\/50,
+body.theme-ocean-mint .fixed.inset-0.bg-black\/50,
+body.theme-ocean-mint .fixed.inset-0.bg-slate-900\/60 {
+  background-color: rgba(3, 14, 22, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+body.theme-ocean-mint .modal-content,
+body.theme-ocean-mint .bg-white.rounded-3xl.p-6.sm\:p-8,
+body.theme-ocean-mint .bg-white.rounded-3xl.p-6,
+body.theme-ocean-mint .bg-white.rounded-2xl.p-6 {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.30) !important;
+  box-shadow: 0 20px 40px -10px rgba(3, 14, 22, 0.9), 0 0 30px rgba(10, 209, 200, 0.20) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .modal-content .text-slate-900,
+body.theme-ocean-mint .modal-content .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .modal-content .text-slate-500,
+body.theme-ocean-mint .modal-content .text-slate-400 {
+  color: #8DA4BA !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 18. PAGINATION & NAVIGATION PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .pagination-btn,
+body.theme-ocean-mint a.px-3.py-1\.5.rounded-xl.border {
+  background: #092032 !important;
+  border: 1px solid rgba(20, 145, 155, 0.30) !important;
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint .pagination-btn:hover,
+body.theme-ocean-mint a.px-3.py-1\.5.rounded-xl.border:hover {
+  background: rgba(10, 209, 200, 0.15) !important;
+  color: #0AD1C8 !important;
+  border-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .pagination-btn.active,
+body.theme-ocean-mint span.px-3.py-1\.5.rounded-xl.bg-rose-600,
+body.theme-ocean-mint a.px-3.py-1\.5.rounded-xl.bg-rose-600 {
+  background: linear-gradient(135deg, #0AD1C8 0%, #14919B 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  border-color: #0AD1C8 !important;
+  box-shadow: 0 4px 12px rgba(10, 209, 200, 0.35) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 19. AUTH PAGES (LOGIN & REGISTER)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .auth-card,
+body.theme-ocean-mint .max-w-md.w-full.bg-white,
+body.theme-ocean-mint .max-w-lg.w-full.bg-white {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.25) !important;
+  box-shadow: 0 20px 40px -10px rgba(3, 14, 22, 0.85), 0 0 25px rgba(10, 209, 200, 0.15) !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 20. LANDING PAGE - SERVICES & LIVE ROTATING ACTIVITY
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .landing-service-card {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .landing-service-card:hover {
+  border-color: #0AD1C8 !important;
+  box-shadow: 0 10px 25px rgba(3, 14, 22, 0.8), 0 0 20px rgba(10, 209, 200, 0.22) !important;
+}
+
+body.theme-ocean-mint .live-activity-item {
+  background: #092032 !important;
+  border: 1px solid rgba(20, 145, 155, 0.25) !important;
+}
+
+body.theme-ocean-mint .live-activity-item .text-slate-800 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .live-activity-item .text-slate-400 {
+  color: #7E9AB2 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 21. LOGGED-IN SERVICES CATALOG & CATEGORY PILLS
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .service-header-action-btn {
+  background: linear-gradient(135deg, #0AD1C8 0%, #14919B 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.35) !important;
+}
+
+body.theme-ocean-mint .service-header-action-btn:hover {
+  background: linear-gradient(135deg, #45DFB1 0%, #0AD1C8 100%) !important;
+  color: #071C2B !important;
+}
+
+body.theme-ocean-mint .service-filters-card {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .service-category-pill {
+  background: #092032 !important;
+  border: 1px solid rgba(20, 145, 155, 0.30) !important;
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint .service-category-pill:hover {
+  background: #0F2E47 !important;
+  color: #0AD1C8 !important;
+  border-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .service-category-pill.active {
+  background: linear-gradient(135deg, #0AD1C8 0%, #14919B 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+  border-color: #0AD1C8 !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.35) !important;
+}
+
+body.theme-ocean-mint .service-search-input {
+  background: #092032 !important;
+  border: 1px solid rgba(20, 145, 155, 0.35) !important;
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .service-search-input:focus {
+  border-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .service-item-card {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+  border-radius: 1.5rem !important;
+}
+
+body.theme-ocean-mint .service-item-card:hover {
+  border-color: #0AD1C8 !important;
+  box-shadow: 0 10px 30px -5px rgba(3, 14, 22, 0.8), 0 0 20px rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .service-item-icon {
+  background: rgba(10, 209, 200, 0.16) !important;
+  color: #0AD1C8 !important;
+  border: 1px solid rgba(10, 209, 200, 0.25) !important;
+}
+
+body.theme-ocean-mint .service-item-cat {
+  background: rgba(10, 209, 200, 0.14) !important;
+  color: #45DFB1 !important;
+}
+
+body.theme-ocean-mint .service-item-badge {
+  background: #0AD1C8 !important;
+  color: #071C2B !important;
+  font-weight: 700 !important;
+}
+
+body.theme-ocean-mint .service-item-title {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .service-item-desc {
+  color: #8DA4BA !important;
+}
+
+body.theme-ocean-mint .service-item-rate {
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .service-item-btn {
+  background: linear-gradient(135deg, #0AD1C8 0%, #14919B 100%) !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+}
+
+body.theme-ocean-mint .service-item-btn:hover {
+  background: linear-gradient(135deg, #45DFB1 0%, #0AD1C8 100%) !important;
+  color: #071C2B !important;
+  box-shadow: 0 4px 14px rgba(69, 223, 177, 0.40) !important;
+}
+
+body.theme-ocean-mint .service-empty-card {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .service-empty-btn {
+  background: #0AD1C8 !important;
+  color: #071C2B !important;
+  font-weight: 800 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 22. ICONS THEME SYSTEM (STRICT OCEAN MINT PALETTE)
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint i[data-lucide],
+body.theme-ocean-mint svg.lucide {
+  stroke-width: 2px;
+}
+
+/* Primary Cyan Icons */
+body.theme-ocean-mint .text-rose-600 i,
+body.theme-ocean-mint .text-rose-500 i,
+body.theme-ocean-mint .text-rose-600 svg,
+body.theme-ocean-mint .text-rose-500 svg {
+  color: #0AD1C8 !important;
+}
+
+/* Circular Icon Badges */
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-\[\#FFF0F3\],
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-rose-50,
+body.theme-ocean-mint .w-10.h-10.rounded-xl.bg-rose-50 {
+  background-color: rgba(10, 209, 200, 0.16) !important;
+  border-color: rgba(10, 209, 200, 0.30) !important;
+  color: #0AD1C8 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 23. EMPTY STATES & LOADING STATES
+ * ------------------------------------------------------------------------- */
+body.theme-ocean-mint .empty-state-card {
+  background: #0C2338 !important;
+  border: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint .empty-state-icon-wrap {
+  background: rgba(10, 209, 200, 0.16) !important;
+  border: 1px solid rgba(10, 209, 200, 0.30) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .empty-state-title {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint .empty-state-desc {
+  color: #8DA4BA !important;
+}
+
+/* Loading Spinners */
+body.theme-ocean-mint .animate-spin.text-rose-600,
+body.theme-ocean-mint .animate-spin.text-rose-500 {
+  color: #0AD1C8 !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 24. FOOTER TRUST BAR & QUICK ACTIONS & CHARTS
+ * ------------------------------------------------------------------------- */
+/* User Footer Trust Bar */
+body.theme-ocean-mint div.border-t.border-\[\#FCE4E8\].bg-white.px-4 {
+  background-color: #071C2B !important;
+  border-top: 1px solid rgba(10, 209, 200, 0.20) !important;
+}
+
+body.theme-ocean-mint div.border-t.border-\[\#FCE4E8\].bg-white.px-4 .text-slate-700 {
+  color: #F0FDF9 !important;
+}
+
+body.theme-ocean-mint div.border-t.border-\[\#FCE4E8\].bg-white.px-4 .text-slate-400 {
+  color: #7E9AB2 !important;
+}
+
+body.theme-ocean-mint div.border-t.border-\[\#FCE4E8\].bg-white.px-4 .w-7.h-7.rounded-full.bg-rose-50 {
+  background-color: rgba(10, 209, 200, 0.16) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .font-serif.italic.text-rose-500 {
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint svg.fill-current.text-rose-400 {
+  color: #45DFB1 !important;
+}
+
+/* Dashboard Quick Actions */
+body.theme-ocean-mint .w-11.h-11.rounded-2xl.bg-rose-500 {
+  background: linear-gradient(135deg, #0AD1C8 0%, #0B6477 100%) !important;
+  color: #071C2B !important;
+}
+
+body.theme-ocean-mint .hover\:bg-rose-50\/50:hover {
+  background-color: rgba(10, 209, 200, 0.12) !important;
+}
+
+body.theme-ocean-mint .hover\:border-rose-300:hover {
+  border-color: #0AD1C8 !important;
+}
+
+/* Sales Overview Chart (SVG) */
+body.theme-ocean-mint .lg\:col-span-5 svg line {
+  stroke: rgba(20, 145, 155, 0.25) !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg text {
+  fill: #7E9AB2 !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg path[stroke="#FF3B69"] {
+  stroke: #0AD1C8 !important;
+  stroke-width: 2.5 !important;
+  filter: drop-shadow(0 2px 8px rgba(10, 209, 200, 0.5)) !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg stop[stop-color="#FF3B69"] {
+  stop-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg circle {
+  stroke: #071C2B !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg circle[fill="#FF3B69"] {
+  fill: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 svg circle[fill="#CBD5E1"] {
+  fill: #14919B !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 .absolute.top-1.bg-white {
+  background: #092032 !important;
+  border: 1px solid #0AD1C8 !important;
+  color: #F0FDF9 !important;
+  box-shadow: 0 4px 14px rgba(10, 209, 200, 0.35) !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 .absolute.top-1.bg-white span.bg-rose-500 {
+  background-color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .lg\:col-span-5 .absolute.top-1.bg-white span.text-rose-600 {
+  color: #45DFB1 !important;
+}
+
+/* Metric Cards Icons Harmonization */
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-purple-50,
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-blue-50 {
+  background-color: rgba(10, 209, 200, 0.16) !important;
+  color: #0AD1C8 !important;
+}
+
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-emerald-50 {
+  background-color: rgba(69, 223, 177, 0.16) !important;
+  color: #45DFB1 !important;
+}
+
+body.theme-ocean-mint .w-12.h-12.rounded-2xl.bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  color: #FBBF24 !important;
+}

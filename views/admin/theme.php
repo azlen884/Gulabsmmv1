@@ -128,12 +128,12 @@ $cornerGlowOn = is_corner_glow_enabled();
             name="active_theme" 
             class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-800 focus:outline-none focus:border-rose-500 transition-colors"
           >
-            <option value="default" <?= $activeTheme === 'default' ? 'selected' : '' ?>>Existing Theme</option>
             <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
             <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
             <option value="holographic_aura" <?= $activeTheme === 'holographic_aura' ? 'selected' : '' ?>>Holographic Aura</option>
             <option value="premium_black_gold" <?= $activeTheme === 'premium_black_gold' ? 'selected' : '' ?>>Premium Black + Gold</option>
+            <option value="ocean_mint" <?= $activeTheme === 'ocean_mint' ? 'selected' : '' ?>>Ocean Mint Luxury</option>
           </select>
         </div>
 
@@ -263,47 +263,7 @@ $cornerGlowOn = is_corner_glow_enabled();
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         
-        <!-- 1. Existing Theme -->
-        <?php $isDef = ($activeTheme === 'default'); ?>
-        <div class="bg-white rounded-3xl border-2 <?= $isDef ? 'border-rose-500 ring-4 ring-rose-500/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-          <?php if ($isDef): ?>
-            <div class="absolute top-4 right-4 px-2.5 py-1 bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
-              Active
-            </div>
-          <?php endif; ?>
-          <div>
-            <div class="w-12 h-12 rounded-2xl bg-[#FFF0F3] border border-[#FCE4E8] flex items-center justify-center text-[#FF3B69] mb-4">
-              <i data-lucide="sparkles" class="w-6 h-6"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-800">Existing Theme</h3>
-            <span class="inline-block text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md mt-1 mb-2">Classic Rose</span>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              The original signature soft Rose & Pink palette with soft gradient accents and clean light UI.
-            </p>
-
-            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
-              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
-              <div class="flex items-center gap-1.5">
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FF3B69;" title="#FF3B69"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #E11D48;" title="#E11D48"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FFF0F3;" title="#FFF0F3"></span>
-                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FFFFFF;" title="#FFFFFF"></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 pt-4 border-t border-slate-100">
-            <button 
-              type="button" 
-              onclick="selectTheme('default')"
-              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isDef ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200' ?>"
-            >
-              <?= $isDef ? 'Current Active Theme' : 'Switch to Existing Theme' ?>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. Premium Red + White -->
+        <!-- 1. Premium Red + White -->
         <?php $isRed = ($activeTheme === 'premium_red'); ?>
         <div class="bg-white rounded-3xl border-2 <?= $isRed ? 'border-red-600 ring-4 ring-red-600/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <?php if ($isRed): ?>
@@ -502,6 +462,47 @@ $cornerGlowOn = is_corner_glow_enabled();
               class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isGold ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-600 border border-slate-200' ?>"
             >
               <?= $isGold ? 'Current Active Theme' : 'Switch to Black + Gold' ?>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Ocean Mint Luxury -->
+        <?php $isOcean = ($activeTheme === 'ocean_mint'); ?>
+        <div class="bg-white rounded-3xl border-2 <?= $isOcean ? 'border-[#0AD1C8] ring-4 ring-[#0AD1C8]/20' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          <?php if ($isOcean): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-gradient-to-r from-[#0AD1C8] to-[#45DFB1] text-[#071C2B] text-[10px] font-black uppercase tracking-wider rounded-full shadow-sm">
+              Active
+            </div>
+          <?php endif; ?>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-[#071C2B] border border-[#0AD1C8]/30 flex items-center justify-center text-[#0AD1C8] mb-4 shadow-sm">
+              <i data-lucide="waves" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Ocean Mint Luxury</h3>
+            <span class="inline-block text-[11px] font-bold text-[#0B6477] bg-teal-50 border border-teal-100 px-2 py-0.5 rounded-md mt-1 mb-2">Ocean Mint Luxury</span>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Deep navy and rich teal canvas illuminated by luminous bright cyan accents, refreshing mint highlights, and ethereal digital glow.
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #071C2B;" title="#071C2B Deep Navy"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #0B6477;" title="#0B6477 Deep Teal"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #0AD1C8;" title="#0AD1C8 Bright Cyan"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #45DFB1;" title="#45DFB1 Mint"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #80ED99;" title="#80ED99 Soft Green"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <button 
+              type="button" 
+              onclick="selectTheme('ocean_mint')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isOcean ? 'bg-slate-100 text-slate-500 cursor-default' : 'bg-slate-50 hover:bg-teal-50 text-slate-700 hover:text-[#0B6477] border border-slate-200' ?>"
+            >
+              <?= $isOcean ? 'Current Active Theme' : 'Switch to Ocean Mint Luxury' ?>
             </button>
           </div>
         </div>

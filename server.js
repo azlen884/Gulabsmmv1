@@ -17,6 +17,9 @@ function ensureDatabase() {
         detached: true,
         stdio: 'ignore'
       });
+      dbProcess.on('error', (err) => {
+        // Silently handle missing daemon path if MariaDB isn't installed as /usr/sbin/mariadbd
+      });
       dbProcess.unref();
 
       // Wait for socket to become available

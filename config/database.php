@@ -341,12 +341,12 @@ function e($text) {
  * Get active theme key with strict server-side fallback
  */
 function get_active_theme() {
-    $theme = get_setting('active_theme', 'default');
+    $theme = get_setting('active_theme', 'premium_red');
     if ($theme === 'black_gold') {
         $theme = 'premium_black_gold';
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold'];
-    return in_array($theme, $valid, true) ? $theme : 'default';
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint'];
+    return in_array($theme, $valid, true) ? $theme : 'premium_red';
 }
 
 /**
@@ -354,16 +354,6 @@ function get_active_theme() {
  */
 function get_available_themes() {
     return [
-        'default' => [
-            'id' => 'default',
-            'name' => 'Existing Theme',
-            'description' => 'Original signature Rose & Pink palette with soft gradient accents.',
-            'primary_color' => '#FF3B69',
-            'secondary_color' => '#FFF0F3',
-            'accent_color' => '#E11D48',
-            'badge' => 'Classic Rose',
-            'features' => ['Original Rose Palette', 'Pink Gradients', 'Default Layout']
-        ],
         'premium_red' => [
             'id' => 'premium_red',
             'name' => 'Premium Red + White',
@@ -414,6 +404,26 @@ function get_available_themes() {
             'badge' => 'Black + Gold Luxury',
             'features' => ['Deep Rich Obsidian Black Canvas', 'Metallic Gold & Champagne Accents', 'Flowing Warm Gold Wave Ribbons']
         ],
+        'ocean_mint' => [
+            'id' => 'ocean_mint',
+            'name' => 'Ocean Mint Luxury',
+            'description' => 'Deep navy and rich teal canvas illuminated by luminous bright cyan accents, refreshing mint highlights, and ethereal digital glow.',
+            'primary_color' => '#0AD1C8',
+            'secondary_color' => '#071C2B',
+            'accent_color' => '#45DFB1',
+            'badge' => 'Ocean Mint Luxury',
+            'features' => ['Deep Navy & Teal Surfaces', 'Bright Cyan & Luminous Mint Accents', 'Flowing Cyan-to-Mint Wave Ribbons']
+        ],
+        'default' => [
+            'id' => 'default',
+            'name' => 'Existing Theme (Classic Rose)',
+            'description' => 'Original signature Rose & Pink palette with soft gradient accents.',
+            'primary_color' => '#FF3B69',
+            'secondary_color' => '#FFF0F3',
+            'accent_color' => '#E11D48',
+            'badge' => 'Classic Rose',
+            'features' => ['Original Rose Palette', 'Pink Gradients', 'Default Layout']
+        ],
     ];
 }
 
@@ -428,7 +438,7 @@ function set_active_theme($themeKey) {
     if ($themeKey === 'black_gold') {
         $themeKey = 'premium_black_gold';
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint'];
     if (!in_array($themeKey, $valid, true)) {
         return false;
     }
@@ -456,6 +466,8 @@ function render_theme_head_tags() {
         $cssFile = '/assets/css/theme-holographic-aura.css';
     } elseif ($active === 'premium_black_gold' || $active === 'black_gold') {
         $cssFile = '/assets/css/theme-premium-black-gold.css';
+    } elseif ($active === 'ocean_mint') {
+        $cssFile = '/assets/css/theme-ocean-mint.css';
     }
 
     if (!empty($cssFile)) {
@@ -480,6 +492,8 @@ function get_theme_body_class() {
         return 'theme-holographic-aura';
     } elseif ($active === 'premium_black_gold' || $active === 'black_gold') {
         return 'theme-premium-black-gold';
+    } elseif ($active === 'ocean_mint') {
+        return 'theme-ocean-mint';
     }
     return 'theme-default';
 }

@@ -23,8 +23,8 @@ $unreadCount = (int)$notifStmt->fetchColumn();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= e($pageTitle ?? 'RoseSMM - Social Media Services') ?></title>
-  <meta name="description" content="RoseSMM - Premium Social Media Marketing Services Panel. Fast, Secure, Reliable.">
+  <title><?= e(str_replace('RoseSMM', get_site_name(), $pageTitle ?? (get_site_name() . ' - Social Media Services'))) ?></title>
+  <meta name="description" content="<?= e(get_site_name()) ?> - Premium Social Media Marketing Services Panel. Fast, Secure, Reliable.">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -134,14 +134,12 @@ $unreadCount = (int)$notifStmt->fetchColumn();
     <div class="p-5">
       <!-- Logo -->
       <a href="/dashboard" class="flex items-center gap-3 mb-6 group">
-        <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 group-hover:scale-105 transition-transform">
-          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
+        <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 font-black text-lg group-hover:scale-105 transition-transform">
+          <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
         </div>
         <div>
-          <span class="text-xl font-bold tracking-tight text-rose-600 block leading-tight">RoseSMM</span>
-          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block">Social Media Services</span>
+          <span class="text-xl font-bold tracking-tight text-rose-600 block leading-tight"><?= e(get_site_name()) ?></span>
+          <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block"><?= e(get_setting('site_tagline', 'Social Media Services')) ?></span>
         </div>
       </a>
 
@@ -289,7 +287,7 @@ $unreadCount = (int)$notifStmt->fetchColumn();
       </div>
 
       <div class="text-[11px] text-slate-400 text-center">
-        &copy; 2025 RoseSMM. All rights reserved.
+        &copy; <?= date('Y') ?> <?= e(get_site_name()) ?>. All rights reserved.
       </div>
     </div>
   </aside>
@@ -300,10 +298,10 @@ $unreadCount = (int)$notifStmt->fetchColumn();
     <div>
       <div class="flex items-center justify-between mb-6">
         <a href="/dashboard" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <div class="w-8 h-8 rounded-xl bg-rose-500 text-white flex items-center justify-center font-black text-sm">
+            <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
           </div>
-          <span class="text-lg font-bold text-rose-600">RoseSMM</span>
+          <span class="text-lg font-bold text-rose-600"><?= e(get_site_name()) ?></span>
         </a>
         <button onclick="toggleMobileSidebar()" class="p-2 text-slate-400 hover:text-slate-600">
           <i data-lucide="x" class="w-5 h-5"></i>

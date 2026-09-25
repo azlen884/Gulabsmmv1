@@ -115,6 +115,36 @@ function get_setting($key, $default = '') {
 }
 
 /**
+ * Get dynamic site name configured in settings
+ */
+function get_site_name($default = 'SMM Panel') {
+    static $siteName = null;
+    if ($siteName === null) {
+        $siteName = get_setting('site_name', $default);
+    }
+    return !empty($siteName) ? $siteName : $default;
+}
+
+/**
+ * Get dynamic site title configured in settings
+ */
+function get_site_title($default = '') {
+    static $siteTitle = null;
+    if ($siteTitle === null) {
+        $name = get_site_name();
+        $siteTitle = get_setting('site_title', $default ?: ($name . ' - Social Media Services'));
+    }
+    return !empty($siteTitle) ? $siteTitle : ($default ?: (get_site_name() . ' - Social Media Services'));
+}
+
+/**
+ * Check if maintenance mode is enabled
+ */
+function is_maintenance_mode() {
+    return (string)get_setting('maintenance_mode', '0') === '1';
+}
+
+/**
  * Update or insert setting value
  */
 function set_setting($key, $value) {
@@ -393,6 +423,11 @@ function set_active_theme($themeKey) {
  * Render active theme stylesheet link and meta tags in HTML <head>
  */
 function render_theme_head_tags() {
+    $decorCss = '/assets/css/theme-decorations.css';
+    $decorPath = __DIR__ . '/..' . $decorCss;
+    $decorVer = file_exists($decorPath) ? filemtime($decorPath) : time();
+    echo '<link rel="stylesheet" id="app-theme-decorations-css" href="' . htmlspecialchars($decorCss . '?v=' . $decorVer, ENT_QUOTES, 'UTF-8') . '">' . "\n";
+
     $active = get_active_theme();
     $cssFile = '';
     if ($active === 'premium_red') {

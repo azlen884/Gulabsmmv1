@@ -36,10 +36,37 @@ if (strpos($uri, '/index.php') === 0) {
     $uri = '/' . ltrim($uri, '/');
 }
 
+require_once __DIR__ . '/config/database.php';
+
 // Normalize trailing slashes (except root)
 $cleanUri = rtrim($uri, '/');
 if (empty($cleanUri)) {
     $cleanUri = '/';
+}
+
+// Server-Side Maintenance Mode Enforcement
+// When enabled by admin, all public and user routes show maintenance page.
+// Admin users (and admin login) remain accessible server-side with no public shortcuts.
+if (is_maintenance_mode()) {
+    $isAdminPath = (strpos($cleanUri, '/admin') === 0);
+    $isCronPath = ($cleanUri === '/cron' || $cleanUri === '/cron.php');
+    $isWebhookPath = ($cleanUri === '/payment/webhook');
+
+    if (!$isAdminPath && !$isCronPath && !$isWebhookPath && !is_admin()) {
+        if (strpos($cleanUri, '/api/') === 0 || strpos($cleanUri, '/payment/') === 0) {
+            http_response_code(503);
+            header('Content-Type: application/json; charset=utf-8');
+            header('Retry-After: 300');
+            echo json_encode([
+                'status' => 'maintenance',
+                'message' => 'The system is currently undergoing scheduled maintenance. Please check back shortly.'
+            ]);
+            exit;
+        }
+
+        require __DIR__ . '/views/public/maintenance.php';
+        exit;
+    }
 }
 
 // Clean Route Map
@@ -122,6 +149,7 @@ $routes = [
     '/admin/payment-gateways' => __DIR__ . '/views/admin/payment_gateways.php',
     '/admin/currencies' => __DIR__ . '/views/admin/currencies.php',
     '/admin/sliders' => __DIR__ . '/views/admin/sliders.php',
+    '/admin/testimonials' => __DIR__ . '/views/admin/testimonials.php',
     '/admin/tickets' => __DIR__ . '/views/admin/tickets.php',
     '/admin/notifications' => __DIR__ . '/views/admin/notifications.php',
     '/admin/settings' => __DIR__ . '/views/admin/settings.php',
@@ -151,22 +179,51 @@ if (file_exists(__DIR__ . '/views/public' . $cleanUri . '.php')) {
 
 // 404 Fallback
 http_response_code(404);
+$siteName = get_site_name();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>404 Not Found - RoseSMM</title>
+  <title>404 Not Found - <?= e($siteName) ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rose: {
+              50: '#FFF0F3',
+              100: '#FFE2E8',
+              200: '#FCD3DC',
+              500: '#FF3B69',
+              600: '#E11D48',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 <?= get_theme_body_class() ?>">
   <div class="max-w-md w-full text-center bg-white p-8 rounded-3xl border border-[#FCE4E8] shadow-sm">
+    <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-rose-50 border border-rose-100 text-rose-500 flex items-center justify-center">
+      <i data-lucide="compass" class="w-7 h-7"></i>
+    </div>
     <div class="text-4xl font-black text-rose-500 mb-2">404</div>
     <h1 class="text-lg font-bold text-slate-800 mb-2">Page Not Found</h1>
-    <p class="text-xs text-slate-500 mb-6">The page or resource you requested could not be located.</p>
-    <a href="/" class="px-5 py-2.5 rounded-full bg-rose-500 text-white font-bold text-xs shadow-sm hover:bg-rose-600 transition-colors">
-      Return to Home
+    <p class="text-xs text-slate-500 mb-6">The page or resource you requested could not be located on <?= e($siteName) ?>.</p>
+    <a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-rose-500 text-white font-bold text-xs shadow-sm hover:bg-rose-600 transition-colors">
+      <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      <span>Return to Home</span>
     </a>
   </div>
+  <script>
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
 </body>
 </html>

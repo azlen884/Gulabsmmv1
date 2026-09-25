@@ -279,6 +279,20 @@ CREATE TABLE `referral_transactions` (
   UNIQUE KEY `uk_ref_source` (`source_type`, `source_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `testimonials`;
+CREATE TABLE `testimonials` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL DEFAULT NULL,
+  `name` VARCHAR(150) NOT NULL,
+  `role` VARCHAR(100) DEFAULT 'Verified Client',
+  `avatar` VARCHAR(255) DEFAULT '',
+  `content` TEXT NOT NULL,
+  `rating` INT DEFAULT 5,
+  `status` ENUM('active', 'inactive') DEFAULT 'active',
+  `sort_order` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Seed Default Settings

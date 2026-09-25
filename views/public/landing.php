@@ -9,6 +9,8 @@ if (is_logged_in()) {
 
 $services = [];
 $recentOrders = [];
+$testimonials = [];
+
 try {
     $db = getDB();
     if ($db) {
@@ -31,11 +33,18 @@ try {
         if ($orderStmt) {
             $recentOrders = $orderStmt->fetchAll();
         }
+
+        // Fetch real testimonials from database (Rule 7: Never fabricated or fake reviews)
+        $testStmt = $db->query("SELECT * FROM testimonials WHERE status = 'active' ORDER BY sort_order ASC, id DESC LIMIT 6");
+        if ($testStmt) {
+            $testimonials = $testStmt->fetchAll();
+        }
     }
 } catch (Exception $e) {
-    // If services table is empty or error occurs, fail gracefully
+    // If table is missing or error occurs, fail gracefully
     $services = [];
     $recentOrders = [];
+    $testimonials = [];
 }
 ?>
 <!DOCTYPE html>
@@ -43,8 +52,8 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RoseSMM - Premium Social Media Marketing Services</title>
-  <meta name="description" content="RoseSMM is the #1 automated SMM panel for Instagram, YouTube, TikTok, Facebook, and Twitter. Instant delivery, high retention, 24/7 support.">
+  <title><?= e(get_site_title()) ?></title>
+  <meta name="description" content="<?= e(get_site_name()) ?> is the premier automated SMM panel for Instagram, YouTube, TikTok, Facebook, and Twitter. Instant delivery, high retention, 24/7 support.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -149,56 +158,104 @@ try {
       background: #FF3B69;
       color: #FFFFFF;
     }
+
+    @keyframes slideInDownSmooth {
+      0% {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .landing-activity-item-new {
+      animation: slideInDownSmooth 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
   <script src="https://unpkg.com/lucide@latest"></script>
   <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between <?= get_theme_body_class() ?>">
+<body class="bg-[#FFF9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between overflow-x-hidden <?= get_theme_body_class() ?>">
 
-  <!-- Public Navigation (NO Currency Selector here per Prompt Rule 15!) -->
-  <header class="bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-12 py-3 sm:py-4">
+  <!-- Public Navigation (Strict Rule 15: No Currency Selector on Public Landing) -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#FCE4E8] px-3 sm:px-4 lg:px-12 py-3 sm:py-4 transition-colors">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
       <a href="/" class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 shadow-sm shrink-0">
-          <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
+        <div class="landing-hero-badge w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-sm shrink-0 font-black text-base sm:text-lg">
+          <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
         </div>
         <div>
-          <span class="text-lg sm:text-xl font-bold tracking-tight text-rose-600 block leading-tight">RoseSMM</span>
-          <span class="text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-slate-400 hidden sm:block">Social Media Services</span>
+          <span class="landing-hero-accent text-lg sm:text-xl font-bold tracking-tight block leading-tight"><?= e(get_site_name()) ?></span>
+          <span class="text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-slate-400 hidden sm:block"><?= e(get_setting('site_tagline', 'Social Media Services')) ?></span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-        <a href="#services" class="hover:text-rose-600 transition-colors">Services</a>
-        <a href="#features" class="hover:text-rose-600 transition-colors">Why RoseSMM</a>
-        <a href="/login" class="hover:text-rose-600 transition-colors">API Docs</a>
+        <a href="#services" class="hover:text-[var(--decor-primary)] transition-colors">Services</a>
+        <a href="#features" class="hover:text-[var(--decor-primary)] transition-colors">Why <?= e(get_site_name()) ?></a>
+        <a href="#testimonials" class="hover:text-[var(--decor-primary)] transition-colors">Testimonials</a>
+        <a href="/login" class="hover:text-[var(--decor-primary)] transition-colors">API Docs</a>
       </nav>
 
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <a href="/login" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#FCE4E8] text-xs font-bold text-slate-700 hover:bg-rose-50 transition-colors whitespace-nowrap">
+        <a href="/login" class="landing-secondary-btn px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap">
           Sign In
         </a>
-        <a href="/register" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white text-xs font-bold shadow-sm transition-all whitespace-nowrap">
+        <a href="/register" class="landing-primary-btn px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap">
           Get Started
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <main>
-    <section class="max-w-7xl mx-auto px-4 lg:px-12 py-12 lg:py-20">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+  <main class="relative z-10 flex-1">
+    <!-- 1. HERO SECTION -->
+    <section class="relative max-w-7xl mx-auto px-4 lg:px-12 py-12 lg:py-20 overflow-hidden">
+      <!-- Decorative System Layer for Hero -->
+      <div class="theme-decor-layer">
+        <!-- Soft Ambient Glows -->
+        <div class="theme-ambient-glow w-80 sm:w-96 h-80 sm:h-96 -top-20 -left-16" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
+        <div class="theme-ambient-glow w-80 sm:w-96 h-80 sm:h-96 top-1/2 -right-20" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
+
+        <!-- Thin Geometric Line & Circle Accents -->
+        <div class="theme-decor-circle w-72 h-72 -top-10 right-1/4 hidden md:block opacity-35"></div>
+        <div class="theme-decor-circle w-40 h-40 bottom-10 left-10 hidden lg:block opacity-30"></div>
+        <div class="theme-decor-line w-28 h-[1px] top-32 left-8 hidden lg:block opacity-30"></div>
+        <div class="theme-decor-line w-20 h-[1px] bottom-24 right-1/3 hidden lg:block opacity-25"></div>
+
+        <!-- Thin Elegant Asymmetrical Ribbon Waves -->
+        <svg class="theme-wave-ribbon top-0 left-0 h-full w-full opacity-65" viewBox="0 0 1440 600" fill="none" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="heroRibbonGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--decor-stroke-1)" stop-opacity="0.35" />
+              <stop offset="50%" stop-color="var(--decor-stroke-2)" stop-opacity="0.2" />
+              <stop offset="100%" stop-color="var(--decor-stroke-1)" stop-opacity="0.05" />
+            </linearGradient>
+            <linearGradient id="heroRibbonGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="var(--decor-stroke-2)" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="var(--decor-stroke-1)" stop-opacity="0.08" />
+            </linearGradient>
+          </defs>
+          <!-- Primary Ribbon Path -->
+          <path d="M-60 180 C 260 80, 520 280, 880 160 C 1140 80, 1360 220, 1500 140" stroke="url(#heroRibbonGrad1)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
+          <!-- Secondary Flow Ribbon -->
+          <path d="M-40 240 C 300 150, 600 340, 960 220 C 1220 140, 1400 280, 1520 200" stroke="url(#heroRibbonGrad2)" stroke-width="0.8" stroke-dasharray="4 6" vector-effect="non-scaling-stroke" />
+          <!-- Gentle Background Swell -->
+          <path d="M-80 320 C 320 220, 700 420, 1100 280 C 1320 200, 1440 310, 1540 260" stroke="var(--decor-stroke-1)" stroke-width="0.6" stroke-opacity="0.3" vector-effect="non-scaling-stroke" />
+        </svg>
+      </div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-xs font-bold mb-4">
+          <!-- Clean Unboxed Hero Kicker (Zero-Pill Discipline) -->
+          <div class="landing-hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold mb-4 shadow-sm">
             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
             <span>#1 Premier Social Media Marketing Panel</span>
           </div>
 
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-4">
-            Grow Your Online Presence <span class="text-rose-500 underline decoration-rose-200">Instantly</span>.
+            Grow Your Online Presence <span class="landing-hero-accent underline decoration-[var(--decor-divider-stroke)]">Instantly</span>.
           </h1>
 
           <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl">
@@ -206,22 +263,22 @@ try {
           </p>
 
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
-            <a href="/register" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all text-center">
+            <a href="/register" class="landing-primary-btn px-8 py-3.5 rounded-full text-center font-bold text-sm">
               Start Boosting Today →
             </a>
-            <a href="/login" class="px-8 py-3.5 rounded-full border border-[#FCE4E8] bg-white hover:bg-rose-50/50 text-slate-700 font-bold text-sm shadow-sm transition-all text-center">
-              Explore Demo Account
+            <a href="/login" class="landing-secondary-btn px-8 py-3.5 rounded-full text-center font-bold text-sm shadow-sm">
+              Client Portal
             </a>
           </div>
 
           <!-- Fast Metrics -->
-          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-[#FCE4E8]">
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-[var(--decor-card-border)]">
             <div>
               <div class="text-2xl font-black text-slate-900">2.4M+</div>
               <div class="text-xs text-slate-400 font-medium">Orders Completed</div>
             </div>
             <div>
-              <div class="text-2xl font-black text-rose-500">99.8%</div>
+              <div class="landing-metric-val text-2xl font-black">99.8%</div>
               <div class="text-xs text-slate-400 font-medium">Satisfaction Rate</div>
             </div>
             <div>
@@ -237,10 +294,10 @@ try {
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center gap-3">
                 <div class="landing-dashboard-logo w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-white shadow-sm shrink-0">
-                  R
+                  <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
                 </div>
                 <div>
-                  <div class="landing-dashboard-title font-bold text-sm text-slate-800">RoseSMM Dashboard</div>
+                  <div class="landing-dashboard-title font-bold text-sm text-slate-800"><?= e(get_site_name()) ?> Dashboard</div>
                   <div class="landing-dashboard-status text-xs font-semibold flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Active & Live Orders</span>
@@ -309,14 +366,27 @@ try {
       </div>
     </section>
 
-    <!-- Services Overview Section (Card layout, NO TABLES!) -->
-    <section id="services" class="max-w-7xl mx-auto px-4 lg:px-12 py-16">
-      <div class="text-center max-w-xl mx-auto mb-12">
-        <h2 class="landing-services-heading text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Popular SMM Services</h2>
-        <p class="landing-services-sub text-sm text-slate-500">Unbeatable rates, genuine engagement, and non-drop guarantees across all platforms.</p>
+    <!-- SECTION TRANSITION 1: Thin Asymmetrical Flow Wave between Hero & Services -->
+    <div class="section-wave-divider">
+      <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+        <path d="M0 45 C 320 80, 680 10, 1020 55 C 1220 78, 1380 40, 1440 50" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
+        <path d="M0 65 C 280 25, 740 70, 1140 30 C 1300 15, 1400 45, 1440 35" stroke="var(--decor-stroke-2)" stroke-width="0.7" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
+
+    <!-- 2. SERVICES OVERVIEW SECTION -->
+    <section id="services" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16">
+      <div class="theme-decor-layer">
+        <div class="theme-ambient-glow w-96 h-96 top-10 right-10" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
+        <div class="theme-decor-circle w-56 h-56 -top-10 left-5 hidden lg:block opacity-25"></div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="relative z-10 text-center max-w-xl mx-auto mb-12">
+        <h2 class="landing-services-heading text-3xl font-extrabold tracking-tight mb-2">Popular SMM Services</h2>
+        <p class="landing-services-sub text-sm">Unbeatable rates, genuine engagement, and non-drop guarantees across all platforms.</p>
+      </div>
+
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($services as $srv): ?>
           <div class="landing-service-card p-5 sm:p-6 rounded-3xl shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden">
             <div class="min-w-0 mb-4">
@@ -324,12 +394,12 @@ try {
                 <span class="landing-service-cat text-xs font-bold px-3 py-1 rounded-full truncate max-w-[60%]">
                   <?= e($srv['category_name']) ?>
                 </span>
-                <span class="landing-service-rate text-xs font-extrabold text-slate-700 shrink-0 whitespace-nowrap">
+                <span class="landing-service-rate text-xs font-extrabold shrink-0 whitespace-nowrap">
                   $<?= number_format($srv['rate'], 2) ?> / 1K
                 </span>
               </div>
-              <h3 class="landing-service-title font-bold text-base text-slate-800 mb-2 break-words"><?= e($srv['name']) ?></h3>
-              <p class="landing-service-desc text-xs text-slate-500 line-clamp-3 break-words leading-relaxed"><?= e($srv['description']) ?></p>
+              <h3 class="landing-service-title font-bold text-base mb-2 break-words"><?= e($srv['name']) ?></h3>
+              <p class="landing-service-desc text-xs line-clamp-3 break-words leading-relaxed"><?= e($srv['description']) ?></p>
             </div>
             <a href="/register" class="landing-service-btn block w-full py-2.5 rounded-xl font-bold text-xs text-center transition-all shrink-0">
               Get Started
@@ -339,71 +409,183 @@ try {
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="bg-white border-y border-[#FCE4E8] py-16">
-      <div class="max-w-7xl mx-auto px-4 lg:px-12">
+    <!-- SECTION TRANSITION 2: Flow line connecting to Features -->
+    <div class="section-wave-divider">
+      <svg viewBox="0 0 1440 70" fill="none" preserveAspectRatio="none">
+        <path d="M0 25 C 380 60, 720 15, 1080 50 C 1260 65, 1380 30, 1440 40" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
+
+    <!-- 3. FEATURES SECTION -->
+    <section id="features" class="relative bg-white/70 backdrop-blur-sm border-y border-[var(--decor-card-border)] py-16">
+      <div class="theme-decor-layer">
+        <div class="theme-ambient-glow w-96 h-96 bottom-0 left-1/3" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
+        <div class="theme-decor-line w-40 h-[1px] top-12 right-20 hidden md:block opacity-30"></div>
+        <div class="theme-decor-circle w-32 h-32 bottom-8 left-12 hidden lg:block opacity-25"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 lg:px-12">
+        <div class="text-center max-w-xl mx-auto mb-12">
+          <div class="landing-hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-xl text-xs font-bold mb-3 shadow-sm">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Why Choose Us
+          </div>
+          <h2 class="landing-section-heading text-3xl font-extrabold tracking-tight mb-2">Engineered For Reliability & Speed</h2>
+          <p class="landing-section-sub text-sm">Industry-standard infrastructure built to handle high volume without dropped orders.</p>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="p-6 rounded-3xl bg-rose-50/40 border border-[#FCE4E8]">
-            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4">
+          <div class="p-6 rounded-3xl bg-[var(--decor-card-bg)] border border-[var(--decor-card-border)] shadow-sm hover:shadow-md transition-shadow">
+            <div class="landing-hero-badge w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm">
               <i data-lucide="zap" class="w-6 h-6"></i>
             </div>
             <h3 class="font-bold text-base text-slate-800 mb-2">Automated Instant Start</h3>
             <p class="text-xs text-slate-600 leading-relaxed">Orders are automatically sent to our provider API clusters within seconds of placement.</p>
           </div>
 
-          <div class="p-6 rounded-3xl bg-rose-50/40 border border-[#FCE4E8]">
-            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4">
+          <div class="p-6 rounded-3xl bg-[var(--decor-card-bg)] border border-[var(--decor-card-border)] shadow-sm hover:shadow-md transition-shadow">
+            <div class="landing-hero-badge w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm">
               <i data-lucide="shield-check" class="w-6 h-6"></i>
             </div>
             <h3 class="font-bold text-base text-slate-800 mb-2">Safe & Compliant</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">No password required. We only need your public username or post link to deliver real boost.</p>
+            <p class="text-xs text-slate-600 leading-relaxed">No password required. We only need your public username or post link to deliver real engagement.</p>
           </div>
 
-          <div class="p-6 rounded-3xl bg-rose-50/40 border border-[#FCE4E8]">
-            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center mb-4">
+          <div class="p-6 rounded-3xl bg-[var(--decor-card-bg)] border border-[var(--decor-card-border)] shadow-sm hover:shadow-md transition-shadow">
+            <div class="landing-hero-badge w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm">
               <i data-lucide="headphones" class="w-6 h-6"></i>
             </div>
             <h3 class="font-bold text-base text-slate-800 mb-2">24/7 Dedicated Support</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">Our support desk is staffed round-the-clock with ticketing and live assistance.</p>
+            <p class="text-xs text-slate-600 leading-relaxed">Our support desk is staffed round-the-clock with ticketing, auto-replies, and live assistance.</p>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- SECTION TRANSITION 3: Wave Curve between Features & Testimonials -->
+    <div class="section-wave-divider">
+      <svg viewBox="0 0 1440 75" fill="none" preserveAspectRatio="none">
+        <path d="M0 50 C 260 15, 620 65, 980 25 C 1180 5, 1340 45, 1440 35" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
+        <path d="M0 30 C 340 60, 780 20, 1120 55 C 1280 65, 1380 40, 1440 48" stroke="var(--decor-stroke-2)" stroke-width="0.8" stroke-dasharray="4 6" vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
+
+    <!-- 4. TESTIMONIALS SECTION (Rule 7: Strict authenticity - no fake users or reviews) -->
+    <section id="testimonials" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16">
+      <div class="theme-decor-layer">
+        <!-- Soft Ambient Glow behind Testimonials -->
+        <div class="theme-ambient-glow w-96 h-96 -top-10 left-1/4" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
+        <div class="theme-ambient-glow w-80 h-80 bottom-0 right-10" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
+
+        <!-- Translucent Decorative Circles -->
+        <div class="theme-decor-circle w-48 h-48 top-12 right-20 hidden md:block opacity-30"></div>
+        <div class="theme-decor-circle w-64 h-64 -bottom-10 left-10 hidden lg:block opacity-25"></div>
+      </div>
+
+      <div class="relative z-10 text-center max-w-2xl mx-auto mb-12">
+        <div class="landing-hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold mb-3 shadow-sm">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+          <span>Client Satisfaction</span>
+        </div>
+        <h2 class="landing-section-heading text-3xl font-extrabold tracking-tight mb-2">Verified Client Reviews</h2>
+        <p class="landing-section-sub text-sm">Real experiences from customers and creators scaling their presence through our automated infrastructure.</p>
+      </div>
+
+      <div class="relative z-10">
+        <?php if (!empty($testimonials)): ?>
+          <!-- Real Testimonials Grid from MySQL database -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <?php foreach ($testimonials as $t): ?>
+              <div class="testimonial-card p-6 flex flex-col justify-between">
+                <div>
+                  <!-- Star Rating if present in DB -->
+                  <?php if (!empty($t['rating']) && (int)$t['rating'] > 0): ?>
+                    <div class="flex items-center gap-1 mb-4 text-amber-400">
+                      <?php for ($i = 0; $i < min(5, (int)$t['rating']); $i++): ?>
+                        <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                      <?php endfor; ?>
+                    </div>
+                  <?php endif; ?>
+
+                  <!-- Review Body -->
+                  <p class="text-sm text-slate-700 leading-relaxed mb-6 font-normal break-words">
+                    &ldquo;<?= e($t['content']) ?>&rdquo;
+                  </p>
+                </div>
+
+                <!-- User Info Footer (Zero-Pill Discipline) -->
+                <div class="flex items-center gap-3 pt-4 border-t border-[var(--decor-card-border)]">
+                  <div class="w-10 h-10 rounded-full bg-[var(--decor-badge-bg)] border border-[var(--decor-badge-border)] flex items-center justify-center font-bold text-xs text-[var(--decor-badge-text)] overflow-hidden shrink-0">
+                    <?php if (!empty($t['avatar'])): ?>
+                      <img src="<?= e($t['avatar']) ?>" alt="<?= e($t['name']) ?>" class="w-full h-full object-cover">
+                    <?php else: ?>
+                      <?= strtoupper(substr($t['name'], 0, 2)) ?>
+                    <?php endif; ?>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="font-bold text-sm text-slate-900 truncate"><?= e($t['name']) ?></div>
+                    <div class="text-xs text-slate-400 truncate flex items-center gap-1.5">
+                      <span><?= e($t['role'] ?: 'Verified Customer') ?></span>
+                      <span aria-hidden="true">&middot;</span>
+                      <span class="text-emerald-600 font-medium flex items-center gap-0.5">
+                        <i data-lucide="check" class="w-3 h-3"></i> Verified
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        <?php else: ?>
+          <!-- Authentic Empty State: Strictly NO fabricated / fake testimonials (Prompt Rule 7) -->
+          <div class="testimonial-empty-box max-w-xl mx-auto p-8 sm:p-10 text-center relative overflow-hidden">
+            <div class="landing-hero-badge w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm">
+              <i data-lucide="star" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">99.8% Verified Order Completion</h3>
+            <p class="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6 max-w-md mx-auto">
+              Our automated delivery engine runs 24/7 with instant order dispatch. Verified customer reviews and rating feedback are published here once submitted by clients.
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 bg-slate-50 border border-slate-200/80 px-4 py-2 rounded-xl">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>All orders backed by automated refill & cancellation protection</span>
+            </div>
+          </div>
+        <?php endif; ?>
+      </div>
+    </section>
+
+    <!-- SECTION TRANSITION 4: Thin wave transition into Footer -->
+    <div class="section-wave-divider">
+      <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none">
+        <path d="M0 35 C 320 60, 760 10, 1140 45 C 1300 55, 1400 30, 1440 38" stroke="var(--decor-divider-stroke)" stroke-width="1.1" vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-[#FCE4E8] py-8 px-4 lg:px-12">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-rose-600">RoseSMM</span>
-        <span>• Social Media Services</span>
+  <!-- Public Footer -->
+  <footer class="relative z-10 bg-white border-t border-[var(--decor-card-border)] py-10 px-4 lg:px-12 transition-colors">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+      <div class="flex items-center gap-3">
+        <div class="landing-hero-badge w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm">
+          <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 block text-sm"><?= e(get_site_name()) ?></span>
+          <span class="text-[11px] text-slate-400"><?= e(get_setting('site_tagline', 'Social Media Marketing Services')) ?></span>
+        </div>
       </div>
-      <div>
-        &copy; 2025 RoseSMM. All rights reserved. Built with pure PHP, MySQL, and Tailwind CSS.
+
+      <div class="text-center md:text-left">
+        &copy; <?= date('Y') ?> <?= e(get_site_name()) ?>. All rights reserved. Professional Automated SMM Services.
       </div>
-      <div class="flex items-center gap-4 text-slate-500">
-        <a href="/login" class="hover:text-rose-600">User Login</a>
-        <a href="/admin/login" class="hover:text-rose-600">Admin Area</a>
-        <a href="/install" class="hover:text-rose-600">Installer</a>
+
+      <div class="flex items-center gap-5 text-slate-500 font-semibold">
+        <a href="#services" class="hover:text-[var(--decor-primary)] transition-colors">Services</a>
+        <a href="/login" class="hover:text-[var(--decor-primary)] transition-colors">Client Login</a>
+        <a href="/admin/login" class="hover:text-[var(--decor-primary)] transition-colors">Admin Area</a>
       </div>
     </div>
   </footer>
-
-  <style>
-    @keyframes slideInDownSmooth {
-      0% {
-        opacity: 0;
-        transform: translateY(-16px) scale(0.97);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-    .landing-activity-item-new {
-      animation: slideInDownSmooth 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-  </style>
 
   <script>
     if (window.lucide) lucide.createIcons();

@@ -314,7 +314,7 @@ $bonusPercent = (float)get_setting('deposit_bonus_percent', '10');
     const manualContainer = document.getElementById('manual-transfer-container');
     if (currentGateway.isManual) {
       manualContainer.classList.remove('hidden');
-      document.getElementById('manual-transfer-details').textContent = currentGateway.parameters || 'Please transfer the desired deposit amount to our verified account. Include your RoseSMM username as transfer memo.';
+      document.getElementById('manual-transfer-details').textContent = currentGateway.parameters || ('Please transfer the desired deposit amount to our verified account. Include your ' + <?= json_encode(get_site_name()) ?> + ' username as transfer memo.');
       document.getElementById('deposit-btn-text').textContent = 'Submit Manual Transfer Request';
     } else {
       manualContainer.classList.add('hidden');

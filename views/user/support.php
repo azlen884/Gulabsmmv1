@@ -72,7 +72,7 @@ $tickets = $allTicketsStmt->fetchAll();
             <div class="flex items-center justify-between mb-1 gap-2">
               <span class="text-xs font-bold text-slate-800 truncate flex items-center gap-1.5">
                 <?php if ($msg['is_admin']): ?>
-                  <span class="text-rose-600 font-black">RoseSMM Support</span>
+                  <span class="text-rose-600 font-black"><?= e(get_site_name()) ?> Support</span>
                   <span class="px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 text-[10px] font-bold">Staff / Automated</span>
                 <?php else: ?>
                   <?= e($msg['full_name'] ?: 'You') ?>

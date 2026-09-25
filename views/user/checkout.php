@@ -123,7 +123,7 @@ require_once __DIR__ . '/../layouts/user_header.php';
           "key": "<?= e($rzpKey) ?>",
           "amount": "<?= $amountInPaise ?>",
           "currency": "<?= e($payment['currency']) ?>",
-          "name": "RoseSMM",
+          "name": <?= json_encode(get_site_name()) ?>,
           "description": "Wallet Deposit #<?= e($internalId) ?>",
           "order_id": "<?= e($rzpOrderId) ?>",
           "prefill": {

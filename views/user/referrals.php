@@ -26,9 +26,10 @@ $formattedEarnings = format_price($totalEarnings, $userCurrency, 'USD');
 $formattedBalance = format_price($user['balance'], $userCurrency, 'USD');
 
 // Encode share text
-$shareText = "Join RoseSMM, the best social media marketing platform with instant automated delivery! Sign up with my referral link: " . $referralUrl;
+$siteBrand = get_site_name();
+$shareText = "Join " . $siteBrand . ", the best social media marketing platform with instant automated delivery! Sign up with my referral link: " . $referralUrl;
 $whatsappUrl = "https://api.whatsapp.com/send?text=" . urlencode($shareText);
-$telegramUrl = "https://t.me/share/url?url=" . urlencode($referralUrl) . "&text=" . urlencode("Boost your social media with RoseSMM!");
+$telegramUrl = "https://t.me/share/url?url=" . urlencode($referralUrl) . "&text=" . urlencode("Boost your social media with " . $siteBrand . "!");
 $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($shareText);
 ?>
 
@@ -50,7 +51,7 @@ $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($shareText);
       <?php endif; ?>
     </div>
     <p class="text-xs sm:text-sm text-slate-500">
-      Invite friends and customers to RoseSMM and earn <strong><?= rtrim(rtrim(number_format($commissionPercent, 2), '0'), '.') ?>%</strong> real commission on their qualifying activity.
+      Invite friends and customers to <?= e($siteBrand) ?> and earn <strong><?= rtrim(rtrim(number_format($commissionPercent, 2), '0'), '.') ?>%</strong> real commission on their qualifying activity.
     </p>
   </div>
 
@@ -203,7 +204,7 @@ $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($shareText);
         <?= $formattedEarnings ?>
       </div>
       <p class="text-xs text-rose-100/90 leading-relaxed">
-        Real earnings credited directly to your RoseSMM wallet balance.
+        Real earnings credited directly to your <?= e($siteBrand) ?> wallet balance.
       </p>
     </div>
 
@@ -265,7 +266,7 @@ $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($shareText);
 <div class="bg-white rounded-3xl border border-[#FCE4E8] p-6 shadow-sm mb-8">
   <div class="mb-4">
     <h3 class="text-base font-black text-slate-800 tracking-tight">How Refer & Earn Works</h3>
-    <p class="text-xs text-slate-500">Three simple steps to generate passive earnings with RoseSMM.</p>
+    <p class="text-xs text-slate-500">Three simple steps to generate passive earnings with <?= e($siteBrand) ?>.</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -392,7 +393,7 @@ $twitterUrl = "https://twitter.com/intent/tweet?text=" . urlencode($shareText);
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
       <div>
         <h3 class="text-base font-black text-slate-800 tracking-tight">Your Referred Friends & Customers</h3>
-        <p class="text-xs text-slate-500">Users who joined RoseSMM using your link.</p>
+        <p class="text-xs text-slate-500">Users who joined <?= e($siteBrand) ?> using your link.</p>
       </div>
       <span class="text-xs font-bold text-slate-400"><?= count($referredUsers) ?> Total Registered</span>
     </div>
@@ -501,8 +502,8 @@ function nativeShare() {
   const url = document.getElementById('referral-url-input').value;
   if (navigator.share) {
     navigator.share({
-      title: 'Join RoseSMM',
-      text: 'Boost your social media with RoseSMM. Use my referral link:',
+      title: 'Join ' + <?= json_encode($siteBrand) ?>,
+      text: 'Boost your social media with ' + <?= json_encode($siteBrand) ?> + '. Use my referral link:',
       url: url
     }).catch(function() {});
   } else {

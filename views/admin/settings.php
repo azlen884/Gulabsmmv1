@@ -8,9 +8,12 @@ $msg = '';
 $errorMsg = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $siteNameInput = trim($_POST['site_name'] ?? 'RoseSMM');
+    if ($siteNameInput === '') $siteNameInput = 'SMM Panel';
     $settings = [
-        'site_name' => trim($_POST['site_name'] ?? 'RoseSMM'),
-        'support_email' => trim($_POST['support_email'] ?? 'support@rosesmm.com'),
+        'site_name' => $siteNameInput,
+        'site_title' => $siteNameInput . ' - Social Media Services',
+        'support_email' => trim($_POST['support_email'] ?? 'support@example.com'),
         'deposit_bonus_percent' => trim($_POST['deposit_bonus_percent'] ?? '10'),
         'maintenance_mode' => isset($_POST['maintenance_mode']) ? '1' : '0',
     ];

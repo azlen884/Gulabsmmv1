@@ -80,10 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     try {
                         $db->prepare("
                             INSERT INTO notifications (user_id, title, message, type)
-                            VALUES (?, 'Welcome to RoseSMM!', 'Your account has been created successfully. Welcome aboard!', 'promo')
-                        ")->execute([$newUserId]);
+                            VALUES (?, ?, 'Your account has been created successfully. Welcome aboard!', 'promo')
+                        ")->execute([$newUserId, 'Welcome to ' . get_site_name() . '!']);
                     } catch (Throwable $notifEx) {
-                        error_log("[RoseSMM Registration Notice] Notification hook: " . $notifEx->getMessage());
+                        error_log("[Registration Notice] Notification hook: " . $notifEx->getMessage());
                     }
 
                     // Ensure clean session initialization
@@ -112,13 +112,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="0;url=' . htmlspecialchars($targetUrl) . '">
-  <title>Account Created - RoseSMM</title>
+  <title>Account Created - ' . htmlspecialchars(get_site_name()) . '</title>
   <script>window.location.replace(' . json_encode($targetUrl) . ');</script>
 </head>
 <body style="font-family: system-ui, -apple-system, sans-serif; background: #FFF9FA; color: #1e293b; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px;">
   <div style="background: white; border: 1px solid #FCE4E8; border-radius: 24px; padding: 32px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.08);">
     <div style="width: 48px; height: 48px; border-radius: 16px; background: #FFF0F3; color: #E11D48; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-weight: bold; font-size: 20px;">✓</div>
-    <h2 style="margin: 0 0 8px; font-size: 20px; font-weight: 800; color: #0f172a;">Welcome to RoseSMM!</h2>
+    <h2 style="margin: 0 0 8px; font-size: 20px; font-weight: 800; color: #0f172a;">Welcome to ' . htmlspecialchars(get_site_name()) . '!</h2>
     <p style="margin: 0 0 20px; font-size: 13px; color: #64748b;">Your account was created successfully. Redirecting you to the dashboard...</p>
     <a href="' . htmlspecialchars($targetUrl) . '" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #FF3B69, #E11D48); color: white; text-decoration: none; border-radius: 16px; font-weight: bold; font-size: 13px; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);">Proceed to Dashboard →</a>
   </div>
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account - RoseSMM</title>
+  <title>Create Account - <?= e(get_site_name()) ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -181,14 +181,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <div class="max-w-md w-full mx-auto pt-6 pb-2 text-center">
     <a href="/" class="inline-flex items-center gap-3">
-      <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 shadow-sm">
-        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
+      <div class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-100 shadow-sm font-black text-lg">
+        <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
       </div>
       <div class="text-left">
-        <span class="text-xl font-bold tracking-tight text-rose-600 block leading-tight">RoseSMM</span>
-        <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block">Social Media Services</span>
+        <span class="text-xl font-bold tracking-tight text-rose-600 block leading-tight"><?= e(get_site_name()) ?></span>
+        <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block"><?= e(get_setting('site_tagline', 'Social Media Services')) ?></span>
       </div>
     </a>
   </div>
@@ -196,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="max-w-md w-full mx-auto bg-white rounded-3xl border border-[#FCE4E8] p-6 sm:p-8 shadow-sm">
     <div class="text-center mb-6">
       <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Create an Account</h1>
-      <p class="text-xs text-slate-500 mt-1">Join RoseSMM to boost your social media with instant automated delivery.</p>
+      <p class="text-xs text-slate-500 mt-1">Join <?= e(get_site_name()) ?> to boost your social media with instant automated delivery.</p>
     </div>
 
     <?php if ($error): ?>
@@ -285,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <button 
         type="submit" 
-        class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-bold text-sm shadow-md hover:shadow transition-all flex items-center justify-center gap-2 mt-4"
+        class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-bold text-sm shadow-md hover:shadow transition-all flex items-center justify-center gap-2 mt-4 cursor-pointer"
       >
         <span>Register & Get Started</span>
         <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -299,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <div class="text-center text-xs text-slate-400 py-4">
-    &copy; 2025 RoseSMM. All rights reserved.
+    &copy; <?= date('Y') ?> <?= e(get_site_name()) ?>. All rights reserved.
   </div>
 
   <script>

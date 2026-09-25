@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - RoseSMM</title>
+  <title>Admin Login - <?= e(get_site_name()) ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -56,22 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <?php render_theme_head_tags(); ?>
 </head>
-<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex items-center justify-center p-4 <?= get_theme_body_class() ?>">
 
   <div class="max-w-md w-full bg-slate-800 rounded-3xl border border-slate-700 p-8 shadow-2xl">
     <div class="text-center mb-6">
       <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center mx-auto mb-3 font-bold text-lg shadow-lg">
-        R
+        <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
       </div>
       <h1 class="text-2xl font-black text-white tracking-tight">Admin Gateway</h1>
       <p class="text-xs text-slate-400 mt-1">Authorized personnel only.</p>
-    </div>
-
-    <!-- Quick Credentials Helper -->
-    <div class="p-3 mb-5 rounded-2xl bg-slate-700/60 border border-slate-600 text-xs text-slate-300 flex items-center justify-between">
-      <span>Default Admin: <strong>admin</strong> / <strong>admin123</strong></span>
-      <button type="button" onclick="fillAdmin()" class="text-rose-400 font-bold hover:underline">Auto-Fill</button>
     </div>
 
     <?php if ($error): ?>
@@ -83,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="POST" action="/admin/login" class="space-y-4">
       <div>
-        <label class="block text-xs font-bold text-slate-300 mb-1">Admin Username</label>
+        <label class="block text-xs font-bold text-slate-300 mb-1">Admin Username or Email</label>
         <input 
           type="text" 
           name="username" 
@@ -108,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <button 
         type="submit" 
-        class="w-full py-3.5 px-6 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-lg transition-colors flex items-center justify-center gap-2 mt-4"
+        class="w-full py-3.5 px-6 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-lg transition-colors flex items-center justify-center gap-2 mt-4 cursor-pointer"
       >
         <span>Authenticate & Access</span>
         <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -122,10 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <script>
     if (window.lucide) lucide.createIcons();
-    function fillAdmin() {
-      document.getElementById('admin-u').value = 'admin';
-      document.getElementById('admin-p').value = 'admin123';
-    }
   </script>
 </body>
 </html>

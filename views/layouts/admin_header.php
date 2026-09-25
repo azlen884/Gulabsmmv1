@@ -15,7 +15,7 @@ $adminPage = $adminPage ?? 'dashboard';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= e($pageTitle ?? 'RoseSMM Admin Panel') ?></title>
+  <title><?= e(str_replace('RoseSMM', get_site_name(), $pageTitle ?? (get_site_name() . ' Admin Panel'))) ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -49,10 +49,10 @@ $adminPage = $adminPage ?? 'dashboard';
     <div class="flex items-center justify-between mb-6">
       <a href="/admin" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-2xl bg-rose-500 text-white flex items-center justify-center font-black text-sm">
-          R
+          <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
         </div>
         <div>
-          <span class="text-base font-bold text-white block leading-tight">RoseSMM</span>
+          <span class="text-base font-bold text-white block leading-tight"><?= e(get_site_name()) ?></span>
           <span class="text-[10px] uppercase font-bold tracking-wider text-rose-400 block">Administration</span>
         </div>
       </a>
@@ -177,6 +177,12 @@ $adminPage = $adminPage ?? 'dashboard';
         </div>
         <span>Sliders & Banners</span>
       </a>
+      <a href="/admin/testimonials" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'testimonials' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'testimonials' ? 'bg-white/20 border border-white/30 text-white' : 'bg-teal-500/15 border border-teal-500/30 text-teal-400' ?>">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+        </div>
+        <span>Testimonials</span>
+      </a>
       <a href="/admin/tickets" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
         <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'tickets' ? 'bg-white/20 border border-white/30 text-white' : 'bg-orange-500/15 border border-orange-500/30 text-orange-400' ?>">
           <i data-lucide="headset" class="w-3.5 h-3.5"></i>
@@ -222,10 +228,10 @@ $adminPage = $adminPage ?? 'dashboard';
       <!-- Admin Logo -->
       <a href="/admin" class="flex items-center gap-3 mb-6">
         <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center font-black">
-          R
+          <?= strtoupper(substr(get_site_name(), 0, 1)) ?>
         </div>
         <div>
-          <span class="text-lg font-bold text-white block leading-tight">RoseSMM</span>
+          <span class="text-lg font-bold text-white block leading-tight"><?= e(get_site_name()) ?></span>
           <span class="text-[10px] uppercase font-bold tracking-wider text-rose-400 block">Administration</span>
         </div>
       </a>
@@ -345,6 +351,12 @@ $adminPage = $adminPage ?? 'dashboard';
             <i data-lucide="image" class="w-3.5 h-3.5"></i>
           </div>
           <span>Sliders & Banners</span>
+        </a>
+        <a href="/admin/testimonials" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'testimonials' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
+          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'testimonials' ? 'bg-white/20 border border-white/30 text-white' : 'bg-teal-500/15 border border-teal-500/30 text-teal-400' ?>">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+          </div>
+          <span>Testimonials</span>
         </a>
         <a href="/admin/tickets" class="group flex items-center gap-3 px-3 py-2 rounded-xl transition-colors <?= $adminPage === 'tickets' ? 'bg-rose-600 text-white font-bold shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' ?>">
           <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 <?= $adminPage === 'tickets' ? 'bg-white/20 border border-white/30 text-white' : 'bg-orange-500/15 border border-orange-500/30 text-orange-400' ?>">

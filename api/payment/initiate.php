@@ -114,7 +114,7 @@ try {
             'client_reference_id' => (string)$recordId,
             'customer_email' => $user['email'],
             'line_items[0][price_data][currency]' => strtolower($gateway['currency']),
-            'line_items[0][price_data][product_data][name]' => 'Deposit to RoseSMM Wallet (' . $user['username'] . ')',
+            'line_items[0][price_data][product_data][name]' => 'Deposit to ' . get_site_name() . ' Wallet (' . $user['username'] . ')',
             'line_items[0][price_data][unit_amount]' => (int)round($totalToCharge * 100),
             'line_items[0][quantity]' => 1,
             'metadata[user_id]' => (string)$userId,
@@ -219,14 +219,14 @@ try {
             'intent' => 'CAPTURE',
             'purchase_units' => [[
                 'reference_id' => (string)$recordId,
-                'description' => 'Deposit to RoseSMM Wallet (' . $user['username'] . ')',
+                'description' => 'Deposit to ' . get_site_name() . ' Wallet (' . $user['username'] . ')',
                 'amount' => [
                     'currency_code' => $gateway['currency'],
                     'value' => number_format($totalToCharge, 2, '.', '')
                 ]
             ]],
             'application_context' => [
-                'brand_name' => 'RoseSMM',
+                'brand_name' => get_site_name(),
                 'landing_page' => 'NO_PREFERENCE',
                 'user_action' => 'PAY_NOW',
                 'return_url' => $baseUrl . '/payment/verify?gateway=paypal&txn_id=' . $recordId,

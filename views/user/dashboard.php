@@ -567,11 +567,13 @@ $services = $db->query("
       <?php if (empty($recentOrders)): ?>
         <div class="text-xs text-slate-400 py-4 text-center">No recent orders yet.</div>
       <?php else: ?>
-        <?php foreach ($recentOrders as $ro): ?>
+        <?php foreach ($recentOrders as $ro): 
+          $catSlug = strtolower((string)($ro['category_slug'] ?? ''));
+        ?>
           <a href="/orders" class="flex items-center justify-between p-2.5 rounded-2xl border border-slate-100 hover:border-rose-200 hover:bg-rose-50/20 transition-all group">
             <div class="flex items-center gap-3 overflow-hidden">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 <?= $ro['category_slug'] === 'instagram' ? 'bg-rose-50 text-rose-500' : ($ro['category_slug'] === 'youtube' ? 'bg-red-50 text-red-500' : ($ro['category_slug'] === 'tiktok' ? 'bg-slate-900 text-white' : ($ro['category_slug'] === 'facebook' ? 'bg-blue-50 text-blue-600' : 'bg-sky-50 text-sky-500'))) ?>">
-                <i data-lucide="<?= $ro['category_slug'] === 'youtube' ? 'youtube' : ($ro['category_slug'] === 'tiktok' ? 'music-2' : ($ro['category_slug'] === 'facebook' ? 'facebook' : ($ro['category_slug'] === 'twitter' ? 'twitter' : 'instagram'))) ?>" class="w-4 h-4"></i>
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 <?= $catSlug === 'instagram' ? 'bg-rose-50 text-rose-500' : ($catSlug === 'youtube' ? 'bg-red-50 text-red-500' : ($catSlug === 'tiktok' ? 'bg-slate-900 text-white' : ($catSlug === 'facebook' ? 'bg-blue-50 text-blue-600' : 'bg-sky-50 text-sky-500'))) ?>">
+                <i data-lucide="<?= $catSlug === 'youtube' ? 'youtube' : ($catSlug === 'tiktok' ? 'music-2' : ($catSlug === 'facebook' ? 'facebook' : ($catSlug === 'twitter' ? 'twitter' : 'instagram'))) ?>" class="w-4 h-4"></i>
               </div>
               <div class="overflow-hidden">
                 <div class="font-bold text-xs text-slate-800 truncate"><?= e($ro['service_name']) ?></div>

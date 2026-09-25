@@ -106,7 +106,7 @@ $tickets = $stmt->fetchAll();
         <div class="p-4 rounded-2xl border <?= $msgItem['is_admin'] ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-100' ?>">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-xs font-bold <?= $msgItem['is_admin'] ? 'text-rose-600' : 'text-slate-800' ?>">
-              <?= $msgItem['is_admin'] ? 'RoseSMM Support Admin' : e($msgItem['username'] ?: 'Customer') ?>
+              <?= $msgItem['is_admin'] ? (e(get_site_name()) . ' Support Admin') : e($msgItem['username'] ?: 'Customer') ?>
             </span>
             <span class="text-[11px] text-slate-400"><?= date('d M Y, h:i A', strtotime($msgItem['created_at'])) ?></span>
           </div>

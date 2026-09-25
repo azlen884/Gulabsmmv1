@@ -1,4 +1,5 @@
     </main>
+    </div>
 
     <!-- Bottom Trust Bar matching screenshot -->
     <div class="border-t border-[#FCE4E8] bg-white px-4 lg:px-8 py-4">

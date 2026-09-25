@@ -1,36 +1,80 @@
 <?php
-$pageTitle = 'Website Theme - Admin Console';
-$adminPage = 'theme';
-require_once __DIR__ . '/../layouts/admin_header.php';
+require_once __DIR__ . '/../../config/database.php';
 
 // Server-side Admin authentication check
 if (!is_admin()) {
+    if (isset($_POST['ajax_toggle_decor'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+        exit;
+    }
     header("Location: /admin/login");
     exit;
 }
+
+// Handle AJAX decoration toggle request
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['ajax_toggle_decor'])) {
+    header('Content-Type: application/json');
+    $effect = trim($_POST['effect'] ?? '');
+    $val = trim($_POST['value'] ?? '');
+    $allowed = ['decor_aurora_glow', 'decor_light_streaks', 'decor_corner_glow'];
+    if (in_array($effect, $allowed, true)) {
+        $enabled = ($val === '1' || $val === 'true' || $val === 'on');
+        set_setting($effect, $enabled ? '1' : '0');
+        echo json_encode([
+            'success' => true,
+            'effect' => $effect,
+            'enabled' => $enabled
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Invalid effect key']);
+    }
+    exit;
+}
+
+$pageTitle = 'Website Theme - Admin Console';
+$adminPage = 'theme';
+require_once __DIR__ . '/../layouts/admin_header.php';
 
 $msg = '';
 $error = '';
 $availableThemes = get_available_themes();
 
-// Process Theme Update
+// Process Theme or Decoration Update via POST
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
-    $selectedTheme = trim($_POST['active_theme'] ?? '');
+    // Check if decoration effects were submitted
+    if (isset($_POST['update_decorations'])) {
+        $aurora = isset($_POST['decor_aurora_glow']) ? '1' : '0';
+        $streaks = isset($_POST['decor_light_streaks']) ? '1' : '0';
+        $corners = isset($_POST['decor_corner_glow']) ? '1' : '0';
+        set_setting('decor_aurora_glow', $aurora);
+        set_setting('decor_light_streaks', $streaks);
+        set_setting('decor_corner_glow', $corners);
+        $msg = "Decoration effects updated successfully in database.";
+    }
 
-    // Server-side strict validation against allowed themes
-    if (array_key_exists($selectedTheme, $availableThemes)) {
-        if (set_active_theme($selectedTheme)) {
-            $themeName = $availableThemes[$selectedTheme]['name'];
-            $msg = "Theme successfully switched to '{$themeName}'. The selected theme is now active site-wide.";
+    // Check if active theme was submitted
+    if (isset($_POST['active_theme'])) {
+        $selectedTheme = trim($_POST['active_theme'] ?? '');
+
+        // Server-side strict validation against allowed themes
+        if (array_key_exists($selectedTheme, $availableThemes)) {
+            if (set_active_theme($selectedTheme)) {
+                $themeName = $availableThemes[$selectedTheme]['name'];
+                $msg = "Theme successfully switched to '{$themeName}'. The selected theme is now active site-wide.";
+            } else {
+                $error = "Failed to update theme in database.";
+            }
         } else {
-            $error = "Failed to update theme in database.";
+            $error = "Invalid theme selection. Please select an authorized theme.";
         }
-    } else {
-        $error = "Invalid theme selection. Please select an authorized theme.";
     }
 }
 
 $activeTheme = get_active_theme();
+$auroraGlowOn = is_aurora_glow_enabled();
+$lightStreaksOn = is_light_streaks_enabled();
+$cornerGlowOn = is_corner_glow_enabled();
 ?>
 
 <div class="max-w-5xl space-y-6">
@@ -102,6 +146,112 @@ $activeTheme = get_active_theme();
           </button>
           <span class="text-xs text-slate-400">Current active: <strong class="text-slate-700"><?= e($availableThemes[$activeTheme]['name']) ?></strong></span>
         </div>
+      </div>
+    </div>
+
+    <!-- Decoration Effects Independent Controls -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+        <div>
+          <h2 class="text-base font-black text-slate-800 tracking-tight flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
+            Decoration Effects
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            Independently toggle the three visual decoration layers across all four themes. Settings are stored in MySQL and take effect immediately.
+          </p>
+        </div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-bold text-slate-600">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>MySQL Synchronized</span>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <!-- 1. Aurora Glow -->
+        <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors flex items-center justify-between gap-4">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-slate-900">Aurora Glow</span>
+              <span class="text-[10px] uppercase font-bold text-purple-700 bg-purple-100/70 px-2 py-0.5 rounded-md">Ambient Flow</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              Very soft, large-scale blurred ambient glow behind content. Adapts smoothly to the active theme palette.
+            </p>
+          </div>
+          <div class="shrink-0 flex items-center gap-3">
+            <button 
+              type="button" 
+              id="btn-decor-aurora" 
+              onclick="toggleDecoration('decor_aurora_glow')"
+              class="inline-flex items-center justify-center min-w-[76px] px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition-all cursor-pointer shadow-sm <?= $auroraGlowOn ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-slate-200 text-slate-600 hover:bg-slate-300' ?>"
+            >
+              [ <?= $auroraGlowOn ? 'ON' : 'OFF' ?> ]
+            </button>
+            <input type="hidden" name="decor_aurora_glow" id="input-decor-aurora" value="<?= $auroraGlowOn ? '1' : '0' ?>">
+          </div>
+        </div>
+
+        <!-- 2. Light Streaks -->
+        <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors flex items-center justify-between gap-4">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-slate-900">Light Streaks</span>
+              <span class="text-[10px] uppercase font-bold text-sky-700 bg-sky-100/70 px-2 py-0.5 rounded-md">Digital Shimmer</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              Fine illuminated trails with smooth light flow that complement the multi-line flowing wave ribbons.
+            </p>
+          </div>
+          <div class="shrink-0 flex items-center gap-3">
+            <button 
+              type="button" 
+              id="btn-decor-streaks" 
+              onclick="toggleDecoration('decor_light_streaks')"
+              class="inline-flex items-center justify-center min-w-[76px] px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition-all cursor-pointer shadow-sm <?= $lightStreaksOn ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-slate-200 text-slate-600 hover:bg-slate-300' ?>"
+            >
+              [ <?= $lightStreaksOn ? 'ON' : 'OFF' ?> ]
+            </button>
+            <input type="hidden" name="decor_light_streaks" id="input-decor-streaks" value="<?= $lightStreaksOn ? '1' : '0' ?>">
+          </div>
+        </div>
+
+        <!-- 3. Corner Glow -->
+        <div class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors flex items-center justify-between gap-4">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-slate-900">Corner Glow</span>
+              <span class="text-[10px] uppercase font-bold text-amber-700 bg-amber-100/70 px-2 py-0.5 rounded-md">Canvas Depth</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              Subtle radial gradient illumination at viewport corners grounding the layout without obscuring text.
+            </p>
+          </div>
+          <div class="shrink-0 flex items-center gap-3">
+            <button 
+              type="button" 
+              id="btn-decor-corners" 
+              onclick="toggleDecoration('decor_corner_glow')"
+              class="inline-flex items-center justify-center min-w-[76px] px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition-all cursor-pointer shadow-sm <?= $cornerGlowOn ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-slate-200 text-slate-600 hover:bg-slate-300' ?>"
+            >
+              [ <?= $cornerGlowOn ? 'ON' : 'OFF' ?> ]
+            </button>
+            <input type="hidden" name="decor_corner_glow" id="input-decor-corners" value="<?= $cornerGlowOn ? '1' : '0' ?>">
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <button 
+          type="submit" 
+          name="update_decorations" 
+          value="1" 
+          class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 cursor-pointer shadow-sm"
+        >
+          <i data-lucide="check" class="w-4 h-4"></i>
+          Save Decoration Settings
+        </button>
+        <span id="decor-status-text" class="text-xs font-semibold text-slate-500">Toggles save immediately via MySQL.</span>
       </div>
     </div>
 
@@ -326,6 +476,69 @@ function selectTheme(themeKey) {
     select.value = themeKey;
     select.form.submit();
   }
+}
+
+function toggleDecoration(key) {
+  let inputId = '';
+  let btnId = '';
+  if (key === 'decor_aurora_glow') {
+    inputId = 'input-decor-aurora';
+    btnId = 'btn-decor-aurora';
+  } else if (key === 'decor_light_streaks') {
+    inputId = 'input-decor-streaks';
+    btnId = 'btn-decor-streaks';
+  } else if (key === 'decor_corner_glow') {
+    inputId = 'input-decor-corners';
+    btnId = 'btn-decor-corners';
+  }
+
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  const statusText = document.getElementById('decor-status-text');
+
+  if (!input || !btn) return;
+
+  const currentVal = input.value === '1';
+  const newVal = !currentVal;
+  input.value = newVal ? '1' : '0';
+
+  // Instant UI update
+  btn.textContent = '[ ' + (newVal ? 'ON' : 'OFF') + ' ]';
+  if (newVal) {
+    btn.className = 'inline-flex items-center justify-center min-w-[76px] px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition-all cursor-pointer shadow-sm bg-emerald-600 text-white hover:bg-emerald-700';
+  } else {
+    btn.className = 'inline-flex items-center justify-center min-w-[76px] px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition-all cursor-pointer shadow-sm bg-slate-200 text-slate-600 hover:bg-slate-300';
+  }
+
+  if (statusText) statusText.textContent = 'Saving to database...';
+
+  const fd = new FormData();
+  fd.append('ajax_toggle_decor', '1');
+  fd.append('effect', key);
+  fd.append('value', newVal ? '1' : '0');
+
+  fetch('/admin/theme', {
+    method: 'POST',
+    body: fd
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (statusText) {
+      if (data.success) {
+        statusText.textContent = 'Saved directly to MySQL.';
+        setTimeout(() => { 
+          if (statusText.textContent === 'Saved directly to MySQL.') {
+            statusText.textContent = 'Toggles save immediately via MySQL.';
+          }
+        }, 2500);
+      } else {
+        statusText.textContent = 'Save failed: ' + (data.error || 'Server error');
+      }
+    }
+  })
+  .catch(err => {
+    if (statusText) statusText.textContent = 'Network error saving setting';
+  });
 }
 </script>
 

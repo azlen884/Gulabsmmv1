@@ -1,6 +1,7 @@
 <?php
 // Ensure database and session are loaded
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/WaveDecorationHelper.php';
 
 // Auth check
 if (!is_logged_in()) {
@@ -503,4 +504,6 @@ $unreadCount = (int)$notifStmt->fetchColumn();
     </header>
 
     <!-- Main Page Content Section -->
-    <main class="flex-1 p-4 lg:p-8">
+    <div class="relative flex-1 flex flex-col">
+      <?= WaveDecorationHelper::renderGlobalDecorations() ?>
+      <main class="flex-1 p-4 lg:p-8 relative z-10">

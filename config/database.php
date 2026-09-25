@@ -464,3 +464,44 @@ function get_theme_body_class() {
     return 'theme-default';
 }
 
+/**
+ * =========================================================================
+ * DECORATION EFFECTS SYSTEM
+ * 1. Aurora Glow
+ * 2. Light Streaks
+ * 3. Corner Glow
+ * Each effect is independently controllable by Administrator and stored in MySQL settings.
+ * =========================================================================
+ */
+
+function is_aurora_glow_enabled(): bool {
+    return get_setting('decor_aurora_glow', '1') === '1';
+}
+
+function is_light_streaks_enabled(): bool {
+    return get_setting('decor_light_streaks', '1') === '1';
+}
+
+function is_corner_glow_enabled(): bool {
+    return get_setting('decor_corner_glow', '1') === '1';
+}
+
+function get_decor_settings(): array {
+    return [
+        'aurora_glow'   => is_aurora_glow_enabled(),
+        'light_streaks' => is_light_streaks_enabled(),
+        'corner_glow'   => is_corner_glow_enabled(),
+    ];
+}
+
+function set_decor_setting(string $key, bool $enabled): bool {
+    if (!is_admin()) {
+        return false;
+    }
+    $allowed = ['decor_aurora_glow', 'decor_light_streaks', 'decor_corner_glow'];
+    if (!in_array($key, $allowed, true)) {
+        return false;
+    }
+    return set_setting($key, $enabled ? '1' : '0');
+}
+

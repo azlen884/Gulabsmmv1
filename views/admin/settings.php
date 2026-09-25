@@ -57,6 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $settings['notice_popup_title'] = $noticeTitle;
     $settings['notice_popup_message'] = $noticeMessage;
 
+    if (isset($_POST['decor_submitted'])) {
+        $settings['decor_aurora_glow'] = isset($_POST['decor_aurora_glow']) ? '1' : '0';
+        $settings['decor_light_streaks'] = isset($_POST['decor_light_streaks']) ? '1' : '0';
+        $settings['decor_corner_glow'] = isset($_POST['decor_corner_glow']) ? '1' : '0';
+    }
+
     foreach ($settings as $key => $val) {
         $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = ?");
         $stmt->execute([$key, $val, $val]);
@@ -307,6 +313,60 @@ $availableThemes = get_available_themes();
               class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-amber-500 text-slate-800"
             ><?= e($noticePopupMessage) ?></textarea>
             <p class="text-[10px] text-slate-400 mt-1">This message will be displayed in the compact professional notice popup to logged-in users.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Decoration Effects -->
+      <div class="pt-5 border-t border-slate-100">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0">
+              <i data-lucide="sparkles" class="w-4.5 h-4.5"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-slate-800">Visual Decoration Effects</h3>
+              <p class="text-[11px] text-slate-400">Control Aurora Glow, Light Streaks, and Corner Glow across all four themes.</p>
+            </div>
+          </div>
+          <a href="/admin/theme" class="text-xs font-bold text-purple-600 hover:text-purple-700 inline-flex items-center gap-1">
+            Theme Settings <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+        <input type="hidden" name="decor_submitted" value="1">
+        <div class="space-y-3 bg-slate-50/70 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Aurora Glow</div>
+              <div class="text-[11px] text-slate-400">Soft, large-scale ambient blurred glow behind content.</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input type="checkbox" name="decor_aurora_glow" value="1" <?= is_aurora_glow_enabled() ? 'checked' : '' ?> class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between gap-4 pt-2 border-t border-slate-200/50">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Light Streaks</div>
+              <div class="text-[11px] text-slate-400">Thin illuminated digital trails along wave ribbons.</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input type="checkbox" name="decor_light_streaks" value="1" <?= is_light_streaks_enabled() ? 'checked' : '' ?> class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-sky-600"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between gap-4 pt-2 border-t border-slate-200/50">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Corner Glow</div>
+              <div class="text-[11px] text-slate-400">Subtle radial corner ambient glows grounding layout.</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input type="checkbox" name="decor_corner_glow" value="1" <?= is_corner_glow_enabled() ? 'checked' : '' ?> class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+            </label>
           </div>
         </div>
       </div>

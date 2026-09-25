@@ -120,8 +120,14 @@ SVG;
             $secondaryLines .= "    <path d=\"M -40 {$sy0} C {$scp1x} {$scp1y}, {$scp2x} {$scp2y}, {$smx} {$smy} C {$scp3x} {$scp3y}, 1400 {$sy1}, {$sx1} {$sy1}\" stroke=\"url(#hero-grad-diag)\" stroke-width=\"0.8\" opacity=\"{$uOpacity}\" stroke-dasharray=\"" . ($j % 4 === 1 ? '4 6' : 'none') . "\" vector-effect=\"non-scaling-stroke\" />\n";
         }
 
+        $aurora = self::renderAuroraGlow();
+        $streaks = self::renderLightStreaks('hero-streak');
+        $corners = self::renderCornerGlow();
+
         return <<<HTML
         <div class="theme-decor-layer" aria-hidden="true">
+          {$corners}
+          {$aurora}
           <!-- Soft Ambient Radial Glows -->
           <div class="theme-ambient-glow w-[480px] h-[480px] -top-24 -left-20" style="background: radial-gradient(circle, var(--wave-glow-1) 0%, transparent 70%);"></div>
           <div class="theme-ambient-glow w-[520px] h-[520px] top-1/3 -right-24" style="background: radial-gradient(circle, var(--wave-glow-2) 0%, transparent 70%);"></div>
@@ -145,6 +151,7 @@ SVG;
             {$secondaryLines}
             </g>
           </svg>
+          {$streaks}
         </div>
 HTML;
     }
@@ -361,5 +368,98 @@ HTML;
           </svg>
         </div>
 HTML;
+    }
+
+    /**
+     * =========================================================================
+     * 7. AURORA GLOW EFFECT
+     * Very soft, large-scale blurred ambient glow behind content.
+     * Controlled by Admin toggle 'decor_aurora_glow'.
+     * =========================================================================
+     */
+    public static function renderAuroraGlow(string $containerClass = ''): string {
+        if (!is_aurora_glow_enabled()) {
+            return '';
+        }
+        return <<<HTML
+        <div class="theme-aurora-glow-container {$containerClass}" aria-hidden="true">
+          <div class="aurora-orb aurora-orb-1"></div>
+          <div class="aurora-orb aurora-orb-2"></div>
+          <div class="aurora-orb aurora-orb-3"></div>
+        </div>
+HTML;
+    }
+
+    /**
+     * =========================================================================
+     * 8. LIGHT STREAKS EFFECT
+     * Elegant thin flowing light streaks complementing the multi-line waves.
+     * Controlled by Admin toggle 'decor_light_streaks'.
+     * =========================================================================
+     */
+    public static function renderLightStreaks(string $prefix = 'streak'): string {
+        if (!is_light_streaks_enabled()) {
+            return '';
+        }
+        return <<<HTML
+        <div class="theme-light-streaks-container" aria-hidden="true">
+          <svg class="theme-light-streaks-svg" viewBox="0 0 1440 650" fill="none" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="{$prefix}-trail-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--streak-c1)" stop-opacity="0" />
+                <stop offset="20%" stop-color="var(--streak-c1)" stop-opacity="0.85" />
+                <stop offset="50%" stop-color="var(--streak-c2)" stop-opacity="0.95" />
+                <stop offset="80%" stop-color="var(--streak-c1)" stop-opacity="0.75" />
+                <stop offset="100%" stop-color="var(--streak-c2)" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="{$prefix}-trail-2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="var(--streak-c2)" stop-opacity="0" />
+                <stop offset="25%" stop-color="var(--streak-c1)" stop-opacity="0.90" />
+                <stop offset="70%" stop-color="var(--streak-c2)" stop-opacity="0.80" />
+                <stop offset="100%" stop-color="var(--streak-c1)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <!-- Illuminated Trails weaving smoothly alongside the multi-line ribbon -->
+            <path class="light-streak-trail" d="M -40,160 C 260,40 540,320 880,180 C 1160,70 1340,240 1520,150" stroke="url(#{$prefix}-trail-1)" stroke-width="1.2" stroke-dasharray="220 90" />
+            <path class="light-streak-trail light-streak-trail-2" d="M -20,290 C 320,150 640,400 990,250 C 1240,140 1390,320 1510,240" stroke="url(#{$prefix}-trail-2)" stroke-width="1.0" stroke-dasharray="160 120" />
+            <path class="light-streak-trail light-streak-trail-3" d="M -30,90 C 380,210 720,80 1060,280 C 1270,390 1400,170 1530,200" stroke="url(#{$prefix}-trail-1)" stroke-width="0.85" stroke-dasharray="140 140" />
+          </svg>
+        </div>
+HTML;
+    }
+
+    /**
+     * =========================================================================
+     * 9. CORNER GLOW EFFECT
+     * Subtle, elegant glow emanating from page corners grounding the layout.
+     * Controlled by Admin toggle 'decor_corner_glow'.
+     * =========================================================================
+     */
+    public static function renderCornerGlow(): string {
+        if (!is_corner_glow_enabled()) {
+            return '';
+        }
+        return <<<HTML
+        <div class="theme-corner-glow-container" aria-hidden="true">
+          <div class="corner-glow-tl"></div>
+          <div class="corner-glow-tr"></div>
+          <div class="corner-glow-br"></div>
+        </div>
+HTML;
+    }
+
+    /**
+     * =========================================================================
+     * 10. GLOBAL DECORATION WRAPPER
+     * Renders all active background ambience effects in proper z-index order.
+     * Each effect renders ONLY if its respective admin toggle is active.
+     * =========================================================================
+     */
+    public static function renderGlobalDecorations(): string {
+        $out = '';
+        $out .= self::renderCornerGlow();
+        $out .= self::renderAuroraGlow();
+        $out .= self::renderLightStreaks('global-streak');
+        return $out;
     }
 }

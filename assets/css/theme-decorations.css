@@ -62,6 +62,19 @@
   --decor-section-heading: #0F172A;
   --decor-section-sub: #64748B;
   --decor-metric-val: #FF3B69;
+
+  /* 3 New Premium Effects: Default Tokens */
+  --aurora-c1: rgba(255, 59, 105, 0.10);
+  --aurora-c2: rgba(225, 29, 72, 0.07);
+  --aurora-c3: rgba(254, 205, 211, 0.14);
+  --aurora-c4: rgba(251, 113, 133, 0.08);
+
+  --streak-c1: #FF3B69;
+  --streak-c2: #FDA4AF;
+  --streak-glow: rgba(255, 59, 105, 0.35);
+
+  --corner-glow-1: rgba(255, 59, 105, 0.07);
+  --corner-glow-2: rgba(254, 205, 211, 0.05);
 }
 
 /* -------------------------------------------------------------------------
@@ -107,6 +120,21 @@ body.theme-premium-red {
   --decor-section-heading: #1E293B;
   --decor-section-sub: #64748B;
   --decor-metric-val: #DC2626;
+
+  /* 1. Aurora Glow: Soft red, Rose, Light pink */
+  --aurora-c1: rgba(220, 38, 38, 0.09);
+  --aurora-c2: rgba(244, 63, 94, 0.07);
+  --aurora-c3: rgba(254, 205, 211, 0.12);
+  --aurora-c4: rgba(254, 226, 226, 0.15);
+
+  /* 2. Light Streaks: Red / rose light streaks */
+  --streak-c1: #DC2626;
+  --streak-c2: #F43F5E;
+  --streak-glow: rgba(220, 38, 38, 0.35);
+
+  /* 3. Corner Glow: Soft red / rose */
+  --corner-glow-1: rgba(220, 38, 38, 0.07);
+  --corner-glow-2: rgba(254, 205, 211, 0.05);
 }
 
 /* -------------------------------------------------------------------------
@@ -152,6 +180,21 @@ body.theme-premium-green {
   --decor-section-heading: #064E3B;
   --decor-section-sub: #64748B;
   --decor-metric-val: #059669;
+
+  /* 1. Aurora Glow: Emerald, Soft green, Mint */
+  --aurora-c1: rgba(5, 150, 105, 0.09);
+  --aurora-c2: rgba(16, 185, 129, 0.07);
+  --aurora-c3: rgba(167, 243, 208, 0.14);
+  --aurora-c4: rgba(209, 250, 229, 0.16);
+
+  /* 2. Light Streaks: Emerald / green light streaks */
+  --streak-c1: #059669;
+  --streak-c2: #34D399;
+  --streak-glow: rgba(5, 150, 105, 0.35);
+
+  /* 3. Corner Glow: Emerald / mint */
+  --corner-glow-1: rgba(5, 150, 105, 0.07);
+  --corner-glow-2: rgba(167, 243, 208, 0.05);
 }
 
 /* -------------------------------------------------------------------------
@@ -197,6 +240,21 @@ body.theme-midnight-blue {
   --decor-section-heading: #F8FAFC;
   --decor-section-sub: #94A3B8;
   --decor-metric-val: #3B82F6;
+
+  /* 1. Aurora Glow: Electric blue, Cyan-blue, Deep blue */
+  --aurora-c1: rgba(37, 99, 235, 0.18);
+  --aurora-c2: rgba(0, 216, 246, 0.12);
+  --aurora-c3: rgba(30, 64, 175, 0.16);
+  --aurora-c4: rgba(56, 189, 248, 0.10);
+
+  /* 2. Light Streaks: Electric blue / cyan light streaks */
+  --streak-c1: #2563EB;
+  --streak-c2: #00D8F6;
+  --streak-glow: rgba(0, 216, 246, 0.45);
+
+  /* 3. Corner Glow: Electric blue / deep blue */
+  --corner-glow-1: rgba(37, 99, 235, 0.14);
+  --corner-glow-2: rgba(0, 216, 246, 0.08);
 }
 
 /* -------------------------------------------------------------------------
@@ -242,6 +300,21 @@ body.theme-holographic-aura {
   --decor-section-heading: #0F172A;
   --decor-section-sub: #475569;
   --decor-metric-val: #6366F1;
+
+  /* 1. Aurora Glow: Cyan, Aqua, Lavender, Violet */
+  --aurora-c1: rgba(6, 182, 212, 0.12);
+  --aurora-c2: rgba(45, 212, 191, 0.10);
+  --aurora-c3: rgba(192, 132, 252, 0.12);
+  --aurora-c4: rgba(129, 140, 248, 0.10);
+
+  /* 2. Light Streaks: Cyan / aqua / lavender / violet light streaks */
+  --streak-c1: #06B6D4;
+  --streak-c2: #C084FC;
+  --streak-glow: rgba(192, 132, 252, 0.40);
+
+  /* 3. Corner Glow: Cyan / lavender */
+  --corner-glow-1: rgba(6, 182, 212, 0.08);
+  --corner-glow-2: rgba(192, 132, 252, 0.08);
 }
 
 /* -------------------------------------------------------------------------
@@ -401,14 +474,192 @@ body.theme-holographic-aura {
   border-radius: 1.75rem !important;
 }
 
+/* =========================================================================
+ * 1. AURORA GLOW EFFECT
+ * Large-scale, ultra-soft ambient blurred glow behind content
+ * Blends smoothly, never causes fog, subtle smooth movement
+ * ========================================================================= */
+.theme-aurora-glow-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.aurora-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(85px);
+  will-change: transform;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.aurora-orb-1 {
+  width: 550px;
+  height: 420px;
+  top: -80px;
+  right: 8%;
+  background: radial-gradient(circle, var(--aurora-c1) 0%, var(--aurora-c3) 45%, transparent 70%);
+  animation: aurora-drift-1 26s ease-in-out infinite alternate;
+}
+
+.aurora-orb-2 {
+  width: 480px;
+  height: 380px;
+  top: 35%;
+  left: -80px;
+  background: radial-gradient(circle, var(--aurora-c2) 0%, var(--aurora-c4, var(--aurora-c1)) 45%, transparent 70%);
+  animation: aurora-drift-2 32s ease-in-out infinite alternate;
+}
+
+.aurora-orb-3 {
+  width: 520px;
+  height: 400px;
+  bottom: 8%;
+  right: 15%;
+  background: radial-gradient(circle, var(--aurora-c3) 0%, var(--aurora-c1) 50%, transparent 70%);
+  animation: aurora-drift-3 28s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.05); }
+  100% { transform: translate(20px, -15px) scale(0.96); }
+}
+
+@keyframes aurora-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(35px, -25px) scale(1.06); }
+  100% { transform: translate(-20px, 15px) scale(0.95); }
+}
+
+@keyframes aurora-drift-3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-25px, -30px) scale(1.04); }
+  100% { transform: translate(20px, 20px) scale(0.98); }
+}
+
+/* =========================================================================
+ * 2. LIGHT STREAKS EFFECT
+ * Fine illuminated trails, smooth flowing lines, subtle digital light movement
+ * Complements the multi-line wave decoration
+ * ========================================================================= */
+.theme-light-streaks-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+.theme-light-streaks-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.light-streak-trail {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px var(--streak-glow));
+  animation: streak-shimmer 8s ease-in-out infinite alternate;
+}
+
+.light-streak-trail-2 {
+  animation: streak-shimmer 10s ease-in-out infinite alternate-reverse;
+}
+
+.light-streak-trail-3 {
+  animation: streak-shimmer 12s ease-in-out infinite alternate;
+}
+
+@keyframes streak-shimmer {
+  0% { opacity: 0.35; stroke-width: 0.85px; }
+  50% { opacity: 0.80; stroke-width: 1.35px; }
+  100% { opacity: 0.45; stroke-width: 0.95px; }
+}
+
+/* =========================================================================
+ * 3. CORNER GLOW EFFECT
+ * Soft radial glow at page corners grounding the layout
+ * ========================================================================= */
+.theme-corner-glow-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+
+.corner-glow-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(ellipse at top left, var(--corner-glow-1) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.corner-glow-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(ellipse at top right, var(--corner-glow-2) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.corner-glow-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(ellipse at bottom right, var(--corner-glow-1) 0%, transparent 68%);
+  pointer-events: none;
+}
+
 /* -------------------------------------------------------------------------
  * RESPONSIVE BEHAVIOR (Mobile & Tablet Refinement)
  * ------------------------------------------------------------------------- */
 @media (max-width: 640px) {
-  /* Simplify waves on mobile: lower opacity and soften blur */
+  /* Simplify waves and glows on mobile */
   .theme-ambient-glow {
     filter: blur(40px) !important;
     opacity: 0.45 !important;
+  }
+  .aurora-orb {
+    filter: blur(50px) !important;
+    opacity: 0.50 !important;
+    animation: none !important; /* Save mobile GPU/battery */
+  }
+  .aurora-orb-1 {
+    width: 320px;
+    height: 260px;
+  }
+  .aurora-orb-2 {
+    display: none !important;
+  }
+  .corner-glow-tl,
+  .corner-glow-tr,
+  .corner-glow-br {
+    width: 220px;
+    height: 220px;
+  }
+  .light-streak-trail {
+    animation: none !important;
+    opacity: 0.55 !important;
   }
   .wave-bundle-secondary {
     opacity: 0.4 !important;

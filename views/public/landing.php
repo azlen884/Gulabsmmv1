@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/WaveDecorationHelper.php';
 
 // If authenticated user visits /, redirect to /dashboard (Prompt Rule 14)
 if (is_logged_in()) {
@@ -210,41 +211,10 @@ try {
   </header>
 
   <main class="relative z-10 flex-1">
-    <!-- 1. HERO SECTION -->
+    <!-- 1. HERO SECTION (Featuring Flowing Multi-Line Wave Ribbon) -->
     <section class="relative max-w-7xl mx-auto px-4 lg:px-12 py-12 lg:py-20 overflow-hidden">
-      <!-- Decorative System Layer for Hero -->
-      <div class="theme-decor-layer">
-        <!-- Soft Ambient Glows -->
-        <div class="theme-ambient-glow w-80 sm:w-96 h-80 sm:h-96 -top-20 -left-16" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
-        <div class="theme-ambient-glow w-80 sm:w-96 h-80 sm:h-96 top-1/2 -right-20" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
-
-        <!-- Thin Geometric Line & Circle Accents -->
-        <div class="theme-decor-circle w-72 h-72 -top-10 right-1/4 hidden md:block opacity-35"></div>
-        <div class="theme-decor-circle w-40 h-40 bottom-10 left-10 hidden lg:block opacity-30"></div>
-        <div class="theme-decor-line w-28 h-[1px] top-32 left-8 hidden lg:block opacity-30"></div>
-        <div class="theme-decor-line w-20 h-[1px] bottom-24 right-1/3 hidden lg:block opacity-25"></div>
-
-        <!-- Thin Elegant Asymmetrical Ribbon Waves -->
-        <svg class="theme-wave-ribbon top-0 left-0 h-full w-full opacity-65" viewBox="0 0 1440 600" fill="none" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="heroRibbonGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="var(--decor-stroke-1)" stop-opacity="0.35" />
-              <stop offset="50%" stop-color="var(--decor-stroke-2)" stop-opacity="0.2" />
-              <stop offset="100%" stop-color="var(--decor-stroke-1)" stop-opacity="0.05" />
-            </linearGradient>
-            <linearGradient id="heroRibbonGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="var(--decor-stroke-2)" stop-opacity="0.25" />
-              <stop offset="100%" stop-color="var(--decor-stroke-1)" stop-opacity="0.08" />
-            </linearGradient>
-          </defs>
-          <!-- Primary Ribbon Path -->
-          <path d="M-60 180 C 260 80, 520 280, 880 160 C 1140 80, 1360 220, 1500 140" stroke="url(#heroRibbonGrad1)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
-          <!-- Secondary Flow Ribbon -->
-          <path d="M-40 240 C 300 150, 600 340, 960 220 C 1220 140, 1400 280, 1520 200" stroke="url(#heroRibbonGrad2)" stroke-width="0.8" stroke-dasharray="4 6" vector-effect="non-scaling-stroke" />
-          <!-- Gentle Background Swell -->
-          <path d="M-80 320 C 320 220, 700 420, 1100 280 C 1320 200, 1440 310, 1540 260" stroke="var(--decor-stroke-1)" stroke-width="0.6" stroke-opacity="0.3" vector-effect="non-scaling-stroke" />
-        </svg>
-      </div>
+      <!-- High-Fidelity Multi-Line Wave System Layer for Hero -->
+      <?= WaveDecorationHelper::renderHeroWave() ?>
 
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
@@ -366,20 +336,13 @@ try {
       </div>
     </section>
 
-    <!-- SECTION TRANSITION 1: Thin Asymmetrical Flow Wave between Hero & Services -->
-    <div class="section-wave-divider">
-      <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
-        <path d="M0 45 C 320 80, 680 10, 1020 55 C 1220 78, 1380 40, 1440 50" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
-        <path d="M0 65 C 280 25, 740 70, 1140 30 C 1300 15, 1400 45, 1440 35" stroke="var(--decor-stroke-2)" stroke-width="0.7" stroke-dasharray="3 5" vector-effect="non-scaling-stroke" />
-      </svg>
-    </div>
+    <!-- SECTION TRANSITION 1: Flowing Multi-Line Wave Ribbon (Hero to Services) -->
+    <?= WaveDecorationHelper::renderDividerHeroToServices() ?>
 
     <!-- 2. SERVICES OVERVIEW SECTION -->
-    <section id="services" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16">
-      <div class="theme-decor-layer">
-        <div class="theme-ambient-glow w-96 h-96 top-10 right-10" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
-        <div class="theme-decor-circle w-56 h-56 -top-10 left-5 hidden lg:block opacity-25"></div>
-      </div>
+    <section id="services" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16 overflow-hidden">
+      <!-- Right-to-Left Multi-Line Wave Ribbon behind Services -->
+      <?= WaveDecorationHelper::renderServicesWave() ?>
 
       <div class="relative z-10 text-center max-w-xl mx-auto mb-12">
         <h2 class="landing-services-heading text-3xl font-extrabold tracking-tight mb-2">Popular SMM Services</h2>
@@ -409,17 +372,13 @@ try {
       </div>
     </section>
 
-    <!-- SECTION TRANSITION 2: Flow line connecting to Features -->
-    <div class="section-wave-divider">
-      <svg viewBox="0 0 1440 70" fill="none" preserveAspectRatio="none">
-        <path d="M0 25 C 380 60, 720 15, 1080 50 C 1260 65, 1380 30, 1440 40" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
-      </svg>
-    </div>
+    <!-- SECTION TRANSITION 2: Flowing Multi-Line Wave (Services to Features) -->
+    <?= WaveDecorationHelper::renderDividerServicesToFeatures() ?>
 
     <!-- 3. FEATURES SECTION -->
-    <section id="features" class="relative bg-white/70 backdrop-blur-sm border-y border-[var(--decor-card-border)] py-16">
+    <section id="features" class="relative bg-white/70 backdrop-blur-sm border-y border-[var(--decor-card-border)] py-16 overflow-hidden">
       <div class="theme-decor-layer">
-        <div class="theme-ambient-glow w-96 h-96 bottom-0 left-1/3" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
+        <div class="theme-ambient-glow w-96 h-96 bottom-0 left-1/3" style="background: radial-gradient(circle, var(--wave-glow-2) 0%, transparent 70%);"></div>
         <div class="theme-decor-line w-40 h-[1px] top-12 right-20 hidden md:block opacity-30"></div>
         <div class="theme-decor-circle w-32 h-32 bottom-8 left-12 hidden lg:block opacity-25"></div>
       </div>
@@ -461,25 +420,10 @@ try {
       </div>
     </section>
 
-    <!-- SECTION TRANSITION 3: Wave Curve between Features & Testimonials -->
-    <div class="section-wave-divider">
-      <svg viewBox="0 0 1440 75" fill="none" preserveAspectRatio="none">
-        <path d="M0 50 C 260 15, 620 65, 980 25 C 1180 5, 1340 45, 1440 35" stroke="var(--decor-divider-stroke)" stroke-width="1.2" vector-effect="non-scaling-stroke" />
-        <path d="M0 30 C 340 60, 780 20, 1120 55 C 1280 65, 1380 40, 1440 48" stroke="var(--decor-stroke-2)" stroke-width="0.8" stroke-dasharray="4 6" vector-effect="non-scaling-stroke" />
-      </svg>
-    </div>
-
-    <!-- 4. TESTIMONIALS SECTION (Rule 7: Strict authenticity - no fake users or reviews) -->
-    <section id="testimonials" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16">
-      <div class="theme-decor-layer">
-        <!-- Soft Ambient Glow behind Testimonials -->
-        <div class="theme-ambient-glow w-96 h-96 -top-10 left-1/4" style="background: radial-gradient(circle, var(--decor-glow-1) 0%, transparent 70%);"></div>
-        <div class="theme-ambient-glow w-80 h-80 bottom-0 right-10" style="background: radial-gradient(circle, var(--decor-glow-2) 0%, transparent 70%);"></div>
-
-        <!-- Translucent Decorative Circles -->
-        <div class="theme-decor-circle w-48 h-48 top-12 right-20 hidden md:block opacity-30"></div>
-        <div class="theme-decor-circle w-64 h-64 -bottom-10 left-10 hidden lg:block opacity-25"></div>
-      </div>
+    <!-- 4. TESTIMONIALS SECTION (With Multi-Line Wave Ribbon & Rule 7: Zero Fake Data) -->
+    <section id="testimonials" class="relative max-w-7xl mx-auto px-4 lg:px-12 py-16 overflow-hidden">
+      <!-- Flowing Multi-Line Wave Ribbon behind Testimonials -->
+      <?= WaveDecorationHelper::renderTestimonialsWave() ?>
 
       <div class="relative z-10 text-center max-w-2xl mx-auto mb-12">
         <div class="landing-hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold mb-3 shadow-sm">
@@ -554,12 +498,8 @@ try {
       </div>
     </section>
 
-    <!-- SECTION TRANSITION 4: Thin wave transition into Footer -->
-    <div class="section-wave-divider">
-      <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none">
-        <path d="M0 35 C 320 60, 760 10, 1140 45 C 1300 55, 1400 30, 1440 38" stroke="var(--decor-divider-stroke)" stroke-width="1.1" vector-effect="non-scaling-stroke" />
-      </svg>
-    </div>
+    <!-- SECTION TRANSITION: Flowing Multi-Line Wave Ribbon (Transition to Footer) -->
+    <?= WaveDecorationHelper::renderDividerPreFooter() ?>
   </main>
 
   <!-- Public Footer -->

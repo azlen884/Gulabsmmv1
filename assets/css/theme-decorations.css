@@ -1,8 +1,13 @@
 /**
  * =========================================================================
- * RoseSMM - Unified Theme Decorative System & Visual Layer
+ * RoseSMM - Unified Flowing Multi-Line Wave Decoration System
  * 
- * Reusable, centralized decorative background system across ALL FOUR themes:
+ * Inspired by:
+ * https://png.pngtree.com/png-vector/20220527/ourmid/pngtree-gradient-wave-lines-vector-png-image_4742826.png
+ *
+ * Visual Signature:
+ * Many thin flowing gradient lines forming elegant waves and 3D ribbons
+ * across all four themes:
  * 1. Premium Red + White (theme-premium-red)
  * 2. Premium Green + White (theme-premium-green)
  * 3. Ultra-Premium Midnight + Electric Blue (theme-midnight-blue)
@@ -10,7 +15,8 @@
  * + Existing Theme Fallback (theme-default)
  *
  * SPECIFICATION RULES:
- * - Smooth flowing waves, thin decorative lines, subtle ambient glow
+ * - Multiple thin parallel flowing lines bending and curving naturally
+ * - Gradient color transition across individual lines forming flowing ribbons
  * - Low opacity, pointer-events: none, strictly behind actual content
  * - Responsive: simplified on mobile, never causes horizontal overflow
  * - Zero-pill discipline for informational metadata
@@ -18,16 +24,23 @@
  */
 
 :root {
-  /* Default Fallback Tokens (Classic Rose) */
+  /* Default Fallback Wave Gradient Tokens (Classic Rose) */
+  --wave-c1: #881337;
+  --wave-c2: #BE123C;
+  --wave-c3: #E11D48;
+  --wave-c4: #FF3B69;
+  --wave-c5: #FB7185;
+  --wave-c6: #FDA4AF;
+  --wave-c7: #FFF1F2;
+  --wave-glow-1: rgba(255, 59, 105, 0.08);
+  --wave-glow-2: rgba(254, 205, 211, 0.12);
+
+  /* Fallback Base Tokens */
   --decor-primary: #FF3B69;
   --decor-primary-hover: #E11D48;
   --decor-accent-text: #FF3B69;
   --decor-stroke-1: rgba(255, 59, 105, 0.22);
   --decor-stroke-2: rgba(225, 29, 72, 0.16);
-  --decor-glow-1: rgba(255, 59, 105, 0.08);
-  --decor-glow-2: rgba(254, 205, 211, 0.12);
-  --decor-ribbon-fill-1: rgba(255, 240, 243, 0.55);
-  --decor-ribbon-fill-2: rgba(254, 205, 211, 0.12);
   --decor-circle: rgba(255, 59, 105, 0.06);
   --decor-geom: rgba(244, 63, 94, 0.15);
   --decor-card-glow: 0 8px 24px -4px rgba(255, 59, 105, 0.08);
@@ -53,19 +66,26 @@
 
 /* -------------------------------------------------------------------------
  * 1. THEME: PREMIUM RED + WHITE (theme-premium-red)
- * Elegant Flow: Crimson & Ruby ribbons, subtle curved lines, soft red glow
- * Dominant clean white space, white/light surfaces, gentle card glow
+ * Color Direction: Deep premium red, Classic red, Soft rose, Very light pink
+ * Thin flowing wave-line system, smooth gradients between tones.
+ * Dominant clean white space, white/light surfaces, gentle card glow.
  * ------------------------------------------------------------------------- */
 body.theme-premium-red {
+  --wave-c1: #7F1D1D; /* Deep premium red */
+  --wave-c2: #991B1B; /* Rich crimson */
+  --wave-c3: #B91C1C; /* Classic ruby */
+  --wave-c4: #DC2626; /* Vibrant premium red */
+  --wave-c5: #F43F5E; /* Rose */
+  --wave-c6: #FDA4AF; /* Soft pink */
+  --wave-c7: #FFF1F2; /* Very light pink */
+  --wave-glow-1: rgba(220, 38, 38, 0.08);
+  --wave-glow-2: rgba(244, 63, 94, 0.05);
+
   --decor-primary: #DC2626;
   --decor-primary-hover: #B91C1C;
   --decor-accent-text: #DC2626;
   --decor-stroke-1: rgba(220, 38, 38, 0.22);
   --decor-stroke-2: rgba(185, 28, 28, 0.16);
-  --decor-glow-1: rgba(220, 38, 38, 0.06);
-  --decor-glow-2: rgba(239, 68, 68, 0.04);
-  --decor-ribbon-fill-1: rgba(254, 242, 242, 0.75);
-  --decor-ribbon-fill-2: rgba(254, 226, 226, 0.14);
   --decor-circle: rgba(220, 38, 38, 0.05);
   --decor-geom: rgba(220, 38, 38, 0.14);
   --decor-card-glow: 0 8px 24px -4px rgba(220, 38, 38, 0.07);
@@ -91,19 +111,26 @@ body.theme-premium-red {
 
 /* -------------------------------------------------------------------------
  * 2. THEME: PREMIUM GREEN + WHITE (theme-premium-green)
- * Emerald Flow: Thin emerald waves, smooth curves, minimal circular geometry
- * White/light surfaces, subtle emerald edge glow, premium shadows
+ * Color Direction: Deep emerald, Premium green, Soft mint, Very light green
+ * Smooth green gradients across individual lines forming elegant ribbons.
+ * Dominant clean white background, no nature/leaf illustrations.
  * ------------------------------------------------------------------------- */
 body.theme-premium-green {
+  --wave-c1: #064E3B; /* Deep emerald */
+  --wave-c2: #065F46; /* Rich forest emerald */
+  --wave-c3: #047857; /* Jade green */
+  --wave-c4: #059669; /* Premium green */
+  --wave-c5: #10B981; /* Bright mint jade */
+  --wave-c6: #6EE7B7; /* Soft mint */
+  --wave-c7: #ECFDF5; /* Very light green */
+  --wave-glow-1: rgba(5, 150, 105, 0.08);
+  --wave-glow-2: rgba(16, 185, 129, 0.05);
+
   --decor-primary: #059669;
   --decor-primary-hover: #047857;
   --decor-accent-text: #059669;
   --decor-stroke-1: rgba(5, 150, 105, 0.20);
   --decor-stroke-2: rgba(16, 185, 129, 0.15);
-  --decor-glow-1: rgba(5, 150, 105, 0.06);
-  --decor-glow-2: rgba(52, 211, 153, 0.04);
-  --decor-ribbon-fill-1: rgba(236, 253, 245, 0.75);
-  --decor-ribbon-fill-2: rgba(209, 250, 229, 0.14);
   --decor-circle: rgba(5, 150, 105, 0.05);
   --decor-geom: rgba(5, 150, 105, 0.14);
   --decor-card-glow: 0 8px 24px -4px rgba(5, 150, 105, 0.07);
@@ -129,19 +156,26 @@ body.theme-premium-green {
 
 /* -------------------------------------------------------------------------
  * 3. THEME: ULTRA-PREMIUM MIDNIGHT + ELECTRIC BLUE (theme-midnight-blue)
- * Midnight Aurora: Deep midnight base, electric-blue thin waves & trails
- * Soft blue aurora, minimal translucent circles, subtle blue card glow
+ * Background: Deep midnight, Near-black blue tones (#080C15, #0B1120)
+ * Wave Colors: Electric blue, Cyan-blue, Deep blue, Soft blue
+ * Digital luxury light-flow effect, NOT cyberpunk or gaming.
  * ------------------------------------------------------------------------- */
 body.theme-midnight-blue {
+  --wave-c1: #172554; /* Deep midnight navy */
+  --wave-c2: #1E40AF; /* Royal cobalt */
+  --wave-c3: #1D4ED8; /* Deep blue */
+  --wave-c4: #2563EB; /* Electric blue */
+  --wave-c5: #38BDF8; /* Cyan-blue */
+  --wave-c6: #818CF8; /* Soft periwinkle */
+  --wave-c7: #C7D2FE; /* Pale soft blue */
+  --wave-glow-1: rgba(37, 99, 235, 0.18);
+  --wave-glow-2: rgba(56, 189, 248, 0.10);
+
   --decor-primary: #2563EB;
   --decor-primary-hover: #1D4ED8;
   --decor-accent-text: #60A5FA;
   --decor-stroke-1: rgba(59, 130, 246, 0.32);
   --decor-stroke-2: rgba(37, 99, 235, 0.20);
-  --decor-glow-1: rgba(37, 99, 235, 0.14);
-  --decor-glow-2: rgba(129, 140, 248, 0.08);
-  --decor-ribbon-fill-1: rgba(15, 23, 42, 0.70);
-  --decor-ribbon-fill-2: rgba(30, 41, 59, 0.22);
   --decor-circle: rgba(59, 130, 246, 0.07);
   --decor-geom: rgba(59, 130, 246, 0.16);
   --decor-card-glow: 0 8px 24px -4px rgba(37, 99, 235, 0.18);
@@ -167,19 +201,26 @@ body.theme-midnight-blue {
 
 /* -------------------------------------------------------------------------
  * 4. THEME: HOLOGRAPHIC AURA (theme-holographic-aura)
- * Iridescent Flow: Cyan, Aqua, Lavender, Soft Violet gradients
- * Smooth holographic flowing ribbons, thin curved lines, translucent glowing circles
+ * Color Direction: Cyan, Aqua, Lavender, Soft violet, Subtle blue
+ * Smooth iridescent gradients across multiple flowing lines.
+ * Futuristic SaaS elegance, NO heavy gold, NO heavy red, NO cheap rainbow.
  * ------------------------------------------------------------------------- */
 body.theme-holographic-aura {
+  --wave-c1: #0891B2; /* Deep cyan */
+  --wave-c2: #06B6D4; /* Cyan */
+  --wave-c3: #2DD4BF; /* Aqua */
+  --wave-c4: #6366F1; /* Soft violet / indigo */
+  --wave-c5: #818CF8; /* Subtle blue */
+  --wave-c6: #C084FC; /* Lavender */
+  --wave-c7: #E9D5FF; /* Soft iridescent haze */
+  --wave-glow-1: rgba(6, 182, 212, 0.14);
+  --wave-glow-2: rgba(192, 132, 252, 0.12);
+
   --decor-primary: #06B6D4;
   --decor-primary-hover: #0891B2;
   --decor-accent-text: #06B6D4;
   --decor-stroke-1: rgba(6, 182, 212, 0.30);
   --decor-stroke-2: rgba(168, 85, 247, 0.24);
-  --decor-glow-1: rgba(34, 211, 238, 0.12);
-  --decor-glow-2: rgba(192, 132, 252, 0.11);
-  --decor-ribbon-fill-1: rgba(246, 248, 254, 0.85);
-  --decor-ribbon-fill-2: rgba(233, 213, 255, 0.18);
   --decor-circle: rgba(168, 85, 247, 0.08);
   --decor-geom: rgba(34, 211, 238, 0.20);
   --decor-card-glow: 0 8px 24px -4px rgba(168, 85, 247, 0.14);
@@ -215,15 +256,18 @@ body.theme-holographic-aura {
   user-select: none;
 }
 
-/* Responsive Wave Ribbons */
+/* Responsive Multi-Line Wave Ribbon Container */
 .theme-wave-ribbon {
   position: absolute;
   width: 100%;
+  height: 100%;
   left: 0;
+  top: 0;
   pointer-events: none;
+  overflow: visible;
 }
 
-/* Ambient Section Glows */
+/* Ambient Radial Glows Behind Waves */
 .theme-ambient-glow {
   position: absolute;
   border-radius: 9999px;
@@ -232,7 +276,7 @@ body.theme-holographic-aura {
   opacity: 0.85;
 }
 
-/* Subtle Geometric Circles & Rings */
+/* Subtle Geometric Concentric Circles & Fine Hairlines */
 .theme-decor-circle {
   position: absolute;
   border-radius: 9999px;
@@ -247,7 +291,38 @@ body.theme-holographic-aura {
 }
 
 /* -------------------------------------------------------------------------
- * LANDING PAGE COMPONENT THEME HOOKS
+ * SECTION DIVIDERS: Flowing Multi-Line Wave Bands
+ * ------------------------------------------------------------------------- */
+.section-wave-divider {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+  user-select: none;
+  position: relative;
+  z-index: 5;
+}
+
+.section-wave-divider svg {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+
+@media (min-width: 768px) {
+  .section-wave-divider svg {
+    height: 96px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-wave-divider svg {
+    height: 120px;
+  }
+}
+
+/* -------------------------------------------------------------------------
+ * LANDING PAGE THEME COMPONENT HOOKS
  * ------------------------------------------------------------------------- */
 .landing-hero-badge {
   background-color: var(--decor-badge-bg) !important;
@@ -294,7 +369,6 @@ body.theme-holographic-aura {
   color: var(--decor-section-sub) !important;
 }
 
-/* Landing Section Card Base Overrides */
 .landing-theme-card {
   background-color: var(--decor-card-bg) !important;
   border: 1px solid var(--decor-card-border) !important;
@@ -327,36 +401,23 @@ body.theme-holographic-aura {
   border-radius: 1.75rem !important;
 }
 
-/* Wave Section Divider */
-.section-wave-divider {
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  pointer-events: none;
-}
-
-.section-wave-divider svg {
-  display: block;
-  width: 100%;
-  height: 48px;
-}
-
-@media (min-width: 768px) {
-  .section-wave-divider svg {
-    height: 72px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .section-wave-divider svg {
-    height: 96px;
-  }
-}
-
-/* Mobile responsive restraint: lower opacity on small viewports */
+/* -------------------------------------------------------------------------
+ * RESPONSIVE BEHAVIOR (Mobile & Tablet Refinement)
+ * ------------------------------------------------------------------------- */
 @media (max-width: 640px) {
+  /* Simplify waves on mobile: lower opacity and soften blur */
   .theme-ambient-glow {
     filter: blur(40px) !important;
-    opacity: 0.5 !important;
+    opacity: 0.45 !important;
+  }
+  .wave-bundle-secondary {
+    opacity: 0.4 !important;
+  }
+  .theme-decor-circle,
+  .theme-decor-line {
+    display: none !important;
+  }
+  .section-wave-divider svg {
+    height: 52px;
   }
 }

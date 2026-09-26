@@ -128,6 +128,7 @@ $cornerGlowOn = is_corner_glow_enabled();
             name="active_theme" 
             class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-800 focus:outline-none focus:border-rose-500 transition-colors"
           >
+            <option value="smm_pro" <?= $activeTheme === 'smm_pro' ? 'selected' : '' ?>>SMM Pro</option>
             <option value="premium_red" <?= $activeTheme === 'premium_red' ? 'selected' : '' ?>>Premium Red + White</option>
             <option value="premium_green" <?= $activeTheme === 'premium_green' ? 'selected' : '' ?>>Premium Green + White</option>
             <option value="midnight_blue" <?= $activeTheme === 'midnight_blue' ? 'selected' : '' ?>>Ultra-Premium Midnight + Electric Blue</option>
@@ -263,6 +264,50 @@ $cornerGlowOn = is_corner_glow_enabled();
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         
+        <!-- SMM Pro (Reference Exact Visual Copy) -->
+        <?php $isSmmPro = ($activeTheme === 'smm_pro'); ?>
+        <div class="bg-[#0B0B14] rounded-3xl border-2 <?= $isSmmPro ? 'border-[#FF2D78] ring-4 ring-[#FF2D78]/25 shadow-lg shadow-[#FF2D78]/20' : 'border-slate-800' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all relative overflow-hidden text-white">
+          <?php if ($isSmmPro): ?>
+            <div class="absolute top-4 right-4 px-2.5 py-1 bg-gradient-to-r from-[#FF2D78] to-[#D91B5C] text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow-md shadow-[#FF2D78]/40">
+              Active
+            </div>
+          <?php endif; ?>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-[#FF2D78]/15 border border-[#FF2D78]/40 flex items-center justify-center text-[#FF2D78] mb-4 shadow-lg shadow-[#FF2D78]/20">
+              <i data-lucide="zap" class="w-6 h-6 fill-[#FF2D78] text-[#FF2D78]"></i>
+            </div>
+            <h3 class="text-base font-bold text-white flex items-center gap-1.5">
+              <span>SMM Pro</span>
+              <span class="px-1.5 py-0.5 text-[9px] font-black uppercase bg-[#FF2D78]/20 border border-[#FF2D78]/40 text-[#FF2D78] rounded">NEW</span>
+            </h3>
+            <span class="inline-block text-[11px] font-bold text-[#FF2D78] bg-[#FF2D78]/10 border border-[#FF2D78]/30 px-2 py-0.5 rounded-md mt-1 mb-2">Dark Luxury Magenta</span>
+            <p class="text-xs text-[#9D9DB8] leading-relaxed">
+              Ultra-luxury dark obsidian canvas illuminated with glowing neon pink & magenta accents, dedicated independent templates, 3D social phone artwork, and floating glass stat badges.
+            </p>
+
+            <div class="mt-4 pt-4 border-t border-white/10 flex items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-400">Palette:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #08080E;" title="#08080E Obsidian"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #131322;" title="#131322 Dark Surface"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #FF2D78;" title="#FF2D78 Neon Pink"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-700" style="background-color: #D91B5C;" title="#D91B5C Ruby Magenta"></span>
+                <span class="w-4 h-4 rounded-full border border-slate-200" style="background-color: #FFFFFF;" title="#FFFFFF White"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/10">
+            <button 
+              type="button" 
+              onclick="selectTheme('smm_pro')"
+              class="w-full py-2 px-3 rounded-xl text-xs font-bold text-center transition-all cursor-pointer <?= $isSmmPro ? 'bg-white/10 text-white/50 cursor-default' : 'bg-gradient-to-r from-[#FF2D78] to-[#D91B5C] text-white hover:opacity-95 shadow-md shadow-[#FF2D78]/30' ?>"
+            >
+              <?= $isSmmPro ? 'Current Active Theme' : 'Switch to SMM Pro' ?>
+            </button>
+          </div>
+        </div>
+
         <!-- 1. Premium Red + White -->
         <?php $isRed = ($activeTheme === 'premium_red'); ?>
         <div class="bg-white rounded-3xl border-2 <?= $isRed ? 'border-red-600 ring-4 ring-red-600/10' : 'border-slate-200' ?> p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative overflow-hidden">

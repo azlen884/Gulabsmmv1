@@ -345,7 +345,7 @@ function get_active_theme() {
     if ($theme === 'black_gold') {
         $theme = 'premium_black_gold';
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint', 'smm_pro'];
     return in_array($theme, $valid, true) ? $theme : 'premium_red';
 }
 
@@ -354,6 +354,16 @@ function get_active_theme() {
  */
 function get_available_themes() {
     return [
+        'smm_pro' => [
+            'id' => 'smm_pro',
+            'name' => 'SMM Pro',
+            'description' => 'Dark luxury aesthetic with vibrant pink & magenta accents, glowing glassmorphic elements, 3D social visuals, and high-contrast typography.',
+            'primary_color' => '#FF2D78',
+            'secondary_color' => '#08080E',
+            'accent_color' => '#D91B5C',
+            'badge' => 'Dark Luxury Magenta',
+            'features' => ['Dark Luxury Canvas & Pink Glow', 'Dedicated Independent SMM Pro Template Engine', '3D Social Media Phone Artwork & Glass Badges']
+        ],
         'premium_red' => [
             'id' => 'premium_red',
             'name' => 'Premium Red + White',
@@ -438,7 +448,7 @@ function set_active_theme($themeKey) {
     if ($themeKey === 'black_gold') {
         $themeKey = 'premium_black_gold';
     }
-    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint'];
+    $valid = ['default', 'premium_red', 'premium_green', 'midnight_blue', 'holographic_aura', 'premium_black_gold', 'ocean_mint', 'smm_pro'];
     if (!in_array($themeKey, $valid, true)) {
         return false;
     }
@@ -456,7 +466,9 @@ function render_theme_head_tags() {
 
     $active = get_active_theme();
     $cssFile = '';
-    if ($active === 'premium_red') {
+    if ($active === 'smm_pro') {
+        $cssFile = '/templates/smm-pro/assets/css/smm-pro.css';
+    } elseif ($active === 'premium_red') {
         $cssFile = '/assets/css/theme-premium-red.css';
     } elseif ($active === 'premium_green') {
         $cssFile = '/assets/css/theme-premium-green.css';
@@ -482,7 +494,9 @@ function render_theme_head_tags() {
  */
 function get_theme_body_class() {
     $active = get_active_theme();
-    if ($active === 'premium_red') {
+    if ($active === 'smm_pro') {
+        return 'theme-smm-pro';
+    } elseif ($active === 'premium_red') {
         return 'theme-premium-red';
     } elseif ($active === 'premium_green') {
         return 'theme-premium-green';

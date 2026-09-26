@@ -156,6 +156,33 @@ $routes = [
     '/admin/theme' => __DIR__ . '/views/admin/theme.php',
 ];
 
+// SMM Pro Independent Theme Dispatcher
+if (get_active_theme() === 'smm_pro') {
+    $smmProViews = [
+        '/dashboard'     => __DIR__ . '/templates/smm-pro/views/dashboard.php',
+        '/order'         => __DIR__ . '/templates/smm-pro/views/order.php',
+        '/orders'        => __DIR__ . '/templates/smm-pro/views/orders.php',
+        '/services'      => __DIR__ . '/templates/smm-pro/views/services.php',
+        '/mass-order'    => __DIR__ . '/templates/smm-pro/views/mass_order.php',
+        '/massorder'     => __DIR__ . '/templates/smm-pro/views/mass_order.php',
+        '/drip-feed'     => __DIR__ . '/templates/smm-pro/views/drip_feed.php',
+        '/refills'       => __DIR__ . '/templates/smm-pro/views/refills.php',
+        '/add-funds'     => __DIR__ . '/templates/smm-pro/views/add_funds.php',
+        '/wallet'        => __DIR__ . '/templates/smm-pro/views/wallet.php',
+        '/transactions'  => __DIR__ . '/templates/smm-pro/views/wallet.php',
+        '/support'       => __DIR__ . '/templates/smm-pro/views/support.php',
+        '/profile'       => __DIR__ . '/templates/smm-pro/views/profile.php',
+        '/notifications' => __DIR__ . '/templates/smm-pro/views/notifications.php',
+        '/referrals'     => __DIR__ . '/templates/smm-pro/views/referrals.php',
+        '/refer-earn'    => __DIR__ . '/templates/smm-pro/views/referrals.php',
+    ];
+
+    if (isset($smmProViews[$cleanUri]) && file_exists($smmProViews[$cleanUri])) {
+        require $smmProViews[$cleanUri];
+        exit;
+    }
+}
+
 if (isset($routes[$cleanUri])) {
     require $routes[$cleanUri];
     exit;

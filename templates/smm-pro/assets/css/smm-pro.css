@@ -1,0 +1,460 @@
+/**
+ * =========================================================================
+ * SMM Pro - Official Theme Stylesheet (templates/smm-pro)
+ * 
+ * Exact Visual Copy of the Dark Luxury SMM Pro Reference Design:
+ * - Canvas Background: #08080E & #0B0B14
+ * - Cards & Surfaces: #131322, #161628 with subtle #FF2D78 pink edge glows
+ * - Primary Brand Pink/Magenta: #FF2D78 & linear-gradient(135deg, #FF2D78 0%, #D91B5C 100%)
+ * - Text: High-contrast pure white #FFFFFF & soft muted lavender/gray #9D9DB8
+ * - Dedicated and completely isolated from existing themes
+ * =========================================================================
+ */
+
+:root {
+  --smm-pro-bg: #08080E;
+  --smm-pro-bg-card: #131322;
+  --smm-pro-surface: #131322;
+  --smm-pro-surface-hover: #18182D;
+  --smm-pro-surface-active: #1F1F38;
+  --smm-pro-border: rgba(255, 255, 255, 0.08);
+  --smm-pro-border-glow: rgba(255, 45, 120, 0.35);
+  --smm-pro-pink: #FF2D78;
+  --smm-pro-pink-dark: #D91B5C;
+  --smm-pro-pink-glow: rgba(255, 45, 120, 0.30);
+  --smm-pro-text: #FFFFFF;
+  --smm-pro-text-secondary: #9D9DB8;
+  --smm-pro-text-muted: #6C6C8A;
+}
+
+body.theme-smm-pro {
+  background-color: #08080E !important;
+  color: #FFFFFF !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+body.theme-smm-pro ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+body.theme-smm-pro ::-webkit-scrollbar-track {
+  background: #08080E;
+}
+body.theme-smm-pro ::-webkit-scrollbar-thumb {
+  background: #25253A;
+  border-radius: 9999px;
+}
+body.theme-smm-pro ::-webkit-scrollbar-thumb:hover {
+  background: #FF2D78;
+}
+
+/* Animations */
+@keyframes smmFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes smmFloatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+
+@keyframes smmFloatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(-2deg);
+  }
+}
+
+@keyframes smmPulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(255, 45, 120, 0.25), 0 0 50px rgba(255, 45, 120, 0.10);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 45, 120, 0.45), 0 0 70px rgba(255, 45, 120, 0.20);
+  }
+}
+
+.smm-float {
+  animation: smmFloat 4s ease-in-out infinite;
+}
+
+.smm-float-slow {
+  animation: smmFloatSlow 6s ease-in-out infinite;
+}
+
+.smm-float-reverse {
+  animation: smmFloatReverse 5s ease-in-out infinite;
+}
+
+.smm-pulse-glow {
+  animation: smmPulseGlow 3s ease-in-out infinite;
+}
+
+/* Cards & Surfaces */
+.smm-card {
+  background-color: #131322;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.smm-card:hover {
+  border-color: rgba(255, 45, 120, 0.30);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 45, 120, 0.12);
+}
+
+.smm-card-glow {
+  background-color: #131322;
+  border: 1px solid rgba(255, 45, 120, 0.25);
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px -4px rgba(255, 45, 120, 0.18);
+}
+
+.smm-glass-card {
+  background: rgba(19, 19, 34, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 1.25rem;
+}
+
+.smm-glass-badge {
+  background: rgba(25, 25, 45, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 45, 120, 0.30);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(255, 45, 120, 0.25);
+  border-radius: 1rem;
+}
+
+/* Buttons */
+.smm-btn-pink {
+  background: linear-gradient(135deg, #FF2D78 0%, #D91B5C 100%);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  border-radius: 9999px;
+  box-shadow: 0 4px 18px rgba(255, 45, 120, 0.40);
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+}
+
+.smm-btn-pink:hover {
+  background: linear-gradient(135deg, #FF458A 0%, #FF2D78 100%);
+  box-shadow: 0 6px 24px rgba(255, 45, 120, 0.55);
+  transform: translateY(-1px);
+  color: #FFFFFF !important;
+}
+
+.smm-btn-dark {
+  background: #18182D;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.smm-btn-dark:hover {
+  background: #20203A;
+  border-color: rgba(255, 45, 120, 0.35);
+  color: #FF2D78 !important;
+  transform: translateY(-1px);
+}
+
+/* Sidebar Styles */
+.smm-sidebar {
+  background-color: #0B0B14;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.smm-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  border-radius: 9999px;
+  color: #9D9DB8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.smm-nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.smm-nav-link.active {
+  background: linear-gradient(135deg, #FF2D78 0%, #D91B5C 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(255, 45, 120, 0.35);
+}
+
+/* Sidebar Bonus Banner */
+.smm-sidebar-bonus {
+  background: linear-gradient(135deg, rgba(255, 45, 120, 0.14) 0%, rgba(217, 27, 92, 0.06) 100%);
+  border: 1px dashed rgba(255, 45, 120, 0.35);
+  border-radius: 1rem;
+}
+
+/* Navbar / Top Bar */
+.smm-navbar {
+  background-color: rgba(11, 11, 20, 0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.smm-search-input {
+  background-color: #131322;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  color: #FFFFFF;
+  font-size: 0.825rem;
+  transition: all 0.2s ease;
+}
+
+.smm-search-input:focus {
+  border-color: #FF2D78;
+  box-shadow: 0 0 0 3px rgba(255, 45, 120, 0.20);
+  outline: none;
+  background-color: #17172B;
+}
+
+/* Status Badges */
+.smm-badge-completed {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.30);
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.smm-badge-in-progress, .smm-badge-processing {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.30);
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.smm-badge-pending {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.30);
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.smm-badge-canceled, .smm-badge-failed {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.30);
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.smm-badge-partial {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: #C084FC;
+  border: 1px solid rgba(168, 85, 247, 0.30);
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Form Controls */
+.smm-input, select.smm-input, textarea.smm-input {
+  background-color: #10101E;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.85rem;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.smm-input:focus, select.smm-input:focus, textarea.smm-input:focus {
+  border-color: #FF2D78;
+  background-color: #151528;
+  box-shadow: 0 0 0 3px rgba(255, 45, 120, 0.20);
+  outline: none;
+}
+
+/* Category Filter Pills */
+.smm-cat-pill {
+  background-color: #161628;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  color: #9D9DB8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.smm-cat-pill:hover {
+  background-color: #1E1E34;
+  color: #FFFFFF;
+  border-color: rgba(255, 45, 120, 0.25);
+}
+
+.smm-cat-pill.active {
+  background: linear-gradient(135deg, #FF2D78 0%, #D91B5C 100%);
+  color: #FFFFFF;
+  border-color: #FF2D78;
+  box-shadow: 0 3px 14px rgba(255, 45, 120, 0.35);
+}
+
+/* Stepper Pill */
+.smm-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6C6C8A;
+}
+
+.smm-step.active {
+  color: #FFFFFF;
+}
+
+.smm-step-num {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #18182D;
+  color: #9D9DB8;
+}
+
+.smm-step.active .smm-step-num {
+  background: linear-gradient(135deg, #FF2D78 0%, #D91B5C 100%);
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(255, 45, 120, 0.40);
+}
+
+/* Bottom Mobile Bar */
+.smm-mobile-nav {
+  background: rgba(11, 11, 20, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.smm-mobile-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: #8B8BA8;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.smm-mobile-tab.active {
+  color: #FF2D78;
+}
+
+/* Hero Background Glow Effect */
+.smm-hero-ambient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(255, 45, 120, 0.22) 0%, rgba(217, 27, 92, 0.08) 45%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Table Styles */
+.smm-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.smm-table th {
+  padding: 0.85rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8E8EB0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.smm-table td {
+  padding: 1rem;
+  font-size: 0.825rem;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.smm-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.02);
+}
